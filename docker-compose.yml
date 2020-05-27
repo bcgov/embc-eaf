@@ -6,7 +6,7 @@ services:
       context: ./expense-authorization/src/API
     image: embc-expense-authorization-api:dev
     ports:
-      - 8080:8080
+      - 8080:80
 
   expense-authorization-portal-ui:
     build:
