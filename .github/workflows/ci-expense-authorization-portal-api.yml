@@ -1,6 +1,8 @@
 name: ci-expense-authorization-portal-api
 
 on:
+  push:
+    branches: [develop, master]
   pull_request:
     types: [opened, reopened, edited, synchronize]
     paths:
