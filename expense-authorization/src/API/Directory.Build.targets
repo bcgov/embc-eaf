@@ -1,0 +1,15 @@
+<Project>
+  <!-- Generate a documentation file unless explicitly disabled. -->
+  <Target Name="SetUpDocumentationFile" BeforeTargets="CoreCompile">
+    <PropertyGroup Condition=" '$(GenerateXMLDocs)' == 'false' ">
+      <DocumentationFile></DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(GenerateXMLDocs)' != 'false' ">
+      <DocumentationFile>$([MSBuild]::NormalizePath('$(OutputPath)', '$(MSBuildProjectName).xml'))</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup Condition=" '$(DocumentationFile)' != '' ">
+      <DocFileItem Remove="*" /> <!-- might not be strictly required -->
+      <DocFileItem Include="$(DocumentationFile)" />
+    </ItemGroup>
+  </Target>
+</Project>
