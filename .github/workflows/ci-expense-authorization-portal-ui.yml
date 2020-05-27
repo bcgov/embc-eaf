@@ -1,4 +1,4 @@
-name: ci-suppliers-portal-ui
+name: ci-expense-authorization-portal-ui
 
 on:
   pull_request:
