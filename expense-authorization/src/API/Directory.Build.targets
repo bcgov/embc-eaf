@@ -10,6 +10,12 @@
     <ItemGroup Condition=" '$(DocumentationFile)' != '' ">
       <DocFileItem Remove="*" /> <!-- might not be strictly required -->
       <DocFileItem Include="$(DocumentationFile)" />
+
+      <_DocumentationFile Include="$(DocumentationFile)" />
+      <ContentWithTargetPath Include="@(_DocumentationFile->'%(FullPath)')"
+                             RelativePath="%(_DocumentationFile.Identity)"
+                             TargetPath="%(_DocumentationFile.Filename)%(_DocumentationFile.Extension)"
+                             CopyToPublishDirectory="PreserveNewest" />
     </ItemGroup>
   </Target>
 </Project>
