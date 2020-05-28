@@ -2,9 +2,17 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
 
-# Dependencies
+# Development setup
 
-`ng add @ng-bootstrap/ng-bootstrap`
+The ApiModule is generated using `openapi-generator-cli` following the OpenAPI spec.  
+The generated content is stored in the `./src/app/api/generated` folder of this project.  
+Whenever the API changes, the api must be regenerated and committed to the source code.
+To accomplish this:
+- copy the current openapi spec from the .NET service into this codebase
+    ie. `http://localhost:8080/swagger/v1/swagger.json` -> `./src/app/api/swagger.json`
+- run the NPM script `generate:api` and replace all content in `./src/app/api/generated` with the newly generated code
+    
+NB: Java must be installed in order to use the openapi-generator-cli.
 
 ## Development server
 

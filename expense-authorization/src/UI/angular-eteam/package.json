@@ -2,11 +2,9 @@
   "name": "angular-eteam",
   "version": "0.0.0",
   "scripts": {
-    "generate:api": "openapi-generator generate -g typescript-angular -i http://localhost:8080/swagger/v1/swagger.json -o ./build/openapi",
+    "generate:api": "openapi-generator generate -g typescript-angular -i ./src/app/api/swagger.json -o ./src/app/api/generated",
     "ng": "ng",
-    "prestart": "npm run generate:api",
     "start": "ng serve",
-    "prebuild": "npm run generate:api",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

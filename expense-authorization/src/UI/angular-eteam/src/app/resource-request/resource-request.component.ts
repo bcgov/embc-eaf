@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import {WeatherForecastService} from 'build/openapi/api/weatherForecast.service'
+import {WeatherForecastService} from '../api/generated/api/weatherForecast.service'
 
 @Component({
   selector: 'app-resource-request',
