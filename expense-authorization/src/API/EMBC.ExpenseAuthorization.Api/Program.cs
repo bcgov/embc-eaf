@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -33,35 +33,28 @@ namespace EMBC.ExpenseAuthorization.Api
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             var builder = Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    // Added before AddUserSecrets to let user secrets override environment variables.
-                    config.AddEnvironmentVariables();
-
-                    var env = hostingContext.HostingEnvironment;
-                    if (env.IsDevelopment())
-                    {
-                        var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
-                        config.AddUserSecrets(appAssembly, optional: true);
-                    }
+                    SetupConfigurationSources(config, hostingContext.HostingEnvironment);
                 });
 
             return builder;
         }
-                        
+         
+        /// <summary>
+        /// Configures the globally shared logger.
+        /// </summary>
+        /// <returns></returns>
         private static ILogger ConfigureLogging()
         {
             var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("appsettings.json");
-            configurationBuilder.AddEnvironmentVariables();
 
-#if DEBUG
-            // we dont know about the hosting environment yet, so we cant check if this is development
-            configurationBuilder.AddJsonFile("appsettings.Development.json", optional: true);
-            configurationBuilder.AddUserSecrets(typeof(Program).Assembly, optional: true);
-#endif
+            // we dont know the environment yet, so pass null
+            SetupConfigurationSources(configurationBuilder, env: null);
+
             var configuration = configurationBuilder.Build();
 
             var logger = new LoggerConfiguration()
@@ -71,6 +64,40 @@ namespace EMBC.ExpenseAuthorization.Api
             Log.Logger = logger;
 
             return logger;
+        }
+
+
+        private static void SetupConfigurationSources(IConfigurationBuilder configurationBuilder, IHostEnvironment env)
+        {
+            // Added before AddUserSecrets to let user secrets override environment variables.
+
+            configurationBuilder.AddJsonFile("appsettings.json");
+
+            if (env != null)
+            {
+                configurationBuilder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+            }
+
+            configurationBuilder.AddEnvironmentVariables();
+
+            try
+            {
+
+                // User secrets override all other settings
+                configurationBuilder.AddUserSecrets(typeof(Program).Assembly, optional: true);
+            }
+            catch (InvalidOperationException)
+            {
+                // InvalidOperationException can be thrown by AddUserSecrets if the secret id exists but 
+                // the framework can not determine an appropriate location for storing user secrets. It uses
+                // the following environment variables / folders in this order
+                //
+                // APPDATA
+                // HOME
+                // SpecialFolder.ApplicationData
+                // SpecialFolder.UserProfile
+                // DOTNET_USER_SECRETS_FALLBACK_DIR
+            }
         }
     }
 }
