@@ -90,7 +90,16 @@
             <div class="form-group col-md">
             </div>
         </div>
+        
+        <button type="submit" [disabled]="!resourceRequestForm.valid">Submit</button>
     </div>
 
-    <button type="submit" [disabled]="!resourceRequestForm.valid">Submit</button>
+    <!-- test API -->
+    <div *ngFor="let article of weatherArticles | async">
+        <p>Date: {{article.date}}</p>
+        <p>TemperatureC: {{article.temperatureC}}</p>
+        <p>TemperatureF: {{article.temperatureF}}</p>
+        <p>Summary: {{article.summary}}</p>
+    </div>
+
 </form>
