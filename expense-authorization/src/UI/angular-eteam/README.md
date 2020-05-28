@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
 
-# Development setup
+## Development setup
 
 The ApiModule is generated using `openapi-generator-cli` following the OpenAPI spec.  
 The generated content is stored in the `./src/app/api/generated` folder of this project.  
