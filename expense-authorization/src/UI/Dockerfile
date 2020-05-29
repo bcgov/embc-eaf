@@ -5,11 +5,10 @@ RUN npm install
 COPY ./angular-eteam/ .
 RUN npm run build -- --prod
 
-#FROM caddy:builder AS caddy-builder
-#RUN caddy-builder
-
 FROM caddy:alpine as final
-#COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
+# for testing, install curl
+RUN apk --no-cache add tini git openssh-client \
+    && apk --no-cache add --virtual devs tar curl
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY --from=ng-builder /src/dist/angular-eteam/ /site
 ENV API_URL=

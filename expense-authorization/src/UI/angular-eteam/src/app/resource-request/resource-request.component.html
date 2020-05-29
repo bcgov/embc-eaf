@@ -95,6 +95,8 @@
     </div>
 
     <!-- test API -->
+    <p>isProd:{{environment.production}}</p>
+    <p>apiUrl:{{environment.apiEndpoint}}</p>
     <div *ngFor="let article of weatherArticles | async">
         <p>Date: {{article.date}}</p>
         <p>TemperatureC: {{article.temperatureC}}</p>

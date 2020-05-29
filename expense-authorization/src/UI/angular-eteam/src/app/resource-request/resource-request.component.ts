@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import {WeatherForecastService} from '../api/generated/api/weatherForecast.service'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-resource-request',
@@ -12,6 +13,7 @@ export class ResourceRequestComponent implements OnInit {
   constructor(private fb: FormBuilder, private weatherForecastService: WeatherForecastService) { }
 
   weatherArticles: any;
+  environment: any;
 
   resourceRequestForm = this.fb.group({
     dateOfRequest: [''],
@@ -29,6 +31,7 @@ export class ResourceRequestComponent implements OnInit {
   
   ngOnInit(): void {
     this.weatherArticles = this.weatherForecastService.weatherForecastGet();
+    this.environment = environment;
   }
 
   onSubmit() {

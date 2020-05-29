@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ResourceRequestComponent } from './resource-request/resource-request.component';
+import { BASE_PATH } from 'src/app/api/generated/variables'
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,7 @@ import { ResourceRequestComponent } from './resource-request/resource-request.co
     HttpClientModule,
     ApiModule
   ],
-  providers: [],
+  providers: [{ provide: BASE_PATH, useValue: environment.apiEndpoint }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
