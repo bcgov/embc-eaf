@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="form-group col-md">
-                <label for="dateOfRequest">Date of Request</label>
+                <label class="control-label" for="dateOfRequest">Date of Request</label>
                 <div class="input-group">
                     <input class="form-control" placeholder="yyyy/mm/dd" id="dateOfRequest" [formControlName]="'dateOfRequest'" ngbDatepicker #d="ngbDatepicker">
                     <div class="input-group-append">
@@ -14,31 +14,31 @@
             </div>
 
             <div class="form-group col-md">
-                <label for="timeOfRequest">Time of Request</label>
-                <input id="timeOfRequest" type="time" class="form-control" formControlName="timeOfRequest">
+                <label class="control-label" for="timeOfRequest">Time of Request</label>
+                <input class="form-control" id="timeOfRequest" type="time" formControlName="timeOfRequest">
             </div>
 
             <div class="form-group col-md">
-                <label for="trackingNumber">Tracking Number</label>
-                <input id="trackingNumber" type="text" class="form-control" formControlName="trackingNumber">
+                <label class="control-label" for="trackingNumber">Tracking Number</label>
+                <input class="form-control" id="trackingNumber" type="text" formControlName="trackingNumber">
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md">
-                <h5>Priority</h5>
+                <div class="control-label">Priority</div>
                 <div class="form-inline">
                     <div class="form-group">
-                        <input id="emergency" type="radio" formControlName="priority" value="1">
-                        <label for="emergency">Emergency</label>
+                        <input class="form-check-input" id="emergency" type="radio" formControlName="priority" value="1">
+                        <label class="form-check-label" for="emergency">Emergency</label>
                     </div>
                     <div class="form-group">
-                        <input id="priority" type="radio" formControlName="priority" value="2">
-                        <label for="priority">Priority</label>
+                        <input class="form-check-input" id="priority" type="radio" formControlName="priority" value="2">
+                        <label class="form-check-label" for="priority">Priority</label>
                     </div>
                     <div class="form-group">
-                        <input id="routine" type="radio" formControlName="priority" value="3">
-                        <label for="routine">Routine</label>
+                        <input class="form-check-input" id="routine" type="radio" formControlName="priority" value="3">
+                        <label class="form-check-label" for="routine">Routine</label>
                     </div>
                 </div>
             </div>
@@ -46,40 +46,41 @@
 
         <div class="row">
             <div class="form-group col-md">
-                <label for="requestorsCommunity">Requestor's Community</label>
-                <input id="requestorsCommunity" type="text" class="form-control" formControlName="requestorsCommunity">
+                <label class="control-label" for="requestorsCommunity">Requestor's Community</label>
+                <input class="form-control" id="requestorsCommunity" type="text" formControlName="requestorsCommunity">
             </div>
             <div class="form-group col-md">
-                <label for="requestorsContactInfo">Requestor's Contact Info</label>
-                <textarea id="requestorsContactInfo" type="text" class="form-control" formControlName="requestorsContactInfo" rows="3" >
+                <label class="control-label" for="requestorsContactInfo">Requestor's Contact Info</label>
+                <textarea class="form-control" id="requestorsContactInfo" type="text" formControlName="requestorsContactInfo" rows="3">
                 </textarea>
             </div>
         </div>
 
-        <h4>What is being Requested</h4>
+        <hr/>
+        <legend>What is being Requested</legend>
 
         <div class="row">
             <div class="form-group col-md">
-                <label for="resourceCategory">Resource Category</label>
-                <input id="resourceCategory" type="text" class="form-control" formControlName="resourceCategory">
+                <label class="control-label" for="resourceCategory">Resource Category</label>
+                <input class="form-control" id="resourceCategory" type="text" formControlName="resourceCategory">
             </div>
             <div class="form-group col-md">
-                <label for="resourceType">Resource Type</label>
-                <input id="resourceType" type="text" class="form-control" formControlName="resourceType">
+                <label class="control-label" for="resourceType">Resource Type</label>
+                <input class="form-control" id="resourceType" type="text" formControlName="resourceType">
             </div>
             <div class="form-group col-md">
-                <label for="quantity">Quantity</label>
-                <input id="quantity" type="text" class="form-control" formControlName="quantity">
+                <label class="control-label" for="quantity">Quantity</label>
+                <input class="form-control" id="quantity" type="text" formControlName="quantity">
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md">
-                <label for="unitsOfMeasure">Units of Measure</label>
-                <input id="unitsOfMeasure" type="text" class="form-control" formControlName="unitsOfMeasure">
+                <label class="control-label" for="unitsOfMeasure">Units of Measure</label>
+                <input class="form-control" id="unitsOfMeasure" type="text" formControlName="unitsOfMeasure">
             </div>
             <div class="form-group col-md">
-                <label for="whenRequired">When Required</label>
+                <label class="control-label" for="whenRequired">When Required</label>
                 <div class="input-group">
                     <input class="form-control" placeholder="yyyy/mm/dd" id="whenRequired" [formControlName]="'whenRequired'" ngbDatepicker #d2="ngbDatepicker">
                     <div class="input-group-append">
@@ -90,18 +91,91 @@
             <div class="form-group col-md">
             </div>
         </div>
-        
-        <button type="submit" [disabled]="!resourceRequestForm.valid">Submit</button>
-    </div>
 
-    <!-- test API -->
-    <p>isProd:{{environment.production}}</p>
-    <p>apiUrl:{{environment.apiEndpoint}}</p>
-    <div *ngFor="let article of weatherArticles | async">
-        <p>Date: {{article.date}}</p>
-        <p>TemperatureC: {{article.temperatureC}}</p>
-        <p>TemperatureF: {{article.temperatureF}}</p>
-        <p>Summary: {{article.summary}}</p>
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label" for="mission">Mission (Purpose of the resource)</label>
+                <textarea class="form-control" id="mission" formControlName="mission" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md">
+                <div class="control-label">Resource Must Come With</div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="fuel" formControlName="fuel">
+                        <label class="form-check-label" for="fuel">Fuel</label>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="meals" formControlName="meals">
+                        <label class="form-check-label" for="meals">Meals</label>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="operators" formControlName="operators">
+                        <label class="form-check-label" for="operators">Operator(s)</label>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="water" formControlName="water">
+                        <label class="form-check-label" for="water">Water</label>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="maintenance" formControlName="maintenance">
+                        <label class="form-check-label" for="maintenance">Maintenance</label>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="lodging" formControlName="lodging">
+                        <label class="form-check-label" for="lodging">Lodging</label>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" id="power" formControlName="power">
+                        <label class="form-check-label" for="power">Power</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+        <legend>Delivery Location</legend>
+
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label" for="location">Location / Site Name</label>
+                <input class="form-control" id="location" type="text" formControlName="location">
+            </div>
+            <div class="form-group col-md">
+                <label class="control-label" for="apt">Apt or Lot Number</label>
+                <input class="form-control" id="apt" type="text" formControlName="apt">
+            </div>
+            <div class="form-group col-md">
+                <label class="control-label" for="streetAddress">StreeAddress</label>
+                <input class="form-control" id="streetAddress" type="text" formControlName="streetAddress">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label" for="city">City</label>
+                <input class="form-control" id="city" type="text" formControlName="city">
+            </div>
+            <div class="form-group col-md">
+                <label class="control-label" for="province">Province</label>
+                <input class="form-control" id="province" type="text" formControlName="province">
+            </div>
+            <div class="form-group col-md">
+                <label class="control-label" for="postcode">Postcode</label>
+                <input class="form-control" id="postcode" type="text" formControlName="postcode">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label" for="additionalInformation">Additional Location Information</label>
+                <textarea class="form-control" id="additionalInformation" formControlName="additionalInformation" rows="3"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!resourceRequestForm.valid" class="btn btn-primary">Submit</button>
     </div>
 
 </form>
