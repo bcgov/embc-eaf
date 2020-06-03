@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import {WeatherForecastService} from '../api/generated/api/weatherForecast.service'
 
 @Component({
@@ -12,36 +12,38 @@ export class ResourceRequestComponent implements OnInit {
   constructor(private fb: FormBuilder, private weatherForecastService: WeatherForecastService) { }
 
   resourceRequestForm = this.fb.group({
-    dateOfRequest: [''],
-    timeOfRequest: [''],
-    trackingNumber: [''],
-    priority: [''],
-    requestorsCommunity: [''],
-    requestorsContactInfo: [''],
-    resourceCategory: [''],
-    resourceType: [''],
-    quantity: [''],
-    unitsOfMeasure: [''],
-    whenRequired: [''],
-    mission: [''],
-    fuel: [''],
-    meals: [''],
-    operators: [''],
-    water: [''],    
-    maintenance: [''],
-    lodging: [''],
-    power: [''],
-    location: [''],
-    apt: [''],
-    streetAddress: [''],
-    city: [''],
-    province: [''],
-    postcode: [''],
-    additionalInformation: ['']
+    dateOfRequest: [null],
+    timeOfRequest: [null],
+    trackingNumber: [null],
+    priority: [null],
+    requestorsCommunity: [null],
+    requestorsContactInfo: [null],
+    resourceCategory: [null],
+    resourceType: [null],
+    quantity: [null],
+    unitsOfMeasure: [null],
+    whenRequired: [null],
+    mission: [null],
+    fuel: [null],
+    meals: [null],
+    operators: [null],
+    water: [null],    
+    maintenance: [null],
+    lodging: [null],
+    power: [null],
+    location: [null],
+    apt: [null],
+    streetAddress: [null],
+    city: [null],
+    province: [null],
+    postcode: [null],
+    additionalInformation: [null]
   });
   
   ngOnInit(): void {
   }
+
+  get dateOfRequest() { return this.resourceRequestForm.get('dateOfRequest'); }
 
   onSubmit() {
     // console.log(this.resourceRequestForm.get('dateOfRequest'));
