@@ -1,0 +1,47 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+.navbar-brand {
+    margin: auto;
+}
+
+.menu-button {
+    cursor: pointer;
+    text-align: center;
+
+    span {
+        display: block;
+        font-size: 16px;
+        margin-top: -5px;
+    }
+}
+
+.menu-button:hover {
+    text-decoration: none;
+}
+
+.bg-secondary-nav {
+    background-color: #38598a !important;
+    position: relative;
+    top: -3px;
+    ul {
+        display: flex;
+        flex-direction: row;
+        margin: 5px 20px;
+        list-style-type: none;
+        .nav-link {
+            display: inline;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+        li+li::before {
+            content: "| ";
+            padding: 0 5px;
+            color: #fff;
+        }
+    }
+}

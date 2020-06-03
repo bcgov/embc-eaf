@@ -5,15 +5,19 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { environment } from '../environments/environment';
+import { BASE_PATH } from 'src/app/api/generated/variables'
 import { AppComponent } from './app.component';
 import { ResourceRequestComponent } from './resource-request/resource-request.component';
-import { BASE_PATH } from 'src/app/api/generated/variables'
-import { environment } from '../environments/environment';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ResourceRequestComponent
+    ResourceRequestComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
