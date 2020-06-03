@@ -9,11 +9,13 @@ export class HeaderComponent implements OnInit {
 
   constructor() { }
 
+  showMenu = false;
+
   ngOnInit(): void {
   }
 
-  homeButton() {
-    console.log("Home clicked");
+  toggleShowMenu() {
+    this.showMenu = !this.showMenu;
   }
 
 }

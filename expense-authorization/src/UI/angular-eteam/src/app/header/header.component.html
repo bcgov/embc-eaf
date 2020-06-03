@@ -14,17 +14,27 @@
                 <div class="navbar-collapse collapse">
                     <div class="navbar-nav">
                         <div>
-                            <a class="header-button menu-button hidden-xs nav-link" tabindex="0">
+                            <a class="header-button menu-button hidden-xs nav-link" tabindex="0" (click)="toggleShowMenu()">
                                 <img src="/assets/images/menu-ico-sm.png" alt="">
                                 <span>Menu</span>
                             </a>
                         </div>
                     </div>
                 </div>
+                <button class="navbar-toggler collapsed" type="button" (click)="toggleShowMenu()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="row d-lg-none w-100" *ngIf="showMenu">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/bootstrap-theme/">Home</a>
+                    <a class="nav-item nav-link" href="/bootstrap-theme/docs/getting-started/introduction">Getting Started</a>
+                    <a class="nav-item nav-link" href="/bootstrap-theme/docs/reference/simple">Theme Demo</a>
+                </div>
             </div>
         </div>
     </nav>
-    <div class="container navMenu" style="display:none;">
+    <div class="container d-none d-lg-block" *ngIf="showMenu">
         <nav class="row navbar-dark bg-secondary-nav justify-content-end">
             <div class="navbar-nav">
                 <ul>
