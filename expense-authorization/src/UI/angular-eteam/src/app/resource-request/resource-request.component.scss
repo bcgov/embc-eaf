@@ -9,3 +9,11 @@ form {
 input[type=radio], input[type=checkbox] {
     margin-left: 0px;    
 }
+.ng-invalid {
+    border-left-color: red;
+    border-left-width: thick;
+}
+.ng-valid.ng-dirty {
+    border-left-color: green;
+    border-left-width: thick;
+}

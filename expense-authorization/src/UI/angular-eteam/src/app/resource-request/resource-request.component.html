@@ -47,7 +47,11 @@
         <div class="row">
             <div class="form-group col-md">
                 <label class="control-label" for="requestorsCommunity">Requestor's Community</label>
-                <input class="form-control" id="requestorsCommunity" type="text" formControlName="requestorsCommunity">
+                <select class="form-control" id="requestorsCommunity" formControlName="requestorsCommunity">
+                    <option></option>
+                    <option>Community1</option>
+                    <option>Community1</option>
+                </select>
             </div>
             <div class="form-group col-md">
                 <label class="control-label" for="requestorsContactInfo">Requestor's Contact Info</label>
@@ -62,22 +66,34 @@
         <div class="row">
             <div class="form-group col-md">
                 <label class="control-label" for="resourceCategory">Resource Category</label>
-                <input class="form-control" id="resourceCategory" type="text" formControlName="resourceCategory">
+                <select class="form-control" id="resourceCategory" formControlName="resourceCategory">
+                    <option></option>
+                    <option value="1">Category1</option>
+                    <option value="2">Category2</option>
+                </select>
             </div>
             <div class="form-group col-md">
-                <label class="control-label" for="resourceType">Resource Type</label>
-                <input class="form-control" id="resourceType" type="text" formControlName="resourceType">
+                <label class="control-label" for="resourceType">* Resource Type</label>
+                <select class="form-control" id="resourceType" formControlName="resourceType">
+                    <option value="">Please Select</option>
+                    <option value="1">Type1</option>
+                    <option value="2">Type2</option>
+                </select>
             </div>
             <div class="form-group col-md">
-                <label class="control-label" for="quantity">Quantity</label>
-                <input class="form-control" id="quantity" type="text" formControlName="quantity">
+                <label class="control-label" for="quantity">* Quantity</label>
+                <input class="form-control" id="quantity" type="number" formControlName="quantity">
             </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md">
                 <label class="control-label" for="unitsOfMeasure">Units of Measure</label>
-                <input class="form-control" id="unitsOfMeasure" type="text" formControlName="unitsOfMeasure">
+                <select class="form-control" id="unitsOfMeasure" formControlName="unitsOfMeasure">
+                    <option value=""></option>
+                    <option value="1">Units1</option>
+                    <option value="2">Units2</option>
+                </select>
             </div>
             <div class="form-group col-md">
                 <label class="control-label" for="whenRequired">When Required</label>
@@ -148,7 +164,7 @@
                 <input class="form-control" id="apt" type="text" formControlName="apt">
             </div>
             <div class="form-group col-md">
-                <label class="control-label" for="streetAddress">StreeAddress</label>
+                <label class="control-label" for="streetAddress">Street Address</label>
                 <input class="form-control" id="streetAddress" type="text" formControlName="streetAddress">
             </div>
         </div>
