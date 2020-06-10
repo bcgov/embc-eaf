@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import {WeatherForecastService} from '../api/generated/api/weatherForecast.service'
 
+/** 
+ * This Component is for a Resource Request Form, an online version of the pdf form available here:
+ * https://www2.gov.bc.ca/assets/gov/public-safety-and-emergency-services/emergency-preparedness-response-recovery/local-government/eoc-forms/resource_request.pdf
+ */
 @Component({
   selector: 'app-resource-request',
   templateUrl: './resource-request.component.html',

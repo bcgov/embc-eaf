@@ -6,3 +6,23 @@ $bcgov-font-path: "~@bcgov/bootstrap-theme/dist/fonts/";
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+form {
+    margin-top: 85px;
+    margin-bottom: 10px;
+}
+.form-check-label {
+    padding-left: 3px;
+    padding-right: 20px;
+}
+input[type=radio], input[type=checkbox] {
+    margin-left: 0px;    
+}
+.ng-invalid {
+    border-left-color: red;
+    border-left-width: thick;
+}
+.ng-valid.ng-dirty {
+    border-left-color: green;
+    border-left-width: thick;
+}

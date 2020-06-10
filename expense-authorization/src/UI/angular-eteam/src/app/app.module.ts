@@ -11,20 +11,24 @@ import { AppComponent } from './app.component';
 import { ResourceRequestComponent } from './resource-request/resource-request.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { AppRoutingModule } from './app-routing.module';
+import { ExpenditureAuthorizationComponent } from './expenditure-authorization/expenditure-authorization.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ResourceRequestComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    ResourceRequestComponent,
+    ExpenditureAuthorizationComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ApiModule
+    ApiModule,
+    AppRoutingModule
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiEndpoint }],
   bootstrap: [AppComponent]
