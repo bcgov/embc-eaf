@@ -18,11 +18,17 @@ form {
 input[type=radio], input[type=checkbox] {
     margin-left: 0px;    
 }
-.ng-invalid {
-    border-left-color: red;
+.ng-invalid.ng-touched {
+    border-left-color: #d93e45;
     border-left-width: thick;
 }
 .ng-valid.ng-dirty {
     border-left-color: green;
     border-left-width: thick;
+}
+.ng-invalid-feedback {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #d93e45;
 }
