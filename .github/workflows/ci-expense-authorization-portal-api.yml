@@ -1,0 +1,23 @@
+name: ci-expense-authorization-portal-api
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    paths:
+      - "expense-authorization/src/API/**"
+      - ".github/workflows/ci-expense-authorization-portal-api.yml"
+
+env:
+  IMAGE_NAME: expense-authorization-portal-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        working-directory: expense-authorization/src/API
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME

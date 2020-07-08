@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  expense-authorization-portal-api:
+    build:
+      context: ./expense-authorization/src/API
+    image: embc-expense-authorization-api:dev
+    ports:
+      - 8080:80
+
+  expense-authorization-portal-ui:
+    build:
+      context: ./expense-authorization/src/UI
+    image: embc-expense-authorization-ui:dev
+    ports:
+      - 2015:2015
+    environment:
+      - "API_URL=expense-authorization-portal-api:8080"
+    depends_on:
+      - expense-authorization-portal-api

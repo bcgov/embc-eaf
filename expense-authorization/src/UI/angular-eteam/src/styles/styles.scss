@@ -1,0 +1,34 @@
+/* You can add global styles to this file, and also import other style files */
+
+$bcgov-font-path: "~@bcgov/bootstrap-theme/dist/fonts/";
+@import "~@bcgov/bootstrap-theme/dist/scss/bootstrap-theme";
+@import "~@bcgov/bootstrap-theme/dist/scss/common";
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+form {
+    margin-top: 85px;
+    margin-bottom: 10px;
+}
+.form-check-label {
+    padding-left: 3px;
+    padding-right: 20px;
+}
+input[type=radio], input[type=checkbox] {
+    margin-left: 0px;    
+}
+.ng-invalid.ng-touched {
+    border-left-color: #d93e45;
+    border-left-width: thick;
+}
+.ng-valid.ng-dirty {
+    border-left-color: green;
+    border-left-width: thick;
+}
+.ng-invalid-feedback {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #d93e45;
+}

@@ -1,0 +1,147 @@
+<form [formGroup]="expndAuthForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+        <h1>Expenditure Authorization</h1>
+
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label" for="expEvent">* Event</label>
+                <input class="form-control" id="expEvent" type="text" formControlName="expEvent">
+                <div class="ng-invalid-feedback" *ngIf="expEvent.touched && expEvent.errors && expEvent.errors.required">This field is required</div>
+            </div>
+
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label class="control-label" for="dateOfRequest">* Date of Request</label>
+                <input class="form-control" id="dateOfRequest" type="date" formControlName="dateOfRequest">
+                <div class="ng-invalid-feedback" *ngIf="dateOfRequest.touched && dateOfRequest.errors && dateOfRequest.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="dateOfRequest.touched && dateOfRequest.errors && dateOfRequest.errors.future">Cannot be a future date</div>
+            </div>
+
+            <div class="form-group col-sm-6 col-md-3 col-lg-2">
+                <label class="control-label" for="timeOfRequest">* Time of Request</label>
+                <input class="form-control" id="timeOfRequest" type="time" formControlName="timeOfRequest">
+                <div class="ng-invalid-feedback" *ngIf="timeOfRequest.touched && timeOfRequest.errors && timeOfRequest.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="timeOfRequest.touched && timeOfRequest.errors && timeOfRequest.errors.future">Cannot be a future time</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-8 col-md-6 col-lg-4">
+                <label class="control-label" for="eafNo">* EAF#</label>
+                <input class="form-control" id="eafNo" type="text" formControlName="eafNo">
+                <div class="ng-invalid-feedback" *ngIf="eafNo.touched && eafNo.errors && eafNo.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-8 col-md-6 col-lg-4">
+                <label class="control-label" for="embcTaskNo">* EMBC Task #</label>
+                <input class="form-control" id="embcTaskNo" type="text" formControlName="embcTaskNo">
+                <div class="ng-invalid-feedback" *ngIf="embcTaskNo.touched && embcTaskNo.errors && embcTaskNo.errors.required">This field is required</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-8 col-lg-6 col-xl-4">
+                <label class="control-label" for="requestorsCommunity">* Requesting Organization/Community</label>
+                <select class="form-control" id="requestorsCommunity" formControlName="requestorsCommunity">
+                    <option value="">Please Select</option>
+                    <option value="1">Community1</option>
+                    <option value="2">Community1</option>
+                </select>
+                <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <legend>Authorized Representative</legend>
+
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label" for="repName">* Name</label>
+                <input class="form-control" id="repName" type="text" formControlName="repName">
+                <div class="ng-invalid-feedback" *ngIf="repName.touched && repName.errors && repName.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-6 col-md-3">
+                <label class="control-label" for="repTelephone">* Telephone</label>
+                <input class="form-control" id="repTelephone" type="tel" formControlName="repTelephone" placeholder="555-555-5555">
+                <div class="ng-invalid-feedback" *ngIf="repTelephone.touched && repTelephone.errors && repTelephone.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-md">
+                <label class="control-label" for="repEmail">* Email</label>
+                <input class="form-control" id="repEmail" type="email" formControlName="repEmail">
+                <div class="ng-invalid-feedback" *ngIf="repEmail.touched && repEmail.errors && repEmail.errors.required">This field is required</div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="form-group col-md">
+                <label class="control-label mb-0" for="description">* Description of Expenditure</label>
+                <div><small class="form-text text-muted mt-0">(include nature of goods and/or services being acquired/provided, desired
+                        outcome, location, date/time planned…)</small></div>
+                <textarea class="form-control" id="description" type="text" formControlName="description" rows="5"></textarea>
+                <div class="ng-invalid-feedback" *ngIf="description.touched && description.errors && description.errors.required">This field is required</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
+                <label class="control-label" for="amountRequested">* Amount Requested</label>
+                <input class="form-control" id="amountRequested" type="text" formControlName="amountRequested">
+                <div class="ng-invalid-feedback" *ngIf="amountRequested.touched && amountRequested.errors && amountRequested.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
+                <label class="control-label" for="expenditureNotToExceed">Expenditure Not to Exceed</label>
+                <input class="form-control" id="expenditureNotToExceed" type="text" formControlName="expenditureNotToExceed">
+            </div>
+        </div>
+
+        <hr />
+        <legend>EOC Approvals</legend>
+
+        <div class="row">
+            <div class="form-group col-md-7 col-lg-4">
+                <label class="control-label" for="processingApprovedBy">* Approved for Processing by</label>
+                <input class="form-control" id="processingApprovedBy" type="text" formControlName="processingApprovedBy">
+                <div class="ng-invalid-feedback" *ngIf="processingApprovedBy.touched && processingApprovedBy.errors && processingApprovedBy.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-md-5 col-lg-3">
+                <label class="control-label" for="processingPosition">* Position</label>
+                <input class="form-control" id="processingPosition" type="text" formControlName="processingPosition">
+                <div class="ng-invalid-feedback" *ngIf="processingPosition.touched && processingPosition.errors && processingPosition.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-6 col-lg-3">
+                <label class="control-label" for="processingDate">* Date</label>
+                <input class="form-control" id="processingDate" type="date" formControlName="processingDate">
+                <div class="ng-invalid-feedback" *ngIf="processingDate.touched && processingDate.errors && processingDate.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-6 col-lg-2">
+                <label class="control-label" for="processingTime">* Time</label>
+                <input class="form-control" id="processingTime" type="time" formControlName="processingTime">
+                <div class="ng-invalid-feedback" *ngIf="processingTime.touched && processingTime.errors && processingTime.errors.required">This field is required</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-7 col-lg-4">
+                <label class="control-label" for="expenditureApprovedBy">* Expenditure Request Approved by</label>
+                <input class="form-control" id="expenditureApprovedBy" type="text" formControlName="expenditureApprovedBy">
+                <div class="ng-invalid-feedback" *ngIf="expenditureApprovedBy.touched && expenditureApprovedBy.errors && expenditureApprovedBy.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-md-5 col-lg-3">
+                <label class="control-label" for="expenditurePosition">* Position</label>
+                <input class="form-control" id="expenditurePosition" type="text" formControlName="expenditurePosition">
+                <div class="ng-invalid-feedback" *ngIf="expenditurePosition.touched && expenditurePosition.errors && expenditurePosition.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-6 col-lg-3">
+                <label class="control-label" for="expenditureDate">* Date</label>
+                <input class="form-control" id="expenditureDate" type="date" formControlName="expenditureDate">
+                <div class="ng-invalid-feedback" *ngIf="expenditureDate.touched && expenditureDate.errors && expenditureDate.errors.required">This field is required</div>
+            </div>
+            <div class="form-group col-sm-6 col-lg-2">
+                <label class="control-label" for="expenditureTime">* Time</label>
+                <input class="form-control" id="expenditureTime" type="time" formControlName="expenditureTime">
+                <div class="ng-invalid-feedback" *ngIf="expenditureTime.touched && expenditureTime.errors && expenditureTime.errors.required">This field is required</div>
+            </div>
+        </div>
+    </div>
+</form>

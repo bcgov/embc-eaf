@@ -1,0 +1,72 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary-nav">
+        <div class="container">
+            <div class="row ml-1 ml-sm-0">
+                <a class="navbar-brand" href="https://www2.gov.bc.ca">
+                    <img class="img-fluid d-none d-md-block" src="/assets/images/bcid-logo-rev-en.svg" width="181" height="45" alt="B.C. Government Logo">
+                    <img class="img-fluid d-md-none" src="/assets/images/bcid-symbol-rev.svg" width="64" height="45" alt="B.C. Government Logo">
+                </a>
+                <div class="navbar-brand">
+                    EMBC
+                </div>
+                <!-- For layout testing - shows breakpoints
+                -->
+                <div class="navbar-brand ml-5">
+                    <div class="d-block d-sm-none">xs</div>
+                    <div class="d-none d-sm-block d-md-none">sm</div>
+                    <div class="d-none d-md-block d-lg-none">md</div>
+                    <div class="d-none d-lg-block d-xl-none">lg</div>
+                    <div class="d-none d-xl-block">xl</div>
+                </div>
+            </div>
+            <div class="row mr-1 mr-sm-0">
+                <div class="navbar-collapse collapse">
+                    <div class="navbar-nav">
+                        <div>
+                            <a class="header-button menu-button hidden-xs nav-link" tabindex="0" (click)="toggleShowMenu()">
+                                <img src="/assets/images/menu-ico-sm.png" alt="">
+                                <span>Menu</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button class="navbar-toggler collapsed" type="button" (click)="toggleShowMenu()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="row d-md-none w-100 ml-1 ml-sm-0" *ngIf="showMenu">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/bootstrap-theme/">Home</a>
+                    <a class="nav-item nav-link" href="/bootstrap-theme/docs/getting-started/introduction">Getting Started</a>
+                    <a class="nav-item nav-link" href="/bootstrap-theme/docs/reference/simple">Theme Demo</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container d-none d-md-block" *ngIf="showMenu">
+        <nav class="row navbar-dark bg-secondary-nav justify-content-end">
+            <div class="navbar-nav">
+                <ul>
+                    <li>
+                        <a class="nav-link nav-item" href="https://news.gov.bc.ca/ministries/transportation-and-infrastructure/emergency-preparedness/biography">The Minister</a>
+                    </li>
+                    <li>
+                        <a class="nav-link nav-item" href="https://www2.gov.bc.ca/gov/content/careers-myhr">Careers &amp; HR</a>
+                    </li>
+                    <li>
+                        <a class="nav-link nav-item" href="https://www2.gov.bc.ca/gov/content/home/services-a-z">Services</a>
+                    </li>
+                    <li>
+                        <a class="nav-link nav-item" href="https://www2.gov.bc.ca/gov/content/home/forms-a-z">Forms</a>
+                    </li>
+                    <li>
+                        <a class="nav-link nav-item" href="https://news.gov.bc.ca/">News</a>
+                    </li>
+                    <li>
+                        <a class="nav-link nav-item" href="https://www2.gov.bc.ca/gov/content/home/contact-us">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
