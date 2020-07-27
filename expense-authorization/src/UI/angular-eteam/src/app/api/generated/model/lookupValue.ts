@@ -11,10 +11,8 @@
  */
 
 
-export interface WeatherForecast { 
-    date?: string;
-    temperatureC?: number;
-    readonly temperatureF?: number;
-    summary?: string | null;
+export interface LookupValue { 
+    id?: string | null;
+    value?: string | null;
 }
 

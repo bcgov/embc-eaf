@@ -17,7 +17,9 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { WeatherForecast } from '../model/models';
+import { LookupType } from '../model/models';
+import { LookupValue } from '../model/models';
+import { ProblemDetails } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -27,7 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class WeatherForecastService {
+export class LookupService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -86,13 +88,17 @@ export class WeatherForecastService {
     }
 
     /**
+     * @param lookupType 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public weatherForecastGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<WeatherForecast>>;
-    public weatherForecastGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<WeatherForecast>>>;
-    public weatherForecastGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<WeatherForecast>>>;
-    public weatherForecastGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public apiLookupLookupTypeGet(lookupType: LookupType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<LookupValue>>;
+    public apiLookupLookupTypeGet(lookupType: LookupType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<LookupValue>>>;
+    public apiLookupLookupTypeGet(lookupType: LookupType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<LookupValue>>>;
+    public apiLookupLookupTypeGet(lookupType: LookupType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (lookupType === null || lookupType === undefined) {
+            throw new Error('Required parameter lookupType was null or undefined when calling apiLookupLookupTypeGet.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -114,7 +120,7 @@ export class WeatherForecastService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<Array<WeatherForecast>>(`${this.configuration.basePath}/WeatherForecast`,
+        return this.httpClient.get<Array<LookupValue>>(`${this.configuration.basePath}/api/Lookup/${encodeURIComponent(String(lookupType))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

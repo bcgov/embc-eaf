@@ -1,67 +1,333 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-      "title": "EMBC Expense Authorization",
-      "contact": {
-        "name": "API Team",
-        "url": "https://github.com/bcgov/embc-expense-authorization",
-        "email": "apiteam@example.org"
-      },
-      "license": {
-        "name": "Apache 2.0",
-        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-      },
-      "version": "v1"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EMBC Expense Authorization",
+    "contact": {
+      "name": "API Team",
+      "url": "https://github.com/bcgov/embc-expense-authorization",
+      "email": "apiteam@example.org"
     },
-    "paths": {
-      "/WeatherForecast": {
-        "get": {
-          "tags": [
-            "WeatherForecast"
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/WeatherForecast"
-                    }
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Lookup/{lookupType}": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "parameters": [
+          {
+            "name": "lookupType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/LookupType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookupValue"
                   }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
     },
-    "components": {
-      "schemas": {
-        "WeatherForecast": {
-          "type": "object",
-          "properties": {
-            "date": {
-              "type": "string",
-              "format": "date-time"
+    "/api/ResourceRequest": {
+      "post": {
+        "tags": [
+          "ResourceRequest"
+        ],
+        "summary": "Creates a Resource Request..",
+        "requestBody": {
+          "description": "The resource request to create.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceRequestModel"
+              }
             },
-            "temperatureC": {
-              "type": "integer",
-              "format": "int32"
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceRequestModel"
+              }
             },
-            "temperatureF": {
-              "type": "integer",
-              "format": "int32",
-              "readOnly": true
-            },
-            "summary": {
-              "type": "string",
-              "nullable": true
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceRequestModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
             }
           },
-          "additionalProperties": false
+          "500": {
+            "description": "Server Error"
+          }
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "LookupType": {
+        "enum": [
+          "PriorityResource",
+          "RequestingOrgForwardTo",
+          "ResourceCategory",
+          "ResourceType",
+          "StatusResource",
+          "UnitsOfMeasure"
+        ],
+        "type": "string"
+      },
+      "LookupValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "ResourceRequestModel": {
+        "required": [
+          "currentStatus",
+          "quantity",
+          "resourceType"
+        ],
+        "type": "object",
+        "properties": {
+          "approvedBy": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "approvedTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currentStatus": {
+            "maxLength": 703,
+            "minLength": 0,
+            "type": "string"
+          },
+          "estimatedResourceCost": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mission": {
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithFuel": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithLodging": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithMaint": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithMeals": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithOperator": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithOther": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithPower": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "mustComeWithWater": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "priority": {
+            "maxLength": 703,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "qtyUnitOfMeasurement": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "reqTrackNoEmac": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "reqTrackNoFema": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "reqTrackNoState": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "requestNumber": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "requestionOrg": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "requestorContactInfo": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "resourceCategory": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "resourceType": {
+            "maxLength": 600,
+            "minLength": 0,
+            "type": "string"
+          },
+          "resourceTypeTemp": {
+            "maxLength": 600,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "specialInstructions": {
+            "type": "string",
+            "nullable": true
+          },
+          "summaryOfActionsTaken": {
+            "type": "string",
+            "nullable": true
+          },
+          "whenNeeded": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
   }
+}

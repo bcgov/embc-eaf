@@ -1,3 +1,5 @@
-export * from './weatherForecast.service';
-import { WeatherForecastService } from './weatherForecast.service';
-export const APIS = [WeatherForecastService];
+export * from './lookup.service';
+import { LookupService } from './lookup.service';
+export * from './resourceRequest.service';
+import { ResourceRequestService } from './resourceRequest.service';
+export const APIS = [LookupService, ResourceRequestService];

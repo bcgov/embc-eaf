@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { LookupService } from '../api/generated/api/lookup.service'
 
 /** 
  * This Component is for an Expenditure Authorization Form, an online version of the pdf form available here:
@@ -13,7 +14,7 @@ import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, Valid
 })
 export class ExpenditureAuthorizationComponent implements OnInit {
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private lookupService: LookupService) { }
 
   today = new Date();
   expndAuthForm = this.fb.group({

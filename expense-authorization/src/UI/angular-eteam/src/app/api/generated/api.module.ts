@@ -3,7 +3,8 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { WeatherForecastService } from './api/weatherForecast.service';
+import { LookupService } from './api/lookup.service';
+import { ResourceRequestService } from './api/resourceRequest.service';
 
 @NgModule({
   imports:      [],

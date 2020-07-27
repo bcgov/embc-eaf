@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import {WeatherForecastService} from '../api/generated/api/weatherForecast.service'
+import { LookupService } from '../api/generated/api/lookup.service'
 
 /** 
  * This Component is for a Resource Request Form, an online version of the pdf form available here:
@@ -13,7 +13,7 @@ import {WeatherForecastService} from '../api/generated/api/weatherForecast.servi
 })
 export class ResourceRequestComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private weatherForecastService: WeatherForecastService) { }
+  constructor(private fb: FormBuilder, private lookupService: LookupService) { }
 
   resourceRequestForm = this.fb.group({
     dateOfRequest: [null],
