@@ -18,7 +18,7 @@ form {
 input[type=radio], input[type=checkbox] {
     margin-left: 0px;    
 }
-.ng-invalid.ng-touched {
+.ng-invalid.ng-touched, .ng-invalid.ng-dirty {
     border-left-color: #d93e45;
     border-left-width: thick;
 }

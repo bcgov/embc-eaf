@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { LookupService } from '../api/generated/api/lookup.service'
+import { LookupType } from '../api/generated';
 
 /** 
  * This Component is for an Expenditure Authorization Form, an online version of the pdf form available here:
@@ -16,6 +17,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private lookupService: LookupService) { }
 
+  communities: any;
+
   today = new Date();
   expndAuthForm = this.fb.group({
     expEvent: [null, Validators.required],
@@ -25,10 +28,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     embcTaskNo: [null, Validators.required],
     requestorsCommunity: ['', Validators.required],
     repName: [null, Validators.required],
-    repTelephone: [null, [Validators.required, Validators.pattern("\\d\\d\\d[\.|\-]\\d\\d\\d[\.|\-]\\d\\d\\d\\d")]],
-    repEmail: [null, Validators.required],
+    repTelephone: [null, [Validators.required, Validators.pattern("^\\d{3}[\.|\-]\\d{3}[\.|\-]\\d{4}$")]],
+    repEmail: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
     description: [null, Validators.required],
-    amountRequested: [null, Validators.required],
+    amountRequested: [null, [Validators.required, Validators.pattern("^\\$?\\d+(\.\\d{2})?$")]],
     expenditureNotToExceed: [null],
     processingApprovedBy: [null, Validators.required],
     processingPosition: [null, Validators.required],
@@ -36,8 +39,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     processingTime: [null],
     expenditureApprovedBy: [null, Validators.required],
     expenditurePosition: [null, Validators.required],
-    expenditureDate: ['2020-06-09', Validators.required],
-    expenditureTime: ['10:55', Validators.required]
+    expenditureDate: [null],
+    expenditureTime: [null]
   }, {
     validator: Validators.compose([
     ])
@@ -71,6 +74,11 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     this.processingTime.setValidators([Validators.required, this.timeNotFutureValidator('processingDate')]);
     this.expenditureDate.setValidators([Validators.required, this.dateNotFutureValidator('expenditureTime')]);
     this.expenditureTime.setValidators([Validators.required, this.timeNotFutureValidator('expenditureDate')]);
+
+    this.communities = [
+      { id: 3, value: "Community3" },
+      { id: 4, value: "Community4" }
+    ];
   }
 
   onSubmit() {

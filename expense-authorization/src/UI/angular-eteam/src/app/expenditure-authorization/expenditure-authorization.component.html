@@ -42,8 +42,7 @@
                 <label class="control-label" for="requestorsCommunity">* Requesting Organization/Community</label>
                 <select class="form-control" id="requestorsCommunity" formControlName="requestorsCommunity">
                     <option value="">Please Select</option>
-                    <option value="1">Community1</option>
-                    <option value="2">Community1</option>
+                    <option *ngFor="let option of communities " value="{{option.id}}">{{option.value}}</option><!-- "| async" -->
                 </select>
                 <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required
                 </div>
@@ -63,11 +62,13 @@
                 <label class="control-label" for="repTelephone">* Telephone</label>
                 <input class="form-control" id="repTelephone" type="tel" formControlName="repTelephone" placeholder="555-555-5555">
                 <div class="ng-invalid-feedback" *ngIf="repTelephone.touched && repTelephone.errors && repTelephone.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="repTelephone.touched && repTelephone.errors && repTelephone.errors.pattern">Must be of the form: 555-555-5555</div>
             </div>
             <div class="form-group col-md">
                 <label class="control-label" for="repEmail">* Email</label>
-                <input class="form-control" id="repEmail" type="email" formControlName="repEmail">
+                <input class="form-control" id="repEmail" type="email" formControlName="repEmail" placeholder="name@domain">
                 <div class="ng-invalid-feedback" *ngIf="repEmail.touched && repEmail.errors && repEmail.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="repEmail.touched && repEmail.errors && repEmail.errors.pattern">Must be of the form: name@domain</div>
             </div>
         </div>
 
@@ -87,7 +88,8 @@
             <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
                 <label class="control-label" for="amountRequested">* Amount Requested</label>
                 <input class="form-control" id="amountRequested" type="text" formControlName="amountRequested">
-                <div class="ng-invalid-feedback" *ngIf="amountRequested.touched && amountRequested.errors && amountRequested.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="!amountRequested.pristine && amountRequested.errors && amountRequested.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="!amountRequested.pristine && amountRequested.errors && amountRequested.errors.pattern">Must be a valid currency amount.</div>
             </div>
             <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
                 <label class="control-label" for="expenditureNotToExceed">Expenditure Not to Exceed</label>
@@ -143,5 +145,8 @@
                 <div class="ng-invalid-feedback" *ngIf="expenditureTime.touched && expenditureTime.errors && expenditureTime.errors.required">This field is required</div>
             </div>
         </div>
-    </div>
+
+        <!-- <button type="submit" [disabled]="!expndAuthForm.valid" class="btn btn-primary">Submit</button> -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>    
 </form>
