@@ -18,6 +18,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   constructor(private fb: FormBuilder, private lookupService: LookupService) { }
 
   communities: any;
+  files: any = [];
 
   today = new Date();
   expndAuthForm = this.fb.group({
@@ -116,6 +117,17 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       }
       return {};
     };
+  }
+
+  uploadFile(event: any) {
+    for (let index = 0; index < event.length; index++) {
+      const element = event[index];
+      this.files.push(element.name)
+    }  
+  }
+  
+  deleteAttachment(index: any) {
+    this.files.splice(index, 1)
   }
 
 }

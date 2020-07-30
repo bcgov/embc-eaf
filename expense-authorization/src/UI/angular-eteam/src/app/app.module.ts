@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ExpenditureAuthorizationComponent } from './expenditure-authorization/expenditure-authorization.component';
+import { DragDropDirective } from './drag-drop.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ExpenditureAuthorizationComponent } from './expenditure-authorization/e
     HeaderComponent,
     FooterComponent,
     ResourceRequestComponent,
-    ExpenditureAuthorizationComponent
+    ExpenditureAuthorizationComponent,
+    DragDropDirective
   ],
   imports: [
     BrowserModule,
