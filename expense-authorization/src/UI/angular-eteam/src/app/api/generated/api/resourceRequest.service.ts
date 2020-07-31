@@ -18,7 +18,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ProblemDetails } from '../model/models';
-import { ResourceRequestModel } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -48,6 +47,19 @@ export class ResourceRequestService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -88,14 +100,51 @@ export class ResourceRequestService {
 
     /**
      * Creates a Resource Request..
-     * @param resourceRequestModel The resource request to create.
+     * @param currentStatus 
+     * @param quantity 
+     * @param resourceType 
+     * @param approvedBy 
+     * @param approvedTime 
+     * @param estimatedResourceCost 
+     * @param mission 
+     * @param mustComeWithFuel 
+     * @param mustComeWithLodging 
+     * @param mustComeWithMaint 
+     * @param mustComeWithMeals 
+     * @param mustComeWithOperator 
+     * @param mustComeWithOther 
+     * @param mustComeWithPower 
+     * @param mustComeWithWater 
+     * @param priority 
+     * @param qtyUnitOfMeasurement 
+     * @param reqTrackNoEmac 
+     * @param reqTrackNoFema 
+     * @param reqTrackNoState 
+     * @param requestNumber 
+     * @param requestionOrg 
+     * @param requestorContactInfo 
+     * @param resourceCategory 
+     * @param resourceTypeTemp 
+     * @param specialInstructions 
+     * @param summaryOfActionsTaken 
+     * @param whenNeeded 
+     * @param files The optional list of files to attach to the request.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiResourceRequestPost(resourceRequestModel?: ResourceRequestModel, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public apiResourceRequestPost(resourceRequestModel?: ResourceRequestModel, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public apiResourceRequestPost(resourceRequestModel?: ResourceRequestModel, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public apiResourceRequestPost(resourceRequestModel?: ResourceRequestModel, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (currentStatus === null || currentStatus === undefined) {
+            throw new Error('Required parameter currentStatus was null or undefined when calling apiResourceRequestPost.');
+        }
+        if (quantity === null || quantity === undefined) {
+            throw new Error('Required parameter quantity was null or undefined when calling apiResourceRequestPost.');
+        }
+        if (resourceType === null || resourceType === undefined) {
+            throw new Error('Required parameter resourceType was null or undefined when calling apiResourceRequestPost.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -111,16 +160,117 @@ export class ResourceRequestService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (approvedBy !== undefined) {
+            formParams = formParams.append('ApprovedBy', <any>approvedBy) as any || formParams;
+        }
+        if (approvedTime !== undefined) {
+            formParams = formParams.append('ApprovedTime', <any>approvedTime) as any || formParams;
+        }
+        if (currentStatus !== undefined) {
+            formParams = formParams.append('CurrentStatus', <any>currentStatus) as any || formParams;
+        }
+        if (estimatedResourceCost !== undefined) {
+            formParams = formParams.append('EstimatedResourceCost', <any>estimatedResourceCost) as any || formParams;
+        }
+        if (mission !== undefined) {
+            formParams = formParams.append('Mission', <any>mission) as any || formParams;
+        }
+        if (mustComeWithFuel !== undefined) {
+            formParams = formParams.append('MustComeWithFuel', <any>mustComeWithFuel) as any || formParams;
+        }
+        if (mustComeWithLodging !== undefined) {
+            formParams = formParams.append('MustComeWithLodging', <any>mustComeWithLodging) as any || formParams;
+        }
+        if (mustComeWithMaint !== undefined) {
+            formParams = formParams.append('MustComeWithMaint', <any>mustComeWithMaint) as any || formParams;
+        }
+        if (mustComeWithMeals !== undefined) {
+            formParams = formParams.append('MustComeWithMeals', <any>mustComeWithMeals) as any || formParams;
+        }
+        if (mustComeWithOperator !== undefined) {
+            formParams = formParams.append('MustComeWithOperator', <any>mustComeWithOperator) as any || formParams;
+        }
+        if (mustComeWithOther !== undefined) {
+            formParams = formParams.append('MustComeWithOther', <any>mustComeWithOther) as any || formParams;
+        }
+        if (mustComeWithPower !== undefined) {
+            formParams = formParams.append('MustComeWithPower', <any>mustComeWithPower) as any || formParams;
+        }
+        if (mustComeWithWater !== undefined) {
+            formParams = formParams.append('MustComeWithWater', <any>mustComeWithWater) as any || formParams;
+        }
+        if (priority !== undefined) {
+            formParams = formParams.append('Priority', <any>priority) as any || formParams;
+        }
+        if (qtyUnitOfMeasurement !== undefined) {
+            formParams = formParams.append('QtyUnitOfMeasurement', <any>qtyUnitOfMeasurement) as any || formParams;
+        }
+        if (quantity !== undefined) {
+            formParams = formParams.append('Quantity', <any>quantity) as any || formParams;
+        }
+        if (reqTrackNoEmac !== undefined) {
+            formParams = formParams.append('ReqTrackNoEmac', <any>reqTrackNoEmac) as any || formParams;
+        }
+        if (reqTrackNoFema !== undefined) {
+            formParams = formParams.append('ReqTrackNoFema', <any>reqTrackNoFema) as any || formParams;
+        }
+        if (reqTrackNoState !== undefined) {
+            formParams = formParams.append('ReqTrackNoState', <any>reqTrackNoState) as any || formParams;
+        }
+        if (requestNumber !== undefined) {
+            formParams = formParams.append('RequestNumber', <any>requestNumber) as any || formParams;
+        }
+        if (requestionOrg !== undefined) {
+            formParams = formParams.append('RequestionOrg', <any>requestionOrg) as any || formParams;
+        }
+        if (requestorContactInfo !== undefined) {
+            formParams = formParams.append('RequestorContactInfo', <any>requestorContactInfo) as any || formParams;
+        }
+        if (resourceCategory !== undefined) {
+            formParams = formParams.append('ResourceCategory', <any>resourceCategory) as any || formParams;
+        }
+        if (resourceType !== undefined) {
+            formParams = formParams.append('ResourceType', <any>resourceType) as any || formParams;
+        }
+        if (resourceTypeTemp !== undefined) {
+            formParams = formParams.append('ResourceTypeTemp', <any>resourceTypeTemp) as any || formParams;
+        }
+        if (specialInstructions !== undefined) {
+            formParams = formParams.append('SpecialInstructions', <any>specialInstructions) as any || formParams;
+        }
+        if (summaryOfActionsTaken !== undefined) {
+            formParams = formParams.append('SummaryOfActionsTaken', <any>summaryOfActionsTaken) as any || formParams;
+        }
+        if (whenNeeded !== undefined) {
+            formParams = formParams.append('WhenNeeded', <any>whenNeeded) as any || formParams;
+        }
+        if (files) {
+            if (useForm) {
+                files.forEach((element) => {
+                    formParams = formParams.append('files', <any>element) as any || formParams;
+            })
+            } else {
+                formParams = formParams.append('files', files.join(COLLECTION_FORMATS['csv'])) as any || formParams;
+            }
         }
 
         let responseType: 'text' | 'json' = 'json';
@@ -129,7 +279,7 @@ export class ResourceRequestService {
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/api/ResourceRequest`,
-            resourceRequestModel,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

@@ -66,21 +66,269 @@
         ],
         "summary": "Creates a Resource Request..",
         "requestBody": {
-          "description": "The resource request to create.",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/ResourceRequestModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResourceRequestModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResourceRequestModel"
+                "required": [
+                  "CurrentStatus",
+                  "Quantity",
+                  "ResourceType"
+                ],
+                "type": "object",
+                "properties": {
+                  "ApprovedBy": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ApprovedTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "CurrentStatus": {
+                    "maxLength": 703,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "EstimatedResourceCost": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Mission": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithFuel": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithLodging": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithMaint": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithMeals": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithOperator": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithOther": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithPower": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithWater": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Priority": {
+                    "maxLength": 703,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "QtyUnitOfMeasurement": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Quantity": {
+                    "maximum": 2147483647,
+                    "minimum": 0,
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ReqTrackNoEmac": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ReqTrackNoFema": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ReqTrackNoState": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestNumber": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestionOrg": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestorContactInfo": {
+                    "maxLength": 1000,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ResourceCategory": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ResourceType": {
+                    "maxLength": 600,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "ResourceTypeTemp": {
+                    "maxLength": 600,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "SpecialInstructions": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "SummaryOfActionsTaken": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "WhenNeeded": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "The optional list of files to attach to the request.",
+                    "nullable": true
+                  }
+                }
+              },
+              "encoding": {
+                "ApprovedBy": {
+                  "style": "form"
+                },
+                "ApprovedTime": {
+                  "style": "form"
+                },
+                "CurrentStatus": {
+                  "style": "form"
+                },
+                "EstimatedResourceCost": {
+                  "style": "form"
+                },
+                "Mission": {
+                  "style": "form"
+                },
+                "MustComeWithFuel": {
+                  "style": "form"
+                },
+                "MustComeWithLodging": {
+                  "style": "form"
+                },
+                "MustComeWithMaint": {
+                  "style": "form"
+                },
+                "MustComeWithMeals": {
+                  "style": "form"
+                },
+                "MustComeWithOperator": {
+                  "style": "form"
+                },
+                "MustComeWithOther": {
+                  "style": "form"
+                },
+                "MustComeWithPower": {
+                  "style": "form"
+                },
+                "MustComeWithWater": {
+                  "style": "form"
+                },
+                "Priority": {
+                  "style": "form"
+                },
+                "QtyUnitOfMeasurement": {
+                  "style": "form"
+                },
+                "Quantity": {
+                  "style": "form"
+                },
+                "ReqTrackNoEmac": {
+                  "style": "form"
+                },
+                "ReqTrackNoFema": {
+                  "style": "form"
+                },
+                "ReqTrackNoState": {
+                  "style": "form"
+                },
+                "RequestNumber": {
+                  "style": "form"
+                },
+                "RequestionOrg": {
+                  "style": "form"
+                },
+                "RequestorContactInfo": {
+                  "style": "form"
+                },
+                "ResourceCategory": {
+                  "style": "form"
+                },
+                "ResourceType": {
+                  "style": "form"
+                },
+                "ResourceTypeTemp": {
+                  "style": "form"
+                },
+                "SpecialInstructions": {
+                  "style": "form"
+                },
+                "SummaryOfActionsTaken": {
+                  "style": "form"
+                },
+                "WhenNeeded": {
+                  "style": "form"
+                },
+                "files": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -162,171 +410,6 @@
           "type": "object",
           "additionalProperties": false
         }
-      },
-      "ResourceRequestModel": {
-        "required": [
-          "currentStatus",
-          "quantity",
-          "resourceType"
-        ],
-        "type": "object",
-        "properties": {
-          "approvedBy": {
-            "maxLength": 300,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "approvedTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "currentStatus": {
-            "maxLength": 703,
-            "minLength": 0,
-            "type": "string"
-          },
-          "estimatedResourceCost": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "mission": {
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithFuel": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithLodging": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithMaint": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithMeals": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithOperator": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithOther": {
-            "maxLength": 300,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithPower": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "mustComeWithWater": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "priority": {
-            "maxLength": 703,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "qtyUnitOfMeasurement": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "quantity": {
-            "maximum": 2147483647,
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "reqTrackNoEmac": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "reqTrackNoFema": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "reqTrackNoState": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "requestNumber": {
-            "maxLength": 300,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "requestionOrg": {
-            "maxLength": 300,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "requestorContactInfo": {
-            "maxLength": 1000,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "resourceCategory": {
-            "maxLength": 300,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "resourceType": {
-            "maxLength": 600,
-            "minLength": 0,
-            "type": "string"
-          },
-          "resourceTypeTemp": {
-            "maxLength": 600,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
-          },
-          "specialInstructions": {
-            "type": "string",
-            "nullable": true
-          },
-          "summaryOfActionsTaken": {
-            "type": "string",
-            "nullable": true
-          },
-          "whenNeeded": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
       }
     }
   }
