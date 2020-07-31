@@ -38,7 +38,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> PostAsync([FromForm]ResourceRequestModel resourceRequest, [FromForm] IList<IFormFile> files)
+        public async Task<IActionResult> PostAsync([FromForm]ResourceRequestModel resourceRequest, [FromForm] List<IFormFile> files)
         {
             // By annotating the controller with ApiControllerAttribute,
             // the ModelStateInvalidFilter will automatically check ModelState.IsValid
