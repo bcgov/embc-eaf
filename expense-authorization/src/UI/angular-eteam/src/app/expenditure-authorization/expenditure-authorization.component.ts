@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { LookupService } from '../api/generated/api/lookup.service'
 import { LookupType } from '../api/generated';
+import { FileSizePipe } from '../filesize.pipe';
 
 /** 
  * This Component is for an Expenditure Authorization Form, an online version of the pdf form available here:
@@ -18,7 +19,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   constructor(private fb: FormBuilder, private lookupService: LookupService) { }
 
   communities: any;
-  files: any = [];
+  files: File[] = [];
+  uploadFileErrors: any;
 
   today = new Date();
   expndAuthForm = this.fb.group({
@@ -119,15 +121,38 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     };
   }
 
-  uploadFile(event: any) {
-    for (let index = 0; index < event.length; index++) {
-      const element = event[index];
-      this.files.push(element.name)
-    }  
+  uploadFile(event: File[]) {
+    let totalFileSize = this.totalFileSize();
+    this.uploadFileErrors = "";
+    for (let i = 0; i < event.length; i++) {
+      const file = event[i];
+      if ((totalFileSize + file.size ) < 5242880 ) { // 5MB = 5 * 1024 * 1024
+        let type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+        if ('|jpg|jpeg|pdf|png|'.indexOf(type) !== -1) {
+          this.files.push(file);
+          totalFileSize = totalFileSize + file.size;
+        }
+        else {
+          this.uploadFileErrors = "This file type is not permitted: " + file.name;
+        }
+      }
+      else {
+        this.uploadFileErrors = "Total file size exceeded";
+      }
+    }
   }
   
   deleteAttachment(index: any) {
-    this.files.splice(index, 1)
+    this.uploadFileErrors = "";
+    this.files.splice(index, 1);
+  }
+
+  totalFileSize() {
+    let total = 0;
+    for (let i = 0; i < this.files.length; i++) {
+      total = total + this.files[i].size;
+    }
+    return total;
   }
 
 }

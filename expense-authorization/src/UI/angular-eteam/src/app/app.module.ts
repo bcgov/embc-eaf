@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ExpenditureAuthorizationComponent } from './expenditure-authorization/expenditure-authorization.component';
 import { DragDropDirective } from './drag-drop.directive';
+import { FileSizePipe } from './filesize.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DragDropDirective } from './drag-drop.directive';
     FooterComponent,
     ResourceRequestComponent,
     ExpenditureAuthorizationComponent,
-    DragDropDirective
+    DragDropDirective,
+    FileSizePipe
   ],
   imports: [
     BrowserModule,
