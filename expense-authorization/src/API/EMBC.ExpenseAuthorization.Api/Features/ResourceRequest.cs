@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace EMBC.ExpenseAuthorization.Api.Features
@@ -13,10 +16,19 @@ namespace EMBC.ExpenseAuthorization.Api.Features
         public class CreateCommand : IRequest<CreateResponse>
         {
             public ResourceRequestModel Request { get; }
+            public List<IFormFile> Files { get; }
 
-            public CreateCommand(ResourceRequestModel request)
+            public CreateCommand(ResourceRequestModel request, IEnumerable<IFormFile> files)
             {
                 Request = request ?? throw new ArgumentNullException(nameof(request));
+
+
+
+                Files = new List<IFormFile>();
+                if (files != null)
+                {
+                    Files.AddRange(files);
+                }
             }
         }
 

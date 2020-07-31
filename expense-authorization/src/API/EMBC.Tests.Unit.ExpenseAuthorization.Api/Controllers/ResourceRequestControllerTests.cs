@@ -27,7 +27,7 @@ namespace EMBC.Tests.Unit.ExpenseAuthorization.Api.Controllers
 
             var sut = new ResourceRequestController(mockMediator.Object, mockLogger.Object);
 
-            var actual = await sut.PostAsync(new ResourceRequestModel());
+            var actual = await sut.PostAsync(new ResourceRequestModel(), null);
 
             Assert.IsType<OkResult>(actual);
 
