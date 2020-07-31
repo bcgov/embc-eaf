@@ -87,9 +87,9 @@
         <div class="row">
             <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
                 <label class="control-label" for="amountRequested">* Amount Requested</label>
-                <input class="form-control" id="amountRequested" type="text" formControlName="amountRequested">
-                <div class="ng-invalid-feedback" *ngIf="!amountRequested.pristine && amountRequested.errors && amountRequested.errors.required">This field is required</div>
-                <div class="ng-invalid-feedback" *ngIf="!amountRequested.pristine && amountRequested.errors && amountRequested.errors.pattern">Must be a valid currency amount.</div>
+                <input class="form-control" id="amountRequested" type="text" formControlName="amountRequested" placeholder="$0.00">
+                <div class="ng-invalid-feedback" *ngIf="amountRequested.touched && amountRequested.errors && amountRequested.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="amountRequested.touched && amountRequested.errors && amountRequested.errors.pattern">Must be a valid currency amount.</div>
             </div>
             <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
                 <label class="control-label" for="expenditureNotToExceed">Expenditure Not to Exceed</label>
@@ -150,19 +150,21 @@
         <legend>File Attachments</legend>
         <div class="row">
             <div class="form-group col-md mb-0">
-                <div class="uploadfilecontainer-note"><small class="form-text text-muted mt-0">(Drag and drop any relevant files)</small></div>
+                <div class="uploadfilecontainer-note"><small class="form-text text-muted mt-0">(Drag and drop any relevant files - only add .png, .jpg, or .pdf file types, < 5MB in total size)</small></div>
+
+                <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+                    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+                </div>
+                
+                <div class="ng-invalid-feedback uploadFileErrors">{{ uploadFileErrors }}</div>
+
+                <div  class="files-list" *ngFor="let file of files;let i= index">
+                    <p> {{ file.name }} ({{ file.size | fileSize }})</p>
+                    <button class="delete-file" (click)="deleteAttachment(i)">
+                        <img src="../../assets/images/Recycle_Bin_Full.png">
+                    </button>
+                </div>
             </div>
-        </div>
-
-        <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
-            <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
-        </div>
-
-        <div  class="files-list" *ngFor="let file of files;let i= index">
-            <p> {{ file }} </p>
-            <button class="delete-file" (click)="deleteAttachment(i)">
-                <img src="../../assets/images/Recycle_Bin_Full.png">
-            </button>
         </div>
 
         <!-- <button type="submit" [disabled]="!expndAuthForm.valid" class="btn btn-primary">Submit</button> -->
