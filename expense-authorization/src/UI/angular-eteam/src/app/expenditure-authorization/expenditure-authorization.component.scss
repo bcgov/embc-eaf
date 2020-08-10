@@ -46,3 +46,15 @@
 .files-list .delete-file img {
     width: 30px;
 }
+
+@media (min-width: 992px) {
+    .submission {
+        height: calc(100vh - 151px);
+    }
+}
+
+@media (max-width: 992px) {
+    .submission {
+        height: 200px;
+    }
+}

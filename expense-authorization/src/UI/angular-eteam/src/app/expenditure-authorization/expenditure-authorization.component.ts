@@ -21,6 +21,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   communities: any;
   files: File[] = [];
   uploadFileErrors: any;
+  submission: String = "none";
 
   today = new Date();
   expndAuthForm = this.fb.group({
@@ -85,12 +86,13 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   }
 
   onSubmit() {
-    // console.log(this.expndAuthForm.get('dateOfRequest'));
     console.log(this.expndAuthForm.value);
+
+    this.submission = "success";
   }
 
   /**
-   * Validates that the control field (a date) is not in the future (can be no or before today)
+   * Validates that the control field (a date) is not in the future (can be on or before today)
    * @param tmField related time field that is dependant on this control field and should be fired afterwards to keep current.
    */
   dateNotFutureValidator(tmField: string): ValidatorFn {
