@@ -8,9 +8,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('title should be set', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('angular-eteam app is running!');
+    expect(page.getFormTitleText()).toEqual('Expenditure Authorization');
   });
 
   afterEach(async () => {

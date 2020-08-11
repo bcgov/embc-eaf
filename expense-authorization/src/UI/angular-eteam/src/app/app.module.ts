@@ -1,4 +1,4 @@
-import { ApiModule } from './api/generated/';
+import { ApiModule, LookupService } from './api/generated/';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';

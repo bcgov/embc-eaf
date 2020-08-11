@@ -5,12 +5,7 @@
         <div class="row">
             <div class="form-group col-md">
                 <label class="control-label" for="dateOfRequest">Date of Request</label>
-                <div class="input-group">
-                    <input class="form-control" placeholder="yyyy/mm/dd" id="dateOfRequest" [formControlName]="'dateOfRequest'" ngbDatepicker #d="ngbDatepicker">
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-secondary" (click)="d.toggle()"><i class="far fa-calendar-alt"></i></button>
-                    </div>
-                </div>
+                <input class="form-control" placeholder="yyyy/mm/dd" id="dateOfRequest" [formControlName]="'dateOfRequest'" type="date">
             </div>
 
             <div class="form-group col-md">
@@ -97,12 +92,7 @@
             </div>
             <div class="form-group col-md">
                 <label class="control-label" for="whenRequired">When Required</label>
-                <div class="input-group">
-                    <input class="form-control" placeholder="yyyy/mm/dd" id="whenRequired" [formControlName]="'whenRequired'" ngbDatepicker #d2="ngbDatepicker">
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-secondary" (click)="d2.toggle()"><i class="far fa-calendar-alt"></i></button>
-                    </div>
-                </div>
+                <input class="form-control" placeholder="yyyy/mm/dd" id="whenRequired" [formControlName]="'whenRequired'" type="date">
             </div>
             <div class="form-group col-md">
             </div>

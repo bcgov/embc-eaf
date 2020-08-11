@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { LookupService } from '../api/generated/api/lookup.service'
-import { LookupType } from '../api/generated';
-import { FileSizePipe } from '../filesize.pipe';
+import { ResourceRequestService } from '../api/generated';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 /** 
  * This Component is for an Expenditure Authorization Form, an online version of the pdf form available here:
@@ -16,7 +17,7 @@ import { FileSizePipe } from '../filesize.pipe';
 })
 export class ExpenditureAuthorizationComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private lookupService: LookupService) { }
+  constructor(private fb: FormBuilder, private lookupService: LookupService, private resourceRequestService: ResourceRequestService) { }
 
   communities: any;
   files: File[] = [];
@@ -61,6 +62,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   get repEmail() { return this.expndAuthForm.get('repEmail'); }
   get description() { return this.expndAuthForm.get('description'); }
   get amountRequested() { return this.expndAuthForm.get('amountRequested'); }
+  get expenditureNotToExceed() { return this.expndAuthForm.get('expenditureNotToExceed'); }  
   get processingApprovedBy() { return this.expndAuthForm.get('processingApprovedBy'); }
   get processingPosition() { return this.expndAuthForm.get('processingPosition'); }
   get processingDate() { return this.expndAuthForm.get('processingDate'); }
@@ -83,12 +85,6 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       { id: 3, value: "Community3" },
       { id: 4, value: "Community4" }
     ];
-  }
-
-  onSubmit() {
-    console.log(this.expndAuthForm.value);
-
-    this.submission = "success";
   }
 
   /**
@@ -155,6 +151,95 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       total = total + this.files[i].size;
     }
     return total;
+  }
+
+  /** Log a HeroService message with the MessageService */
+  private log(message: string) {
+    console.log(message);
+  }
+
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      this.submission = "failure";
+      this.log(`${operation} failed: ${error.message}`);
+      if (error.error.title) {
+        this.log(`  ${error.error.title}`);
+        for(let key in error.error.errors) {
+          let child = error.error.errors[key];
+          if (child.length > 0) {
+            console.log('  ' + child[0]);
+          }
+        }
+      }
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
+  onSubmit() {
+    console.log(this.expndAuthForm.value);
+
+    let expEvent = this.expEvent.value;
+    let requestDt = new Date(this.dateOfRequest.value + ' ' + this.timeOfRequest.value).toDateString();
+    let eafNo = this.eafNo.value;
+    let embcTaskNo = this.embcTaskNo.value;
+    let requestorsCommunity = this.requestorsCommunity.value;
+    let repName = this.repName.value;
+    let repTelephone = this.repTelephone.value;
+    let repEmail = this.repEmail.value;
+    let description = this.description.value;
+    let amountRequested = this.amountRequested.value;
+    let expenditureNotToExceed = this.expenditureNotToExceed ? this.expenditureNotToExceed.value : '';
+    let processingApprovedBy = this.processingApprovedBy.value;
+    let processingPosition = this.processingPosition.value;
+    let processingDt = new Date(this.processingDate.value + ' ' + this.processingTime.value).toDateString();
+    let expenditureApprovedBy = this.expenditureApprovedBy.value;
+    let expenditurePosition = this.expenditurePosition.value;
+    let expenditureDt = new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toDateString();
+
+    console.log(expEvent);
+
+    this.resourceRequestService.apiResourceRequestPost(
+        'currentStatusStr',
+        0,
+        'resourceTypeStr',
+        processingApprovedBy,
+        processingDt,
+        amountRequested,
+        description,
+        '', '', '', '', '', '', '', '', 
+        'priorityStr',
+        'qtyStr',
+        embcTaskNo,
+        '',
+        '',
+        eafNo,
+        requestorsCommunity,
+        '',
+        'resourceCat',
+        '',
+        '',
+        '',
+        new Date().toDateString(),
+        this.files
+      )
+      .pipe(
+        catchError(this.handleError('API post'))
+      )
+      .subscribe(() => {
+        if (this.submission != "failure") {
+          this.submission = "success";
+          console.log('apiResourceRequestPost returned');
+        }
+      });
   }
 
 }
