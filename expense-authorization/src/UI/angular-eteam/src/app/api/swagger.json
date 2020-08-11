@@ -19,10 +19,12 @@
         "tags": [
           "Lookup"
         ],
+        "summary": "",
         "parameters": [
           {
             "name": "lookupType",
             "in": "path",
+            "description": "",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/LookupType"
@@ -363,7 +365,8 @@
           "ResourceCategory",
           "ResourceType",
           "StatusResource",
-          "UnitsOfMeasure"
+          "UnitsOfMeasure",
+          "LeadAgencyDeptList"
         ],
         "type": "string"
       },

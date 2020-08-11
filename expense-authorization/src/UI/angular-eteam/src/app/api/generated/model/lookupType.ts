@@ -11,7 +11,7 @@
  */
 
 
-export type LookupType = 'PriorityResource' | 'RequestingOrgForwardTo' | 'ResourceCategory' | 'ResourceType' | 'StatusResource' | 'UnitsOfMeasure';
+export type LookupType = 'PriorityResource' | 'RequestingOrgForwardTo' | 'ResourceCategory' | 'ResourceType' | 'StatusResource' | 'UnitsOfMeasure' | 'LeadAgencyDeptList';
 
 export const LookupType = {
     PriorityResource: 'PriorityResource' as LookupType,
@@ -19,6 +19,7 @@ export const LookupType = {
     ResourceCategory: 'ResourceCategory' as LookupType,
     ResourceType: 'ResourceType' as LookupType,
     StatusResource: 'StatusResource' as LookupType,
-    UnitsOfMeasure: 'UnitsOfMeasure' as LookupType
+    UnitsOfMeasure: 'UnitsOfMeasure' as LookupType,
+    LeadAgencyDeptList: 'LeadAgencyDeptList' as LookupType
 };
 
