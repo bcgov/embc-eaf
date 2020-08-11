@@ -38,7 +38,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> PostAsync([FromForm]ResourceRequestModel resourceRequest, [FromForm] List<IFormFile> files)
+        public async Task<IActionResult> PostAsync([FromForm]ResourceRequestModel resourceRequest, [FromForm] IFormFileCollection files)
         {
             // By annotating the controller with ApiControllerAttribute,
             // the ModelStateInvalidFilter will automatically check ModelState.IsValid
@@ -53,8 +53,12 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.Warning(e, "An error occured while processing the request");
-                return Problem(e.Message);
+                // create an error instance id to correlate the log error message with the problem details returned to 
+                // caller
+                var errorInstanceId = Guid.NewGuid().ToString("d");
+
+                _logger.Warning(e, "An error occured while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
+                return Problem(e.Message, errorInstanceId);
             }
         }
     }

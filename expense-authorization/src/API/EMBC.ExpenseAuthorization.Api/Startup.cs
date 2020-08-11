@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Autofac;
+using EMBC.ExpenseAuthorization.Api.Email;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using MediatR;
 using MediatR.Extensions.Autofac.DependencyInjection;
@@ -48,8 +50,15 @@ namespace EMBC.ExpenseAuthorization.Api
 
 
             services.AddOptions();
-            services.Configure<ETeamSettings>(Configuration.GetSection(ETeamSettings.Section));
-            
+
+            services.AddOptions<ETeamSettings>()
+                .Bind(Configuration.GetSection(ETeamSettings.Section))
+                .ValidateDataAnnotations();
+
+            services.AddOptions<EmailSettings>()
+                .Bind(Configuration.GetSection(EmailSettings.Section))
+                .ValidateDataAnnotations();
+
             services
                 .AddRefitClient<IETeamRestService>()
                 .ConfigureHttpClient(ConfigureETeamsHttpClient);
@@ -73,6 +82,8 @@ namespace EMBC.ExpenseAuthorization.Api
             // add all the handlers in this assembly
             services.AddMediatR(GetType().Assembly);
 
+            services.AddTransient<IEmailSender, EmailSender>();
+
             AddSwaggerGen(services);
         }
 
@@ -80,11 +91,21 @@ namespace EMBC.ExpenseAuthorization.Api
         {
             var options = serviceProvider.GetService<IOptions<ETeamSettings>>();
 
-            var settings = options.Value;
+            try
+            {
+                var settings = options.Value;
 
-            // TODO: should we validate the url is an absolute Uri?
+                client.BaseAddress = settings.Url;
 
-            client.BaseAddress = settings.Url;
+                Log.Debug("Using {ETeamUrl}", settings.Url);
+            }
+            catch (OptionsValidationException exception)
+            {
+                Log.Fatal(exception, "Options (configuration) Validation failure on {OptionsName} for {OptionsType}. Failures: {Failures}", 
+                    exception.OptionsName,
+                    exception.OptionsType,
+                    exception.Failures.ToArray());
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,7 +127,7 @@ namespace EMBC.ExpenseAuthorization.Api
 
             app.UseEndpoints(endpoints =>
             {
-                // uncomment RequireAuthorization once we have keycload
+                // uncomment RequireAuthorization once we have keycloak
                 endpoints.MapControllers()/*.RequireAuthorization()*/;
             });
 

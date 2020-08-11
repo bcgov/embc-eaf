@@ -7,7 +7,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
 {
     public static class ETeamRestServiceExtensions
     {
-        public static Task CreateReportAsync(this IETeamRestService service, string username, string password, string reportTypeName, ResourceRequestModel resourceRequest)
+        public static Task<string> CreateReportAsync(this IETeamRestService service, string username, string password, string reportTypeName, ResourceRequestModel resourceRequest)
         {
             if (string.IsNullOrEmpty(username)) throw new ArgumentException("Parameter cannot be null or empty", nameof(username));
             if (string.IsNullOrEmpty(password)) throw new ArgumentException("Parameter cannot be null or empty", nameof(password));

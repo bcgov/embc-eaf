@@ -52,7 +52,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Models
 
         [Required]
         [Range(0, int.MaxValue)]
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 1;
         
         [StringLength(100)]
         public string ReqTrackNoEmac { get; set; }

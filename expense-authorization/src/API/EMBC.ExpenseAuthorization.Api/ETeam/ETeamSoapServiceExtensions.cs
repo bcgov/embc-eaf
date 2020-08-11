@@ -5,11 +5,21 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using Refit;
 
 namespace EMBC.ExpenseAuthorization.Api.ETeam
 {
     public static class ETeamSoapServiceExtensions
     {
+        /// <summary>
+        /// Gets the pick list lookup.
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="lookupType"></param>
+        /// <returns></returns>
+        /// <exception cref="ApiException">
+        /// Error calling SOAP service.  See <see cref="ApiException.Content"/> for more informatiom.
+        /// </exception>
         public static async Task<List<LookupValue>> GetPicklistKeywords(this IETeamSoapService service, LookupType lookupType)
         {
             // create the correct SOAP Envelope for the request
