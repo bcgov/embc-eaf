@@ -41,9 +41,10 @@
             <div class="form-group col-md-9 col-lg-7 col-xl-6">
                 <label class="control-label" for="requestorsCommunity">* Requesting Organization/Community</label>
                 <ng-select labelForId="requestorsCommunity"
-                           [items]="communities | async"
+                           [items]="communities"
                            bindLabel="value"
                            bindValue="id"
+                           ngDefaultControl 
                            formControlName="requestorsCommunity">
                 </ng-select>
                 <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required</div>

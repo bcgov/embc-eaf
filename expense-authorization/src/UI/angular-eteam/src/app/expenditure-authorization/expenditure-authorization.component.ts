@@ -19,7 +19,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private lookupService: LookupService, private resourceRequestService: ResourceRequestService) { }
 
-  communities: Observable<LookupValue[]>;
+  communities: LookupValue[];
   files: File[] = [];
   uploadFileErrors: any;
   submission: String = "none";
@@ -81,7 +81,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     this.expenditureDate.setValidators([Validators.required, this.dateNotFutureValidator('expenditureTime')]);
     this.expenditureTime.setValidators([Validators.required, this.timeNotFutureValidator('expenditureDate')]);
 
-    this.communities = this.lookupService.apiLookupLookupTypeGet(LookupType.LeadAgencyDeptList);
+    this.lookupService.apiLookupLookupTypeGet(LookupType.LeadAgencyDeptList)
+      .subscribe(items => this.communities = items);
   }
 
   /**
