@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { environment } from '../environments/environment';
 import { BASE_PATH } from 'src/app/api/generated/variables'
@@ -29,7 +30,7 @@ import { FileSizePipe } from './filesize.pipe';
   imports: [
     BrowserModule,
     NgbModule,
-    ReactiveFormsModule,
+    NgSelectModule, ReactiveFormsModule,
     HttpClientModule,
     ApiModule,
     AppRoutingModule
