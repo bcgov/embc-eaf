@@ -7,6 +7,8 @@ $bcgov-font-path: "~@bcgov/bootstrap-theme/dist/fonts/";
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 form {
     margin-top: 85px;
     margin-bottom: 10px;
@@ -18,14 +20,22 @@ form {
 input[type=radio], input[type=checkbox] {
     margin-left: 0px;    
 }
-.ng-invalid.ng-touched, .ng-invalid.ng-dirty {
+.ng-invalid.ng-touched, 
+.ng-invalid.ng-dirty, 
+ng-select.ng-invalid.ng-touched .ng-select-container {
     border-left-color: #d93e45;
     border-left-width: thick;
 }
-.ng-valid.ng-dirty {
+.ng-valid.ng-dirty,
+ng-select.ng-valid.ng-dirty .ng-select-container {
     border-left-color: green;
     border-left-width: thick;
 }
+
+.ng-select .ng-select-container {
+    border: 1px solid #adb5bd;
+}
+
 .ng-invalid-feedback {
     width: 100%;
     margin-top: 0.25rem;

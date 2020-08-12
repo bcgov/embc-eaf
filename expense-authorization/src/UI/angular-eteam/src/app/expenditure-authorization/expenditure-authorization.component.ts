@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { LookupService } from '../api/generated/api/lookup.service'
-import { ResourceRequestService } from '../api/generated';
+import { ResourceRequestService, LookupType, LookupValue } from '../api/generated';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -19,12 +19,12 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private lookupService: LookupService, private resourceRequestService: ResourceRequestService) { }
 
-  communities: any;
+  communities: LookupValue[];
   files: File[] = [];
   uploadFileErrors: any;
   submission: String = "none";
+  today: Date = new Date();
 
-  today = new Date();
   expndAuthForm = this.fb.group({
     expEvent: [null, Validators.required],
     dateOfRequest: [null],
@@ -81,10 +81,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     this.expenditureDate.setValidators([Validators.required, this.dateNotFutureValidator('expenditureTime')]);
     this.expenditureTime.setValidators([Validators.required, this.timeNotFutureValidator('expenditureDate')]);
 
-    this.communities = [
-      { id: 3, value: "Community3" },
-      { id: 4, value: "Community4" }
-    ];
+    this.lookupService.apiLookupLookupTypeGet(LookupType.LeadAgencyDeptList)
+      .subscribe(items => this.communities = items);
   }
 
   /**

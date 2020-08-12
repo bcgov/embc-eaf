@@ -38,14 +38,16 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-sm-8 col-lg-6 col-xl-4">
+            <div class="form-group col-md-9 col-lg-7 col-xl-6">
                 <label class="control-label" for="requestorsCommunity">* Requesting Organization/Community</label>
-                <select class="form-control" id="requestorsCommunity" formControlName="requestorsCommunity">
-                    <option value="">Please Select</option>
-                    <option *ngFor="let option of communities " value="{{option.id}}">{{option.value}}</option><!-- "| async" -->
-                </select>
-                <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required
-                </div>
+                <ng-select labelForId="requestorsCommunity"
+                           [items]="communities"
+                           bindLabel="value"
+                           bindValue="id"
+                           ngDefaultControl 
+                           formControlName="requestorsCommunity">
+                </ng-select>
+                <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required</div>
             </div>
         </div>
 

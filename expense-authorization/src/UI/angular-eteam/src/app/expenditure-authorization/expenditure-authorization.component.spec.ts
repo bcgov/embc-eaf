@@ -2,12 +2,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpenditureAuthorizationComponent } from './expenditure-authorization.component';
 import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { LookupService, ResourceRequestService } from '../api/generated';
+import { LookupService, ResourceRequestService, LookupValue } from '../api/generated';
+import { of } from 'rxjs';
+
+const lookupServiceMockup = {
+  apiLookupLookupTypeGet() {
+    const communities: LookupValue[] = [
+      {id: '1', value: 'Community1'}
+    ];
+    return of(communities);
+  }
+};
 
 describe('ExpenditureAuthorizationComponent', () => {
   let component: ExpenditureAuthorizationComponent;
   let fixture: ComponentFixture<ExpenditureAuthorizationComponent>;
-  let spyLookupService = jasmine.createSpyObj( { apiLookupLookupTypeGet: null } );
   let spyResourceRequestService = jasmine.createSpyObj( { apiResourceRequestPost: null } );
 
   beforeEach(async(() => {
@@ -15,7 +24,7 @@ describe('ExpenditureAuthorizationComponent', () => {
       declarations: [ ExpenditureAuthorizationComponent ],
       imports: [ ReactiveFormsModule ],
       providers: [ 
-        { provide: LookupService, useValue: spyLookupService }, 
+        { provide: LookupService, useValue: lookupServiceMockup }, 
         { provide: ResourceRequestService, useValue: spyResourceRequestService }
       ]
     })
