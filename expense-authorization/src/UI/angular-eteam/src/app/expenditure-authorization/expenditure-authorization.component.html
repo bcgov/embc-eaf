@@ -42,7 +42,7 @@
                 <label class="control-label" for="requestorsCommunity">* Requesting Organization/Community</label>
                 <select class="form-control" id="requestorsCommunity" formControlName="requestorsCommunity">
                     <option value="">Please Select</option>
-                    <option *ngFor="let option of communities " value="{{option.id}}">{{option.value}}</option><!-- "| async" -->
+                    <option *ngFor="let option of communities" value="{{option.id}}">{{option.value}}</option>
                 </select>
                 <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required
                 </div>
