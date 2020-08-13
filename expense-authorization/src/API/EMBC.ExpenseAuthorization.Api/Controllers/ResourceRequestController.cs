@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.Features;
@@ -10,6 +9,7 @@ using Serilog;
 
 namespace EMBC.ExpenseAuthorization.Api.Controllers
 {
+    /// <summary></summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ResourceRequestController : ControllerBase

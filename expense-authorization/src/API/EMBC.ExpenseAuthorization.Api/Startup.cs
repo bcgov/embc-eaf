@@ -66,19 +66,7 @@ namespace EMBC.ExpenseAuthorization.Api
             services
                 .AddRefitClient<IETeamSoapService>()
                 .ConfigureHttpClient(ConfigureETeamsHttpClient);
-
-            // send header Access-Control-Allow-Origin: *
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.AllowAnyHeader();
-                    builder.AllowAnyMethod();
-                    builder.AllowAnyOrigin();
-                });
-            });
-
-
+            
             // add all the handlers in this assembly
             services.AddMediatR(GetType().Assembly);
 
@@ -116,11 +104,7 @@ namespace EMBC.ExpenseAuthorization.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

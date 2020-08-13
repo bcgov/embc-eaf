@@ -9,6 +9,7 @@ using MimeKit;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
+    /// <summary></summary>
     public class EmailSender : IEmailSender
     {
         private readonly IOptions<EmailSettings> _options;
