@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Net.Http;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
 
 namespace EMBC.ExpenseAuthorization.Api
 {
@@ -11,7 +14,7 @@ namespace EMBC.ExpenseAuthorization.Api
     {
         public static int Main(string[] args)
         {
-            var logger = ConfigureLogging();
+            var logger = GetProgramLogger();
 
             try
             {
@@ -34,7 +37,44 @@ namespace EMBC.ExpenseAuthorization.Api
         {
             var builder = Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .UseSerilog()
+                .UseSerilog((hostingContext, loggerConfiguration) =>
+                {
+                    loggerConfiguration
+                        .ReadFrom.Configuration(hostingContext.Configuration)
+                        .Enrich.WithMachineName()
+                        .Enrich.WithProcessId()
+                        .Enrich.WithProcessName()
+                        .Enrich.FromLogContext()
+                        .Enrich.WithExceptionDetails()
+                        ;
+
+                    if (hostingContext.HostingEnvironment.IsDevelopment())
+                    {
+                        loggerConfiguration.WriteTo.Console();
+                    }
+                    else
+                    {
+                        loggerConfiguration.WriteTo.Console(formatter: new RenderedCompactJsonFormatter());
+                        var splunkUrl = hostingContext.Configuration.GetValue("SPLUNK_URL", string.Empty);
+                        var splunkToken = hostingContext.Configuration.GetValue("SPLUNK_TOKEN", string.Empty);
+                        if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
+                        {
+                            Log.Warning("Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL env vars");
+                        }
+                        else
+                        {
+                            loggerConfiguration
+                                .WriteTo.EventCollector(
+                                    splunkHost: splunkUrl,
+                                    eventCollectorToken: splunkToken,
+                                    messageHandler: new HttpClientHandler
+                                    {
+                                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                                    },
+                                    renderTemplate: false);
+                        }
+                    }
+                })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -45,10 +85,10 @@ namespace EMBC.ExpenseAuthorization.Api
         }
          
         /// <summary>
-        /// Configures the globally shared logger.
+        /// Gets the main program logger used outside of the hosting service.
         /// </summary>
         /// <returns></returns>
-        private static ILogger ConfigureLogging()
+        private static ILogger GetProgramLogger()
         {
             var configurationBuilder = new ConfigurationBuilder();
 
@@ -60,8 +100,6 @@ namespace EMBC.ExpenseAuthorization.Api
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
-
-            Log.Logger = logger;
 
             return logger;
         }
@@ -80,8 +118,10 @@ namespace EMBC.ExpenseAuthorization.Api
 
             configurationBuilder.AddEnvironmentVariables();
 
+#if DEBUG
             try
             {
+                // only use User Secrets in development
 
                 // User secrets override all other settings
                 configurationBuilder.AddUserSecrets(typeof(Program).Assembly, optional: true);
@@ -98,6 +138,7 @@ namespace EMBC.ExpenseAuthorization.Api
                 // SpecialFolder.UserProfile
                 // DOTNET_USER_SECRETS_FALLBACK_DIR
             }
+#endif
         }
     }
 }

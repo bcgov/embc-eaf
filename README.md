@@ -27,6 +27,26 @@ Repository for Expense Authorization Form Webform Development
 
 See (openshift/README.md)
 
+## Configuration
+
+### API
+
+From Docker or OpenShift, these envrionment variables can be used to configure the API.  See [API Readme](expense-authorization/src/API/README.md).
+
+| Env Variable | Description |
+| --- | --- |
+| ETEAM__URL | Required. URL to the E TEam server and instance. Do not include trailing slahs (/). |
+| ETEAM__USERNAME | Required. The E Team user to authenicated using |
+| ETEAM__PASSWORD | Required. The E Team user's password |
+| ETEAM__REPORTTYPENAME | Optional. The report type name to use. Optional, defaults to ```ResourceRequest``` |
+| EMAIL__ENABLED | Optional. If not supplied, defaults to ```true```. Set to false to skip sending email which is useful during development. |
+| EMAIL__FROM | Required. The email address to send from |
+| EMAIL__SMTPSERVER | Required. The SMTP server name |
+| EMAIL__PORT | Optional. The network port the SMTP server is running on. If not supplied, defaults to 465 (SMTP/SSL) |
+| EMAIL__USERNAME | Optional. If supplied, the username and password used to authenticate to the SMPT server, otherwise non-authenticated access will be used|
+| EMAIL__PASSWORD | Optional. If supplied, the username and password used to authenticate to the SMPT server, otherwise non-authenticated access will be used |
+| SPLUNK_URL | Optional. The URL to Splunk. |
+| SPLUNK_TOKEN | The Splunk event collector token. |
 
 ## License
 

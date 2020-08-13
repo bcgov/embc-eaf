@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EMBC.ExpenseAuthorization.Api.Controllers
 {
+    /// <summary></summary>
     [Route("api/[controller]")]
     [ApiController]
     public class LookupController : ControllerBase
@@ -15,6 +16,12 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
         private readonly ILogger<LookupController> _logger;
 
 
+        /// <summary>Initializes a new instance of the <see cref="LookupController" /> class.</summary>
+        /// <param name="service">The service.</param>
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">service
+        /// or
+        /// logger</exception>
         public LookupController(IETeamSoapService service, ILogger<LookupController> logger)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
