@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.Email;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using EMBC.ExpenseAuthorization.Api.ETeam.Models;
+using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -36,14 +37,12 @@ namespace EMBC.ExpenseAuthorization.Api.Features
         
         public class Handler : IRequestHandler<CreateCommand, CreateResponse>
         {
-            private readonly IETeamRestService _eteamsService;
-            private readonly IOptions<ETeamSettings> _options;
+            private readonly IETeamSoapService _eteamService;
             private readonly IEmailSender _emailSender;
 
-            public Handler(IETeamRestService eteamsService, IOptions<ETeamSettings> options, IEmailSender emailSender)
+            public Handler(IETeamSoapService eteamService, IEmailSender emailSender)
             {
-                _eteamsService = eteamsService ?? throw new ArgumentNullException(nameof(eteamsService));
-                _options = options ?? throw new ArgumentNullException(nameof(options));
+                _eteamService = eteamService ?? throw new ArgumentNullException(nameof(eteamService));
                 _emailSender = emailSender;
             }
 
@@ -54,13 +53,23 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                     throw new ArgumentNullException(nameof(request));
                 }
 
-                var settings = _options.Value;
+                string reportId;
 
-                string username = settings.Username;
-                string password = settings.Password;
-                string reportTypeName = settings.ReportTypeName;
+                try
+                {
+                    CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
 
-                var response = await _eteamsService.CreateReportAsync(username, password, reportTypeName, request.Request);
+                    // seems the output has the id in reportId / id
+                    if (!response.Fields.TryGetValue("reportId", out reportId))
+                    {
+                        response.Fields.TryGetValue("id", out reportId);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+
+                }
 
                 if (request.Files != null && request.Files.Count != 0)
                 {
@@ -69,8 +78,8 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                     {
                         To = new List<MailboxAddress> { new MailboxAddress("philbolduc@gmail.com")},
                         Attachments = request.Files,
-                        Content = "Attachments",
-                        Subject = "E-Team Resource Request"
+                        Content = $"Attachments for Report: {reportId}",
+                        Subject = "E-Team Resource Request",
                     };
 
                     await _emailSender.SendEmailAsync(message);

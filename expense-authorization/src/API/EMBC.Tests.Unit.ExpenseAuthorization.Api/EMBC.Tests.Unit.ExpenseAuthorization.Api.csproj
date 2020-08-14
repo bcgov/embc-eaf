@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ETeam\Responses\CreateResponse.txt" />
+    <None Remove="ETeam\Responses\GetPicklistKeywordsResponse.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ETeam\Responses\CreateResponse.txt" />
+    <EmbeddedResource Include="ETeam\Responses\GetPicklistKeywordsResponse.txt" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.13.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0-preview-20200519-01" />
     <PackageReference Include="Moq" Version="4.14.5" />
@@ -23,6 +34,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EMBC.ExpenseAuthorization.Api\EMBC.ExpenseAuthorization.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="ETeam\Responses\CreateResponse.txt" />
   </ItemGroup>
 
 </Project>

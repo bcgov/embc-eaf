@@ -1,15 +1,25 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EMBC.ExpenseAuthorization.Api.ETeam.Models;
+using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using Refit;
 
 namespace EMBC.ExpenseAuthorization.Api.ETeam
 {
-    /// <summary>
-    /// Refit generated service.
-    /// </summary>
     public interface IETeamSoapService
     {
-        [Headers("SOAPAction: urn:extds/XdsReportManager/getPicklistKeywordsRequest")]
-        [Post("/services/XdsReportManager")]
-        public Task<string> GetPicklistKeywordsAsync([Body] string soapEnvelope);
+        /// <summary>
+        /// Gets the pick list lookup.
+        /// </summary>
+        /// <param name="lookupType"></param>
+        /// <returns></returns>
+        /// <exception cref="ApiException">
+        /// Error calling SOAP service.  See <see cref="ApiException.Content"/> for more information.
+        /// </exception>
+        Task<IList<LookupValue>> GetPicklistKeywordsAsync(LookupType lookupType);
+
+        Task<IList<LookupValue>> GetPicklistColorsAsync(LookupType lookupType);
+
+        Task<CreateReportResponse> CreateReportAsync(ResourceRequestModel resourceRequest);
     }
 }
