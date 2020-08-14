@@ -12,14 +12,21 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
         /// Gets the pick list lookup.
         /// </summary>
         /// <param name="lookupType"></param>
-        /// <returns></returns>
         /// <exception cref="ApiException">
         /// Error calling SOAP service.  See <see cref="ApiException.Content"/> for more information.
         /// </exception>
         Task<IList<LookupValue>> GetPicklistKeywordsAsync(LookupType lookupType);
 
+        /// <summary>
+        /// Gets the picklist colors lookup.
+        /// </summary>
+        /// <param name="lookupType">Type of the lookup.</param>
         Task<IList<LookupValue>> GetPicklistColorsAsync(LookupType lookupType);
 
+        /// <summary>
+        /// Creates a resource request report.
+        /// </summary>
+        /// <param name="resourceRequest">The resource request.</param>
         Task<CreateReportResponse> CreateReportAsync(ResourceRequestModel resourceRequest);
     }
 }

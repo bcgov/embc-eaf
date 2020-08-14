@@ -17,25 +17,12 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
         {
             var createReturn = element.XPathSelectElement("./createReturn");
 
-            // createReturn is NULL
-
             IEnumerable<KeyValuePair<string, string>> keyValues = createReturn
                 .XPathSelectElements("./item")
                 .Select(ReadItemFromXml)
                 .Where(_ => !string.IsNullOrEmpty(_.Key));
 
             Fields = new Dictionary<string, string>(keyValues);
-        }
-    }
-
-    public class LoginResponse : SoapResponse
-    {
-        protected override void ReadElementsFromXml(XElement element)
-        {
-            if (element.Name.LocalName != "loginResponse")
-            {
-                // error
-            }
         }
     }
 }

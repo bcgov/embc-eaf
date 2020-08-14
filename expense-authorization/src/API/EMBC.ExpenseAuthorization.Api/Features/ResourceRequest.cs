@@ -53,22 +53,13 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                     throw new ArgumentNullException(nameof(request));
                 }
 
-                string reportId;
 
-                try
+                CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
+
+                // seems the output has the id in reportId / id
+                if (!response.Fields.TryGetValue("reportId", out var reportId))
                 {
-                    CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
-
-                    // seems the output has the id in reportId / id
-                    if (!response.Fields.TryGetValue("reportId", out reportId))
-                    {
-                        response.Fields.TryGetValue("id", out reportId);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw;
-
+                    response.Fields.TryGetValue("id", out reportId);
                 }
 
                 if (request.Files != null && request.Files.Count != 0)

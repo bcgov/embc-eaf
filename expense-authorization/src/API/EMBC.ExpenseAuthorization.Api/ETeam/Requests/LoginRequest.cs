@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 namespace EMBC.ExpenseAuthorization.Api.ETeam.Requests
 {
@@ -9,11 +10,10 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Requests
 
         public LoginRequest(string username, string password)
         {
-            _username = username;
-            _password = password;
+            _username = username ?? throw new ArgumentNullException(nameof(username));
+            _password = password ?? throw new ArgumentNullException(nameof(password));
         }
-
-
+        
         protected override void WriteBody(XmlWriter xmlWriter)
         {
             xmlWriter.WriteStartElement("login", "urn:extds");

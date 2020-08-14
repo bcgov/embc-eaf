@@ -6,6 +6,10 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Requests
 {
     public abstract class SoapRequest
     {
+        /// <summary>
+        /// Creates the XML SOAP request.
+        /// </summary>
+        /// <returns></returns>
         public string CreateSoapRequest()
         {
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -38,6 +42,12 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Requests
             return buffer.ToString();
         }
 
-        protected abstract void WriteBody(XmlWriter xmlWriter);
+        /// <summary>
+        /// Writes the SOAP body.
+        /// </summary>
+        /// <param name="xmlWriter">The XML writer.</param>
+        protected virtual void WriteBody(XmlWriter xmlWriter)
+        {
+        }
     }
 }

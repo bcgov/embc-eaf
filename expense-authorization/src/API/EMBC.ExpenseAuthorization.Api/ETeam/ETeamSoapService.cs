@@ -64,7 +64,6 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
 
         private async Task<CreateReportResponse> CreateReportAsync(ETeamSettings settings, ResourceRequestModel resourceRequest)
         {
-
             var soapRequest = GetCreateReportSoapRequest(settings.ReportTypeName, resourceRequest);
             var soapResponse = await _client.CreateReportAsync(soapRequest);
 
