@@ -1,0 +1,105 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Body>
+      <ns1:createResponse xmlns:ns1="urn:extds" soapenv:encodingStyle="http://www.w3.org/2003/05/soap-encoding">
+         <ns2:result xmlns:ns2="http://www.w3.org/2003/05/soap-rpc">createReturn</ns2:result>
+         <createReturn xmlns:ns3="http://xml.apache.org/xml-soap" id="id0" xsi:type="ns3:Map">
+            <item xmlns:soapenc="http://www.w3.org/2003/05/soap-encoding">
+               <key xmlns:ns4="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns4:string">creatorProfileId</key>
+               <value xmlns:ns5="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns5:string">Control4222019144914-embcTraining-159165347724905008001</value>
+            </item>
+            <item>
+               <key xmlns:ns6="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns6:string">reportType</key>
+               <value xmlns:ns7="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns7:string">resource_request</value>
+            </item>
+            <item>
+               <key xmlns:ns8="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns8:string">modifiedBy</key>
+               <value xmlns:ns9="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns9:string">Control4222019144914-embcTraining-159138518653868850336</value>
+            </item>
+            <item>
+               <key xmlns:ns10="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns10:string">streetAddressForMapText</key>
+               <value xmlns:ns11="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns11:string" />
+            </item>
+            <item>
+               <key xmlns:ns12="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns12:string">reportId</key>
+               <value xmlns:ns13="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns13:string">Control4222019144914-embcTraining-159742987459901082006</value>
+            </item>
+            <item>
+               <key xmlns:ns14="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns14:string">modifierProfileId</key>
+               <value xmlns:ns15="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns15:string">Control4222019144914-embcTraining-159165347724905008001</value>
+            </item>
+            <item>
+               <key xmlns:ns16="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns16:string">id</key>
+               <value xmlns:ns17="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns17:string">Control4222019144914-embcTraining-159742987459901082006</value>
+            </item>
+            <item>
+               <key xmlns:ns18="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns18:string">subReportType</key>
+               <value xmlns:ns19="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns19:string">Phone</value>
+            </item>
+            <item>
+               <key xmlns:ns20="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns20:string">holdEnqueue</key>
+               <value xmlns:ns21="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns21:string">N</value>
+            </item>
+            <item>
+               <key xmlns:ns22="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns22:string">creatorCogID</key>
+               <value xmlns:ns23="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns23:string" />
+            </item>
+            <item>
+               <key xmlns:ns24="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns24:string">quantity</key>
+               <value xmlns:ns25="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns25:string">1</value>
+            </item>
+            <item>
+               <key xmlns:ns26="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns26:string">cFData</key>
+               <value xmlns:ns27="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns27:string" />
+            </item>
+            <item>
+               <key xmlns:ns28="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns28:string">creatorUsername</key>
+               <value xmlns:ns29="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns29:string">pbolduc</value>
+            </item>
+            <item>
+               <key xmlns:ns30="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns30:string">customReportName</key>
+               <value xmlns:ns31="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns31:string" />
+            </item>
+            <item>
+               <key xmlns:ns32="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns32:string">status</key>
+               <value xmlns:ns33="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns33:string">A</value>
+            </item>
+            <item>
+               <key xmlns:ns34="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns34:string">requestorContactInfo</key>
+               <value xmlns:ns35="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns35:string">555-555-555</value>
+            </item>
+            <item>
+               <key xmlns:ns36="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns36:string">currentStatus</key>
+               <value xmlns:ns37="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns37:string">60230</value>
+            </item>
+            <item>
+               <key xmlns:ns38="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns38:string">resourceType</key>
+               <value xmlns:ns39="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns39:string">Phone</value>
+            </item>
+            <item>
+               <key xmlns:ns40="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns40:string">customReportType</key>
+               <value xmlns:ns41="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns41:string" />
+            </item>
+            <item>
+               <key xmlns:ns42="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns42:string">createdBy</key>
+               <value xmlns:ns43="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns43:string">Control4222019144914-embcTraining-159138518653868850336</value>
+            </item>
+            <item>
+               <key xmlns:ns44="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns44:string">modifierUsername</key>
+               <value xmlns:ns45="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns45:string">pbolduc</value>
+            </item>
+            <item>
+               <key xmlns:ns46="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns46:string">estimatedResourceCost</key>
+               <value xmlns:ns47="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns47:string">0</value>
+            </item>
+            <item>
+               <key xmlns:ns48="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns48:string">currentStatusDetails</key>
+               <value xmlns:ns49="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns49:string">Purple-~StatusResource</value>
+            </item>
+            <item>
+               <key xmlns:ns50="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns50:string">transactionControl</key>
+               <value xmlns:ns51="http://schemas.xmlsoap.org/soap/encoding/" xsi:type="ns51:string">N</value>
+            </item>
+         </createReturn>
+      </ns1:createResponse>
+   </soapenv:Body>
+</soapenv:Envelope>

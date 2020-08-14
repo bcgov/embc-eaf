@@ -60,12 +60,10 @@ namespace EMBC.ExpenseAuthorization.Api
                 .ValidateDataAnnotations();
 
             services
-                .AddRefitClient<IETeamRestService>()
+                .AddRefitClient<IETeamSoapClient>()
                 .ConfigureHttpClient(ConfigureETeamsHttpClient);
 
-            services
-                .AddRefitClient<IETeamSoapService>()
-                .ConfigureHttpClient(ConfigureETeamsHttpClient);
+            services.AddTransient<IETeamSoapService, ETeamSoapService>();
             
             // add all the handlers in this assembly
             services.AddMediatR(GetType().Assembly);
