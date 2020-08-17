@@ -1,0 +1,419 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EMBC Expense Authorization",
+    "contact": {
+      "name": "API Team",
+      "url": "https://github.com/bcgov/embc-expense-authorization",
+      "email": "apiteam@example.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Lookup/{lookupType}": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "",
+        "parameters": [
+          {
+            "name": "lookupType",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/LookupType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookupValue"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/ResourceRequest": {
+      "post": {
+        "tags": [
+          "ResourceRequest"
+        ],
+        "summary": "Creates a Resource Request..",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "CurrentStatus",
+                  "Quantity",
+                  "ResourceType"
+                ],
+                "type": "object",
+                "properties": {
+                  "ApprovedBy": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ApprovedTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "CurrentStatus": {
+                    "maxLength": 703,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "EstimatedResourceCost": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Mission": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithFuel": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithLodging": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithMaint": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithMeals": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithOperator": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithOther": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithPower": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "MustComeWithWater": {
+                    "maxLength": 48,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Priority": {
+                    "maxLength": 703,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "QtyUnitOfMeasurement": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Quantity": {
+                    "maximum": 2147483647,
+                    "minimum": 0,
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ReqTrackNoEmac": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ReqTrackNoFema": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ReqTrackNoState": {
+                    "maxLength": 100,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestNumber": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestionOrg": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestorContactInfo": {
+                    "maxLength": 1000,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ResourceCategory": {
+                    "maxLength": 300,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ResourceType": {
+                    "maxLength": 600,
+                    "minLength": 0,
+                    "type": "string"
+                  },
+                  "ResourceTypeTemp": {
+                    "maxLength": 600,
+                    "minLength": 0,
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "SpecialInstructions": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "SummaryOfActionsTaken": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "WhenNeeded": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "The optional list of files to attach to the request.",
+                    "nullable": true
+                  }
+                }
+              },
+              "encoding": {
+                "ApprovedBy": {
+                  "style": "form"
+                },
+                "ApprovedTime": {
+                  "style": "form"
+                },
+                "CurrentStatus": {
+                  "style": "form"
+                },
+                "EstimatedResourceCost": {
+                  "style": "form"
+                },
+                "Mission": {
+                  "style": "form"
+                },
+                "MustComeWithFuel": {
+                  "style": "form"
+                },
+                "MustComeWithLodging": {
+                  "style": "form"
+                },
+                "MustComeWithMaint": {
+                  "style": "form"
+                },
+                "MustComeWithMeals": {
+                  "style": "form"
+                },
+                "MustComeWithOperator": {
+                  "style": "form"
+                },
+                "MustComeWithOther": {
+                  "style": "form"
+                },
+                "MustComeWithPower": {
+                  "style": "form"
+                },
+                "MustComeWithWater": {
+                  "style": "form"
+                },
+                "Priority": {
+                  "style": "form"
+                },
+                "QtyUnitOfMeasurement": {
+                  "style": "form"
+                },
+                "Quantity": {
+                  "style": "form"
+                },
+                "ReqTrackNoEmac": {
+                  "style": "form"
+                },
+                "ReqTrackNoFema": {
+                  "style": "form"
+                },
+                "ReqTrackNoState": {
+                  "style": "form"
+                },
+                "RequestNumber": {
+                  "style": "form"
+                },
+                "RequestionOrg": {
+                  "style": "form"
+                },
+                "RequestorContactInfo": {
+                  "style": "form"
+                },
+                "ResourceCategory": {
+                  "style": "form"
+                },
+                "ResourceType": {
+                  "style": "form"
+                },
+                "ResourceTypeTemp": {
+                  "style": "form"
+                },
+                "SpecialInstructions": {
+                  "style": "form"
+                },
+                "SummaryOfActionsTaken": {
+                  "style": "form"
+                },
+                "WhenNeeded": {
+                  "style": "form"
+                },
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LookupType": {
+        "enum": [
+          "PriorityResource",
+          "RequestingOrgForwardTo",
+          "ResourceCategory",
+          "ResourceType",
+          "StatusResource",
+          "UnitsOfMeasure",
+          "LeadAgencyDeptList"
+        ],
+        "type": "string"
+      },
+      "LookupValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}
