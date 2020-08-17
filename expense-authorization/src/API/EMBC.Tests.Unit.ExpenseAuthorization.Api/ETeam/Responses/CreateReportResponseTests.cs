@@ -1,5 +1,4 @@
-﻿using System.IO;
-using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
+﻿using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using Xunit;
 
 namespace EMBC.Tests.Unit.ExpenseAuthorization.Api.ETeam.Responses
@@ -17,6 +16,16 @@ namespace EMBC.Tests.Unit.ExpenseAuthorization.Api.ETeam.Responses
             Assert.Equal("Control4222019144914-embcTraining-159742987459901082006", sut.Fields["reportId"]);
             Assert.Equal("Control4222019144914-embcTraining-159742987459901082006", sut.Fields["id"]);
             Assert.Equal("resource_request", sut.Fields["reportType"]);
+        }
+
+        [Fact]
+        public void ThrowsSoapFaultWhenFault()
+        {
+            string xml = EmbeddedResource.Get<CreateReportResponseTests>("SoapFaultResponse.txt");
+            CreateReportResponse sut = new CreateReportResponse();
+
+            var soapFaultException = Assert.Throws<SoapFaultException>(() => sut.LoadFromXml(xml));
+
         }
     }
 }

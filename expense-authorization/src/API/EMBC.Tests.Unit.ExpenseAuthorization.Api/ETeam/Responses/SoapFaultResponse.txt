@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Body>
+      <soapenv:Fault>
+         <soapenv:Code>
+            <soapenv:Value>soapenv:Server.generalException</soapenv:Value>
+         </soapenv:Code>
+         <soapenv:Reason>
+            <soapenv:Text xml:lang="en" />
+         </soapenv:Reason>
+         <soapenv:Detail>
+            <ns1:fault xmlns:ns1="urn:extds" id="id0" xsi:type="ns1:XdsLoginException" />
+            <ns2:exceptionName xmlns:ns2="http://xml.apache.org/axis/">com.eteam.ems.service.xds.manager.XdsLoginException</ns2:exceptionName>
+            <ns3:hostname xmlns:ns3="http://xml.apache.org/axis/">Control</ns3:hostname>
+         </soapenv:Detail>
+      </soapenv:Fault>
+   </soapenv:Body>
+</soapenv:Envelope>
