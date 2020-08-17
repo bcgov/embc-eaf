@@ -26,9 +26,11 @@ namespace EMBC.ExpenseAuthorization.Api
     public class Startup
     {
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Startup>();
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            CurrentEnvironment = env;
             Configuration = configuration;
         }
 
@@ -69,6 +71,20 @@ namespace EMBC.ExpenseAuthorization.Api
             services.AddMediatR(GetType().Assembly);
 
             services.AddTransient<IEmailSender, EmailSender>();
+
+            // enable CORS in development
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyOrigin();
+                    });
+                });
+            }
 
             AddSwaggerGen(services);
         }
