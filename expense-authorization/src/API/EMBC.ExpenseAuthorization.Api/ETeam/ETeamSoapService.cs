@@ -122,10 +122,12 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
             var resourceCategories = await GetLookupAsync(LookupType.ResourceCategory);
             var resourceTypes = await GetLookupAsync(LookupType.ResourceType);
             var statuses = await GetLookupAsync(LookupType.StatusResource);
+            var priorities = await GetLookupAsync(LookupType.PriorityResource);
 
             resourceRequest.ResourceCategory = resourceCategories.FirstOrDefault(_ => _.Value == DefaultResourceCategory)?.Id;
             resourceRequest.ResourceType = resourceTypes.FirstOrDefault(_ => _.Value == DefaultResourceType)?.Id;
             resourceRequest.CurrentStatus = statuses.FirstOrDefault(_ => _.Value == DefaultCurrentStatus)?.Id;
+            resourceRequest.Priority = priorities.FirstOrDefault(_ => _.Value == "Green-Routine")?.Id;
 
             var soapRequest = GetCreateReportSoapRequest(settings.ReportTypeName, resourceRequest);
 
