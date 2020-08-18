@@ -27,7 +27,47 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        
+
+        /// <summary>Gets the asynchronous.</summary>
+        /// <returns></returns>
+        [HttpGet("ExpenditureAuthorizationResourceTypes")]
+        [ProducesResponseType(typeof(List<LookupValue>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetAsync()
+        {
+            // By annotating the controller with ApiControllerAttribute,
+            // the ModelStateInvalidFilter will automatically check ModelState.IsValid
+            // see https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1#automatic-http-400-responses
+
+            try
+            {
+                var values = await _service.GetExpenditureAuthorizationResourceTypesAsync();
+                return Ok(values);
+            }
+            catch (Refit.ApiException exception)
+            {
+                // create an error instance id to correlate the log error message with the problem details returned to 
+                // caller
+                var errorInstanceId = Guid.NewGuid().ToString("d");
+
+                _logger.LogWarning(exception, "Error getting lookup values for Expenditure Authorization Resource Types, Error Message: {ErrorResponse}, Status Code = {HttpStatusCode}, Error Id: {ErrorInstanceId}",
+                    exception.Content,
+                    exception.StatusCode,
+                    errorInstanceId);
+
+                var problem = new ProblemDetails
+                {
+                    Detail = "E-Teams web service was not successful",
+                    Instance = errorInstanceId,
+                    Status = (int)exception.StatusCode
+                };
+
+                // throw the error to the caller
+                return StatusCode(500, problem);
+            }
+
+        }
+
         /// <summary>
         /// 
         /// </summary>

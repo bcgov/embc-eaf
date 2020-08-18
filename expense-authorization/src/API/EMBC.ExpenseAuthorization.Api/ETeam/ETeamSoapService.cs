@@ -14,8 +14,10 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
     public class ETeamSoapService : IETeamSoapService
     {
         private const string DefaultResourceCategory = "Expenditure Authorization";
-        private const string DefaultResourceType = "Expenditure Authorization-EOC Activation"; // this may change
         private const string DefaultCurrentStatus = "Black-New Request";
+
+        private const string ExpenditureAuthorizationResourceTypePrefix = "Expenditure Authorization-";
+
 
         private readonly IETeamSoapClient _client;
         private readonly IOptions<ETeamSettings> _options;
@@ -29,7 +31,20 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
-        
+
+        public async Task<IList<LookupValue>> GetExpenditureAuthorizationResourceTypesAsync()
+        {
+            // Get all the resource types. Resource type descriptions are prefixed with the resource category 
+            IList<LookupValue> resourceTypeValues = await GetPicklistKeywordsAsync(LookupType.ResourceType);
+
+            IList<LookupValue> values = resourceTypeValues
+                .Where(_ => _.Value != null && _.Value.StartsWith(ExpenditureAuthorizationResourceTypePrefix))
+                .Select(_ => new LookupValue { Id = _.Id, Value = _.Value.Substring(ExpenditureAuthorizationResourceTypePrefix.Length)})
+                .ToList();
+
+            return values;
+        }
+
         /// <summary>Gets the lookup asynchronous.</summary>
         /// <param name="lookupType">Type of the lookup.</param>
         /// <returns></returns>
@@ -120,14 +135,19 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
         {
             // get the defaults, we could cache this in the future
             var resourceCategories = await GetLookupAsync(LookupType.ResourceCategory);
-            var resourceTypes = await GetLookupAsync(LookupType.ResourceType);
+            //var resourceTypes = await GetLookupAsync(LookupType.ResourceType);
             var statuses = await GetLookupAsync(LookupType.StatusResource);
             var priorities = await GetLookupAsync(LookupType.PriorityResource);
 
             resourceRequest.ResourceCategory = resourceCategories.FirstOrDefault(_ => _.Value == DefaultResourceCategory)?.Id;
-            resourceRequest.ResourceType = resourceTypes.FirstOrDefault(_ => _.Value == DefaultResourceType)?.Id;
+            //resourceRequest.ResourceType = resourceTypes.FirstOrDefault(_ => _.Value == DefaultResourceType)?.Id;
             resourceRequest.CurrentStatus = statuses.FirstOrDefault(_ => _.Value == DefaultCurrentStatus)?.Id;
             resourceRequest.Priority = priorities.FirstOrDefault(_ => _.Value == "Green-Routine")?.Id;
+
+            if (string.IsNullOrEmpty(resourceRequest.RequestorContactInfo))
+            {
+                resourceRequest.RequestorContactInfo = "place holder due to code not finished";
+            }
 
             var soapRequest = GetCreateReportSoapRequest(settings.ReportTypeName, resourceRequest);
 
