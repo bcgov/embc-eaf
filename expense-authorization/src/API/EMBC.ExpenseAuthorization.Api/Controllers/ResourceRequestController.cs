@@ -48,7 +48,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
             {
                 var command = new ResourceRequest.CreateCommand(resourceRequest, files);
                 ResourceRequest.CreateResponse response = await _mediator.Send(command);
-
+                
                 return Ok();
             }
             catch (Exception e)
