@@ -39,7 +39,7 @@ namespace EMBC.ExpenseAuthorization.Api.Features
         {
             private readonly IETeamSoapService _eteamService;
             private readonly IEmailService _emailService;
-
+            
             public Handler(IETeamSoapService eteamService, IEmailService emailService)
             {
                 _eteamService = eteamService ?? throw new ArgumentNullException(nameof(eteamService));

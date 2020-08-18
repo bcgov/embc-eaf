@@ -36,5 +36,10 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
         }
 
         public string SoapFault { get; }
+
+        public override string ToString()
+        {
+            return this.Message + ":" + SoapFault;
+        }
     }
 }

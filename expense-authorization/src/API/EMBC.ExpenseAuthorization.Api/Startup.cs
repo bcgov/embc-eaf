@@ -66,7 +66,8 @@ namespace EMBC.ExpenseAuthorization.Api
                 .ConfigureHttpClient(ConfigureETeamsHttpClient);
 
             services.AddTransient<IETeamSoapService, ETeamSoapService>();
-            
+            services.AddTransient<IEmailService, EmailService>();
+
             // add all the handlers in this assembly
             services.AddMediatR(GetType().Assembly);
 
