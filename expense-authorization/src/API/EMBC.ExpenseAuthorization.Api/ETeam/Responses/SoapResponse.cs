@@ -16,7 +16,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
         /// <param name="xml">The XML.</param>
         /// <exception cref="ArgumentNullException">xml</exception>
         /// <exception cref="ArgumentException">Parameter cannot be empty string - xml</exception>
-        /// <exception cref="SoapFaultException">A SOAP Fault was thrown by the E Team server</exception>
+        /// <exception cref="SoapFaultException">The <paramref name="xml"/> represents a SOAP fault.</exception>
         public void LoadFromXml(string xml)
         {
             if (xml == null)

@@ -45,21 +45,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
 
             try
             {
-                IList<LookupValue> values = Array.Empty<LookupValue>();
-
-                switch (lookupType)
-                {
-                    case LookupType.PriorityResource:
-                    case LookupType.StatusResource:
-                        values = await _service.GetPicklistColorsAsync(lookupType);
-                        break;
-
-                    default:
-                        values = await _service.GetPicklistKeywordsAsync(lookupType);
-                        break;
-
-                }
-
+                var values = await _service.GetLookupAsync(lookupType);
                 return Ok(values);
             }
             catch (Refit.ApiException exception)

@@ -38,12 +38,12 @@ namespace EMBC.ExpenseAuthorization.Api.Features
         public class Handler : IRequestHandler<CreateCommand, CreateResponse>
         {
             private readonly IETeamSoapService _eteamService;
-            private readonly IEmailSender _emailSender;
+            private readonly IEmailService _emailService;
 
-            public Handler(IETeamSoapService eteamService, IEmailSender emailSender)
+            public Handler(IETeamSoapService eteamService, IEmailService emailService)
             {
                 _eteamService = eteamService ?? throw new ArgumentNullException(nameof(eteamService));
-                _emailSender = emailSender;
+                _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             }
 
             public async Task<CreateResponse> Handle(CreateCommand request, CancellationToken cancellationToken)
@@ -52,31 +52,11 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                 {
                     throw new ArgumentNullException(nameof(request));
                 }
-
-
+                
                 CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
 
-                // seems the output has the id in reportId / id
-                if (!response.Fields.TryGetValue("reportId", out var reportId))
-                {
-                    response.Fields.TryGetValue("id", out reportId);
-                }
-
-                if (request.Files != null && request.Files.Count != 0)
-                {
-
-                    var message = new Message
-                    {
-                        To = new List<MailboxAddress> { new MailboxAddress("philbolduc@gmail.com")},
-                        Attachments = request.Files,
-                        Content = $"Attachments for Report: {reportId}",
-                        Subject = "E-Team Resource Request",
-                    };
-
-                    await _emailSender.SendEmailAsync(message);
-
-                }
-
+                await _emailService.SendEmailAsync(response, request.Files);
+                
                 return new CreateResponse();
             }
         }

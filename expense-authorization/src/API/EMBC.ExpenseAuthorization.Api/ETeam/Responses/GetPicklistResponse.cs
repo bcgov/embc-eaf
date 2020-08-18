@@ -8,10 +8,15 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
 {
     public abstract class GetPicklistResponse : SoapResponse
     {
-        private string _returnPath;
+        private readonly string _returnPath;
 
         public IList<LookupValue> Values { get; private set; } = Array.Empty<LookupValue>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetPicklistResponse"/> class.
+        /// </summary>
+        /// <param name="returnPath">The xpath to the response items</param>
+        /// <exception cref="ArgumentNullException">returnPath</exception>
         protected GetPicklistResponse(string returnPath)
         {
             _returnPath = returnPath ?? throw new ArgumentNullException(nameof(returnPath));

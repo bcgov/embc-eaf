@@ -68,7 +68,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
             var bodyBuilder = new BodyBuilder
             {
-                HtmlBody = string.Format("<h2 style='color:red;'>{0}</h2>", message.Content)
+                HtmlBody = message.Content
             };
 
             if (message.Attachments != null)
