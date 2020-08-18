@@ -8,6 +8,8 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
 {
     public interface IETeamSoapService
     {
+        Task<IList<LookupValue>> GetExpenditureAuthorizationResourceTypesAsync();
+
         Task<IList<LookupValue>> GetLookupAsync(LookupType lookupType);
 
         /// <summary>
