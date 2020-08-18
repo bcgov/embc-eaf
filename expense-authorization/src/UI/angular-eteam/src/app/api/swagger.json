@@ -14,6 +14,32 @@
     "version": "v1"
   },
   "paths": {
+    "/api/Lookup/ExpenditureAuthorizationResourceTypes": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Gets the asynchronous.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookupValue"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
     "/api/Lookup/{lookupType}": {
       "get": {
         "tags": [
@@ -71,11 +97,6 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "required": [
-                  "CurrentStatus",
-                  "Quantity",
-                  "ResourceType"
-                ],
                 "type": "object",
                 "properties": {
                   "ApprovedBy": {
@@ -91,7 +112,8 @@
                   "CurrentStatus": {
                     "maxLength": 703,
                     "minLength": 0,
-                    "type": "string"
+                    "type": "string",
+                    "nullable": true
                   },
                   "EstimatedResourceCost": {
                     "type": "integer",
@@ -101,71 +123,11 @@
                     "type": "string",
                     "nullable": true
                   },
-                  "MustComeWithFuel": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithLodging": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithMaint": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithMeals": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithOperator": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithOther": {
-                    "maxLength": 300,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithPower": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "MustComeWithWater": {
-                    "maxLength": 48,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
                   "Priority": {
                     "maxLength": 703,
                     "minLength": 0,
                     "type": "string",
                     "nullable": true
-                  },
-                  "QtyUnitOfMeasurement": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "Quantity": {
-                    "maximum": 2147483647,
-                    "minimum": 0,
-                    "type": "integer",
-                    "format": "int32"
                   },
                   "ReqTrackNoEmac": {
                     "maxLength": 100,
@@ -212,23 +174,42 @@
                   "ResourceType": {
                     "maxLength": 600,
                     "minLength": 0,
-                    "type": "string"
-                  },
-                  "ResourceTypeTemp": {
-                    "maxLength": 600,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "SpecialInstructions": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "SummaryOfActionsTaken": {
                     "type": "string",
                     "nullable": true
                   },
                   "WhenNeeded": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Event": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ExpenditureNotToExceed": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "EocApprovals.Processing.ApprovedBy": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.Processing.Position": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.Processing.ApprovalDateTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EocApprovals.ExpenditureRequest.ApprovedBy": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.ExpenditureRequest.Position": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
                     "type": "string",
                     "format": "date-time"
                   },
@@ -259,37 +240,7 @@
                 "Mission": {
                   "style": "form"
                 },
-                "MustComeWithFuel": {
-                  "style": "form"
-                },
-                "MustComeWithLodging": {
-                  "style": "form"
-                },
-                "MustComeWithMaint": {
-                  "style": "form"
-                },
-                "MustComeWithMeals": {
-                  "style": "form"
-                },
-                "MustComeWithOperator": {
-                  "style": "form"
-                },
-                "MustComeWithOther": {
-                  "style": "form"
-                },
-                "MustComeWithPower": {
-                  "style": "form"
-                },
-                "MustComeWithWater": {
-                  "style": "form"
-                },
                 "Priority": {
-                  "style": "form"
-                },
-                "QtyUnitOfMeasurement": {
-                  "style": "form"
-                },
-                "Quantity": {
                   "style": "form"
                 },
                 "ReqTrackNoEmac": {
@@ -316,16 +267,31 @@
                 "ResourceType": {
                   "style": "form"
                 },
-                "ResourceTypeTemp": {
-                  "style": "form"
-                },
-                "SpecialInstructions": {
-                  "style": "form"
-                },
-                "SummaryOfActionsTaken": {
-                  "style": "form"
-                },
                 "WhenNeeded": {
+                  "style": "form"
+                },
+                "Event": {
+                  "style": "form"
+                },
+                "ExpenditureNotToExceed": {
+                  "style": "form"
+                },
+                "EocApprovals.Processing.ApprovedBy": {
+                  "style": "form"
+                },
+                "EocApprovals.Processing.Position": {
+                  "style": "form"
+                },
+                "EocApprovals.Processing.ApprovalDateTime": {
+                  "style": "form"
+                },
+                "EocApprovals.ExpenditureRequest.ApprovedBy": {
+                  "style": "form"
+                },
+                "EocApprovals.ExpenditureRequest.Position": {
+                  "style": "form"
+                },
+                "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
                   "style": "form"
                 },
                 "files": {
@@ -358,18 +324,6 @@
   },
   "components": {
     "schemas": {
-      "LookupType": {
-        "enum": [
-          "PriorityResource",
-          "RequestingOrgForwardTo",
-          "ResourceCategory",
-          "ResourceType",
-          "StatusResource",
-          "UnitsOfMeasure",
-          "LeadAgencyDeptList"
-        ],
-        "type": "string"
-      },
       "LookupValue": {
         "type": "object",
         "properties": {
@@ -383,6 +337,18 @@
           }
         },
         "additionalProperties": false
+      },
+      "LookupType": {
+        "enum": [
+          "PriorityResource",
+          "RequestingOrgForwardTo",
+          "ResourceCategory",
+          "ResourceType",
+          "StatusResource",
+          "UnitsOfMeasure",
+          "LeadAgencyDeptList"
+        ],
+        "type": "string"
       },
       "ProblemDetails": {
         "type": "object",
