@@ -79,20 +79,8 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Models
         public string Event { get; set; }
         public decimal ExpenditureNotToExceed { get; set; }
 
-        public EocApprovals EocApprovals { get; set; }
+        //public EocApprovals EocApprovals { get; set; }
         #endregion
     }
 
-    public class EocApprovals
-    {
-        public EocApproval Processing { get; set; }
-        public EocApproval ExpenditureRequest { get; set; }
-    }
-
-    public class EocApproval
-    {
-        public string ApprovedBy { get; set; }
-        public string Position { get; set; }
-        public DateTime ApprovalDateTime { get; set; }
-    }
 }
