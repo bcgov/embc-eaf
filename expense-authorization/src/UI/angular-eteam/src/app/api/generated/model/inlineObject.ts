@@ -14,20 +14,10 @@
 export interface InlineObject { 
     ApprovedBy?: string | null;
     ApprovedTime?: string;
-    CurrentStatus: string;
+    CurrentStatus?: string | null;
     EstimatedResourceCost?: number;
     Mission?: string | null;
-    MustComeWithFuel?: string | null;
-    MustComeWithLodging?: string | null;
-    MustComeWithMaint?: string | null;
-    MustComeWithMeals?: string | null;
-    MustComeWithOperator?: string | null;
-    MustComeWithOther?: string | null;
-    MustComeWithPower?: string | null;
-    MustComeWithWater?: string | null;
     Priority?: string | null;
-    QtyUnitOfMeasurement?: string | null;
-    Quantity: number;
     ReqTrackNoEmac?: string | null;
     ReqTrackNoFema?: string | null;
     ReqTrackNoState?: string | null;
@@ -35,11 +25,16 @@ export interface InlineObject {
     RequestionOrg?: string | null;
     RequestorContactInfo?: string | null;
     ResourceCategory?: string | null;
-    ResourceType: string;
-    ResourceTypeTemp?: string | null;
-    SpecialInstructions?: string | null;
-    SummaryOfActionsTaken?: string | null;
+    ResourceType?: string | null;
     WhenNeeded?: string;
+    Event?: string | null;
+    ExpenditureNotToExceed?: number;
+    EocApprovals_Processing_ApprovedBy?: string | null;
+    EocApprovals_Processing_Position?: string | null;
+    EocApprovals_Processing_ApprovalDateTime?: string;
+    EocApprovals_ExpenditureRequest_ApprovedBy?: string | null;
+    EocApprovals_ExpenditureRequest_Position?: string | null;
+    EocApprovals_ExpenditureRequest_ApprovalDateTime?: string;
     /**
      * The optional list of files to attach to the request.
      */

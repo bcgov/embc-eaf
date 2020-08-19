@@ -100,23 +100,12 @@ export class ResourceRequestService {
 
     /**
      * Creates a Resource Request..
-     * @param currentStatus 
-     * @param quantity 
-     * @param resourceType 
      * @param approvedBy 
      * @param approvedTime 
+     * @param currentStatus 
      * @param estimatedResourceCost 
      * @param mission 
-     * @param mustComeWithFuel 
-     * @param mustComeWithLodging 
-     * @param mustComeWithMaint 
-     * @param mustComeWithMeals 
-     * @param mustComeWithOperator 
-     * @param mustComeWithOther 
-     * @param mustComeWithPower 
-     * @param mustComeWithWater 
      * @param priority 
-     * @param qtyUnitOfMeasurement 
      * @param reqTrackNoEmac 
      * @param reqTrackNoFema 
      * @param reqTrackNoState 
@@ -124,27 +113,24 @@ export class ResourceRequestService {
      * @param requestionOrg 
      * @param requestorContactInfo 
      * @param resourceCategory 
-     * @param resourceTypeTemp 
-     * @param specialInstructions 
-     * @param summaryOfActionsTaken 
+     * @param resourceType 
      * @param whenNeeded 
+     * @param event 
+     * @param expenditureNotToExceed 
+     * @param eocApprovalsProcessingApprovedBy 
+     * @param eocApprovalsProcessingPosition 
+     * @param eocApprovalsProcessingApprovalDateTime 
+     * @param eocApprovalsExpenditureRequestApprovedBy 
+     * @param eocApprovalsExpenditureRequestPosition 
+     * @param eocApprovalsExpenditureRequestApprovalDateTime 
      * @param files The optional list of files to attach to the request.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public apiResourceRequestPost(currentStatus: string, quantity: number, resourceType: string, approvedBy?: string, approvedTime?: string, estimatedResourceCost?: number, mission?: string, mustComeWithFuel?: string, mustComeWithLodging?: string, mustComeWithMaint?: string, mustComeWithMeals?: string, mustComeWithOperator?: string, mustComeWithOther?: string, mustComeWithPower?: string, mustComeWithWater?: string, priority?: string, qtyUnitOfMeasurement?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceTypeTemp?: string, specialInstructions?: string, summaryOfActionsTaken?: string, whenNeeded?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (currentStatus === null || currentStatus === undefined) {
-            throw new Error('Required parameter currentStatus was null or undefined when calling apiResourceRequestPost.');
-        }
-        if (quantity === null || quantity === undefined) {
-            throw new Error('Required parameter quantity was null or undefined when calling apiResourceRequestPost.');
-        }
-        if (resourceType === null || resourceType === undefined) {
-            throw new Error('Required parameter resourceType was null or undefined when calling apiResourceRequestPost.');
-        }
+    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -194,38 +180,8 @@ export class ResourceRequestService {
         if (mission !== undefined) {
             formParams = formParams.append('Mission', <any>mission) as any || formParams;
         }
-        if (mustComeWithFuel !== undefined) {
-            formParams = formParams.append('MustComeWithFuel', <any>mustComeWithFuel) as any || formParams;
-        }
-        if (mustComeWithLodging !== undefined) {
-            formParams = formParams.append('MustComeWithLodging', <any>mustComeWithLodging) as any || formParams;
-        }
-        if (mustComeWithMaint !== undefined) {
-            formParams = formParams.append('MustComeWithMaint', <any>mustComeWithMaint) as any || formParams;
-        }
-        if (mustComeWithMeals !== undefined) {
-            formParams = formParams.append('MustComeWithMeals', <any>mustComeWithMeals) as any || formParams;
-        }
-        if (mustComeWithOperator !== undefined) {
-            formParams = formParams.append('MustComeWithOperator', <any>mustComeWithOperator) as any || formParams;
-        }
-        if (mustComeWithOther !== undefined) {
-            formParams = formParams.append('MustComeWithOther', <any>mustComeWithOther) as any || formParams;
-        }
-        if (mustComeWithPower !== undefined) {
-            formParams = formParams.append('MustComeWithPower', <any>mustComeWithPower) as any || formParams;
-        }
-        if (mustComeWithWater !== undefined) {
-            formParams = formParams.append('MustComeWithWater', <any>mustComeWithWater) as any || formParams;
-        }
         if (priority !== undefined) {
             formParams = formParams.append('Priority', <any>priority) as any || formParams;
-        }
-        if (qtyUnitOfMeasurement !== undefined) {
-            formParams = formParams.append('QtyUnitOfMeasurement', <any>qtyUnitOfMeasurement) as any || formParams;
-        }
-        if (quantity !== undefined) {
-            formParams = formParams.append('Quantity', <any>quantity) as any || formParams;
         }
         if (reqTrackNoEmac !== undefined) {
             formParams = formParams.append('ReqTrackNoEmac', <any>reqTrackNoEmac) as any || formParams;
@@ -251,17 +207,32 @@ export class ResourceRequestService {
         if (resourceType !== undefined) {
             formParams = formParams.append('ResourceType', <any>resourceType) as any || formParams;
         }
-        if (resourceTypeTemp !== undefined) {
-            formParams = formParams.append('ResourceTypeTemp', <any>resourceTypeTemp) as any || formParams;
-        }
-        if (specialInstructions !== undefined) {
-            formParams = formParams.append('SpecialInstructions', <any>specialInstructions) as any || formParams;
-        }
-        if (summaryOfActionsTaken !== undefined) {
-            formParams = formParams.append('SummaryOfActionsTaken', <any>summaryOfActionsTaken) as any || formParams;
-        }
         if (whenNeeded !== undefined) {
             formParams = formParams.append('WhenNeeded', <any>whenNeeded) as any || formParams;
+        }
+        if (event !== undefined) {
+            formParams = formParams.append('Event', <any>event) as any || formParams;
+        }
+        if (expenditureNotToExceed !== undefined) {
+            formParams = formParams.append('ExpenditureNotToExceed', <any>expenditureNotToExceed) as any || formParams;
+        }
+        if (eocApprovalsProcessingApprovedBy !== undefined) {
+            formParams = formParams.append('EocApprovals.Processing.ApprovedBy', <any>eocApprovalsProcessingApprovedBy) as any || formParams;
+        }
+        if (eocApprovalsProcessingPosition !== undefined) {
+            formParams = formParams.append('EocApprovals.Processing.Position', <any>eocApprovalsProcessingPosition) as any || formParams;
+        }
+        if (eocApprovalsProcessingApprovalDateTime !== undefined) {
+            formParams = formParams.append('EocApprovals.Processing.ApprovalDateTime', <any>eocApprovalsProcessingApprovalDateTime) as any || formParams;
+        }
+        if (eocApprovalsExpenditureRequestApprovedBy !== undefined) {
+            formParams = formParams.append('EocApprovals.ExpenditureRequest.ApprovedBy', <any>eocApprovalsExpenditureRequestApprovedBy) as any || formParams;
+        }
+        if (eocApprovalsExpenditureRequestPosition !== undefined) {
+            formParams = formParams.append('EocApprovals.ExpenditureRequest.Position', <any>eocApprovalsExpenditureRequestPosition) as any || formParams;
+        }
+        if (eocApprovalsExpenditureRequestApprovalDateTime !== undefined) {
+            formParams = formParams.append('EocApprovals.ExpenditureRequest.ApprovalDateTime', <any>eocApprovalsExpenditureRequestApprovalDateTime) as any || formParams;
         }
         if (files) {
             if (useForm) {

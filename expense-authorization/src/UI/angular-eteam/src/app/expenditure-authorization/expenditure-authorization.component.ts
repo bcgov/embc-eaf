@@ -20,6 +20,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   constructor(private fb: FormBuilder, private lookupService: LookupService, private resourceRequestService: ResourceRequestService) { }
 
   communities: LookupValue[];
+  resourceTypes: LookupValue[];
   files: File[] = [];
   uploadFileErrors: any;
   submission: String = "none";
@@ -32,6 +33,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     eafNo: [null, Validators.required],
     embcTaskNo: [null, Validators.required],
     requestorsCommunity: ['', Validators.required],
+    resourceType: ['', Validators.required],
     repName: [null, Validators.required],
     repTelephone: [null, [Validators.required, Validators.pattern("^\\d{3}([\\.\\- ]?)\\d{3}\\1\\d{4}$")]],
     repEmail: [null, [Validators.required, Validators.pattern("^[^@]{1,64}@[^_@]+$")]],
@@ -57,6 +59,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   get eafNo() { return this.expndAuthForm.get('eafNo'); }
   get embcTaskNo() { return this.expndAuthForm.get('embcTaskNo'); }
   get requestorsCommunity() { return this.expndAuthForm.get('requestorsCommunity'); }
+  get resourceType() { return this.expndAuthForm.get('resourceType'); }
   get repName() { return this.expndAuthForm.get('repName'); }
   get repTelephone() { return this.expndAuthForm.get('repTelephone'); }
   get repEmail() { return this.expndAuthForm.get('repEmail'); }
@@ -83,6 +86,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
     this.lookupService.apiLookupLookupTypeGet(LookupType.LeadAgencyDeptList)
       .subscribe(items => this.communities = items);
+    this.lookupService.apiLookupExpenditureAuthorizationResourceTypesGet()
+      .subscribe(items => this.resourceTypes = items);
   }
 
   /**
@@ -203,30 +208,41 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     let expenditurePosition = this.expenditurePosition.value;
     let expenditureDt = new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toDateString();
 
+    // custom field - mission == description + amountRequested
+    let mission = description + '\\n' + amountRequested;
+    // custom field - requestorsContactInfo == name + telephone + email
+    let requestorsContactInfo = 
+          'Name: ' + repName + '\\n' 
+          'Telephone: ' + repTelephone + '\\n' 
+          'Email: ' + repEmail;
+    let resourceType = '';
+
     console.log(expEvent);
 
     this.resourceRequestService.apiResourceRequestPost(
-        'currentStatusStr',
-        0,
-        'resourceTypeStr',
-        processingApprovedBy,
+        null,
         processingDt,
-        amountRequested,
-        description,
-        '', '', '', '', '', '', '', '', 
-        'priorityStr',
-        'qtyStr',
-        embcTaskNo,
-        '',
-        '',
+        null, // currentStatus
+        expenditureNotToExceed,
+        mission,
+        null, // priority
+        embcTaskNo, // reqTrackNoEmac
+        null, // regTrackNoFema
+        null, // reqTrackNoState
         eafNo,
         requestorsCommunity,
-        '',
-        'resourceCat',
-        '',
-        '',
-        '',
-        new Date().toDateString(),
+        requestorsContactInfo,
+        null, // resourceCategory
+        resourceType,
+        requestDt,
+        expEvent,
+        expenditureNotToExceed,
+        processingApprovedBy,
+        processingPosition,
+        processingDt,
+        expenditureApprovedBy,
+        expenditurePosition,
+        expenditureDt,
         this.files
       )
       .pipe(

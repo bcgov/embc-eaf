@@ -49,6 +49,17 @@
                 </ng-select>
                 <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required</div>
             </div>
+            <div class="form-group col-lg col-md-9">
+                <label class="control-label" for="resourceType">* Resource Type</label>
+                <ng-select labelForId="resourceType"
+                           [items]="resourceTypes"
+                           bindLabel="value"
+                           bindValue="id"
+                           ngDefaultControl 
+                           formControlName="resourceType">
+                </ng-select>
+                <div class="ng-invalid-feedback" *ngIf="resourceType.touched && resourceType.errors && resourceType.errors.required">This field is required</div>
+            </div>
         </div>
 
         <hr />

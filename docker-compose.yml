@@ -5,11 +5,14 @@ services:
     build:
       context: ./expense-authorization/src/API
     image: embc-expense-authorization-api:dev
+    ports:
+      - 8080:80
     environment:
       - ETEAM__URL=http://localhost/
       - ETEAM__USERNAME=username
       - ETEAM__PASSWORD=password
       - EMAIL__ENABLED=false
+      - ASPNETCORE_ENVIRONMENT=Development
 
   expense-authorization-portal-ui:
     build:
