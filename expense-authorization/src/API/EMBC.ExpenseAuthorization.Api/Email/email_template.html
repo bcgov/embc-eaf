@@ -11,15 +11,29 @@
 </head>
 <body>
 
-<a href="{{ReportUrl}}" target="_blank">Open Report</a>
+    <a href="{{Report.Url}}" target="_blank">Open Report</a>
 
-<table>
-    <thead><tr><td>Field</td><td>Value</td></tr></thead>
-    <tr><td>Date of Request</td><td>{{DateOfRequest}}</td></tr>
-    <tr><td>EAF#</td><td>{{EAFNumber}}</td></tr>
-    <tr><td>Description of Expenditure</td><td>{{DescriptionOfExpenditure}}</td></tr>
-    <tr><td>Event</td><td>{{Event}}</td></tr>
-    <tr><td>Expenditure Not to Exceed</td><td>{{ExpenditureNotToExceed}}</td></tr>
-</table>
+    <table>
+        <thead style="font-weight: bold"><tr><td>Field</td><td>Value</td></tr></thead>
+        <tr><td>Date of Request</td><td>{{ResourceRequest.ApprovedTime}}</td></tr>
+        <tr><td>Description of Expenditure</td><td></td></tr>
+        <tr><td>Event</td><td>{{ResourceRequest.Event}}</td></tr>
+        <tr><td>Expenditure Not to Exceed</td><td></td></tr>
+    </table>
+
+    <h2>EOC Approvals</h2>
+    <h3>Processing</h3>
+    <p>
+        <span>Approved By</span>: {{ResourceRequest.EocApprovals.Processing.ApprovedBy}} <br />
+        <span>Position</span>: {{ResourceRequest.EocApprovals.Processing.Position}} <br />
+        <span>Approval Date/Time</span>: {{ResourceRequest.EocApprovals.Processing.ApprovalDateTime}} <br />
+    </p>
+
+    <h3>Expenditure Request</h3>
+    <p>
+        <span>Approved By</span>: {{ResourceRequest.EocApprovals.ExpenditureRequest.ApprovedBy}} <br />
+        <span>Position</span>: {{ResourceRequest.EocApprovals.ExpenditureRequest.Position}} <br />
+        <span>Approval Date/Time</span>: {{ResourceRequest.EocApprovals.ExpenditureRequest.ApprovalDateTime}} <br />
+    </p>
 </body>
 </html>
