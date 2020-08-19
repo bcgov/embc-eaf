@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { LookupService } from '../api/generated/api/lookup.service'
-import { ResourceRequestService, LookupType, LookupValue } from '../api/generated';
+import { ExpenseAuthorizationService, LookupType, LookupValue } from '../api/generated';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class ExpenditureAuthorizationComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private lookupService: LookupService, private resourceRequestService: ResourceRequestService) { }
+  constructor(private fb: FormBuilder, private lookupService: LookupService, private expenseAuthorizationService: ExpenseAuthorizationService) { }
 
   communities: LookupValue[];
   resourceTypes: LookupValue[];
@@ -98,9 +98,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
-      this.submission = "failure";
-      this.log(`${operation} failed: ${error.message}`);
-      if (error.error.title) {
+      if (error.status == 400 && error.error.title == 'One or more validation errors occurred.') {
+        // Server validation error (the UI protects against this with it's own validation so this should never happen)
+        // But if we are here then there is a decrepency between the UI and server validation checks.
+        this.submission = "validationFailure";
         this.log(`  ${error.error.title}`);
         for(let key in error.error.errors) {
           let child = error.error.errors[key];
@@ -108,6 +109,12 @@ export class ExpenditureAuthorizationComponent implements OnInit {
             console.log('  ' + child[0]);
           }
         }
+      }
+      else {        
+        // Not server validation error, but some other unknown internal server error.
+        // Just say try again later.
+        this.submission = "failure";
+        this.log(`${operation} failed: ${error.message}`);
       }
 
       // Let the app keep running by returning an empty result.
@@ -185,7 +192,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     //console.log(this.expndAuthForm.value);
 
     let expEvent = this.expEvent.value;
-    let requestTs = new Date(this.now).toDateString();
+    let requestTs = new Date(this.now).toISOString();
     let eafNo = this.eafNo.value;
     let embcTaskNo = this.embcTaskNo.value;
     let requestorsCommunity = this.requestorsCommunity.value;
@@ -198,50 +205,37 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     let expenditureNotToExceed = this.expenditureNotToExceed ? this.expenditureNotToExceed.value : '';
     let processingApprovedBy = this.processingApprovedBy.value;
     let processingPosition = this.processingPosition.value;
-    let processingTs = new Date(this.processingDate.value + ' ' + this.processingTime.value).toDateString();
+    let processingTs = (this.processingDate.value && this.processingTime.value) ? new Date(this.processingDate.value + ' ' + this.processingTime.value).toISOString() : null;
     let expenditureApprovedBy = this.expenditureApprovedBy.value;
     let expenditurePosition = this.expenditurePosition.value;
-    let expenditureTs = new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toDateString();
+    let expenditureTs = (this.expenditureDate.value && this.expenditureTime.value) ? new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toISOString() : null;
 
-    // custom field - mission == description + amountRequested
-    let mission = description + '\\n' + amountRequested;
-    // custom field - requestorsContactInfo == name + telephone + email
-    let requestorsContactInfo = 
-          'Name: ' + repName + '\\n' 
-          'Telephone: ' + repTelephone + '\\n' 
-          'Email: ' + repEmail;
-
-    this.resourceRequestService.apiResourceRequestPost(
-        null,
-        requestTs, // approvedTime
-        null, // currentStatus
-        expenditureNotToExceed,
-        mission,
-        null, // priority
-        embcTaskNo, // reqTrackNoEmac
-        null, // regTrackNoFema
-        null, // reqTrackNoState
-        eafNo,
-        requestorsCommunity,
-        requestorsContactInfo,
-        null, // resourceCategory
-        resourceType,
-        requestTs,
-        expEvent,
-        expenditureNotToExceed,
-        processingApprovedBy,
-        processingPosition,
-        processingTs,
-        expenditureApprovedBy,
-        expenditurePosition,
-        expenditureTs,
+    this.expenseAuthorizationService.apiExpenseAuthorizationPost(
+        expEvent,     // Event
+        requestTs,    // DateTime
+        eafNo,        // EAF #
+        embcTaskNo,   // EMBC Task #
+        requestorsCommunity, // Requesting Community
+        resourceType, // Resource Type
+        repName,      // Authorized Representative Name
+        repTelephone, // Authorized Representative Telephone
+        repEmail,     // Authorized Representative Email
+        description,  // Description
+        amountRequested, // Amount Requested
+        expenditureNotToExceed, // Expenditure Not To Exceed
+        processingApprovedBy, // Approved for Processing By
+        processingPosition, // Approved Position
+        processingTs, // // Approved DateTime
+        expenditureApprovedBy, // Expenditure Approved By
+        expenditurePosition, // Expenditure Position
+        expenditureTs, // Expenditure DateTime
         this.files
       )
       .pipe(
         catchError(this.handleError('API post'))
       )
       .subscribe(() => {
-        if (this.submission != "failure") {
+        if (this.submission != "failure" && this.submission != "validationFailure") {
           this.submission = "success";
           console.log('apiResourceRequestPost returned');
         }

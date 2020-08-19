@@ -27,7 +27,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class ResourceRequestService {
+export class ExpenseAuthorizationService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -99,23 +99,18 @@ export class ResourceRequestService {
     }
 
     /**
-     * Creates a Resource Request..
-     * @param approvedBy 
-     * @param approvedTime 
-     * @param currentStatus 
-     * @param estimatedResourceCost 
-     * @param mission 
-     * @param priority 
-     * @param reqTrackNoEmac 
-     * @param reqTrackNoFema 
-     * @param reqTrackNoState 
-     * @param requestNumber 
-     * @param requestionOrg 
-     * @param requestorContactInfo 
-     * @param resourceCategory 
-     * @param resourceType 
-     * @param whenNeeded 
+     * Creates an Expense Authorization Request.
      * @param event 
+     * @param dateTime 
+     * @param eAFNo 
+     * @param eMBCTaskNo 
+     * @param requestingOrg 
+     * @param resourceType 
+     * @param authName 
+     * @param authTelephone 
+     * @param authEmail 
+     * @param description 
+     * @param amountRequested 
      * @param expenditureNotToExceed 
      * @param eocApprovalsProcessingApprovedBy 
      * @param eocApprovalsProcessingPosition 
@@ -127,10 +122,10 @@ export class ResourceRequestService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public apiResourceRequestPost(approvedBy?: string, approvedTime?: string, currentStatus?: string, estimatedResourceCost?: number, mission?: string, priority?: string, reqTrackNoEmac?: string, reqTrackNoFema?: string, reqTrackNoState?: string, requestNumber?: string, requestionOrg?: string, requestorContactInfo?: string, resourceCategory?: string, resourceType?: string, whenNeeded?: string, event?: string, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -165,53 +160,38 @@ export class ResourceRequestService {
             formParams = new HttpParams({encoder: this.encoder});
         }
 
-        if (approvedBy !== undefined) {
-            formParams = formParams.append('ApprovedBy', <any>approvedBy) as any || formParams;
+        if (event !== undefined) {
+            formParams = formParams.append('Event', <any>event) as any || formParams;
         }
-        if (approvedTime !== undefined) {
-            formParams = formParams.append('ApprovedTime', <any>approvedTime) as any || formParams;
+        if (dateTime !== undefined) {
+            formParams = formParams.append('DateTime', <any>dateTime) as any || formParams;
         }
-        if (currentStatus !== undefined) {
-            formParams = formParams.append('CurrentStatus', <any>currentStatus) as any || formParams;
+        if (eAFNo !== undefined) {
+            formParams = formParams.append('EAFNo', <any>eAFNo) as any || formParams;
         }
-        if (estimatedResourceCost !== undefined) {
-            formParams = formParams.append('EstimatedResourceCost', <any>estimatedResourceCost) as any || formParams;
+        if (eMBCTaskNo !== undefined) {
+            formParams = formParams.append('EMBCTaskNo', <any>eMBCTaskNo) as any || formParams;
         }
-        if (mission !== undefined) {
-            formParams = formParams.append('Mission', <any>mission) as any || formParams;
-        }
-        if (priority !== undefined) {
-            formParams = formParams.append('Priority', <any>priority) as any || formParams;
-        }
-        if (reqTrackNoEmac !== undefined) {
-            formParams = formParams.append('ReqTrackNoEmac', <any>reqTrackNoEmac) as any || formParams;
-        }
-        if (reqTrackNoFema !== undefined) {
-            formParams = formParams.append('ReqTrackNoFema', <any>reqTrackNoFema) as any || formParams;
-        }
-        if (reqTrackNoState !== undefined) {
-            formParams = formParams.append('ReqTrackNoState', <any>reqTrackNoState) as any || formParams;
-        }
-        if (requestNumber !== undefined) {
-            formParams = formParams.append('RequestNumber', <any>requestNumber) as any || formParams;
-        }
-        if (requestionOrg !== undefined) {
-            formParams = formParams.append('RequestionOrg', <any>requestionOrg) as any || formParams;
-        }
-        if (requestorContactInfo !== undefined) {
-            formParams = formParams.append('RequestorContactInfo', <any>requestorContactInfo) as any || formParams;
-        }
-        if (resourceCategory !== undefined) {
-            formParams = formParams.append('ResourceCategory', <any>resourceCategory) as any || formParams;
+        if (requestingOrg !== undefined) {
+            formParams = formParams.append('RequestingOrg', <any>requestingOrg) as any || formParams;
         }
         if (resourceType !== undefined) {
             formParams = formParams.append('ResourceType', <any>resourceType) as any || formParams;
         }
-        if (whenNeeded !== undefined) {
-            formParams = formParams.append('WhenNeeded', <any>whenNeeded) as any || formParams;
+        if (authName !== undefined) {
+            formParams = formParams.append('AuthName', <any>authName) as any || formParams;
         }
-        if (event !== undefined) {
-            formParams = formParams.append('Event', <any>event) as any || formParams;
+        if (authTelephone !== undefined) {
+            formParams = formParams.append('AuthTelephone', <any>authTelephone) as any || formParams;
+        }
+        if (authEmail !== undefined) {
+            formParams = formParams.append('AuthEmail', <any>authEmail) as any || formParams;
+        }
+        if (description !== undefined) {
+            formParams = formParams.append('Description', <any>description) as any || formParams;
+        }
+        if (amountRequested !== undefined) {
+            formParams = formParams.append('AmountRequested', <any>amountRequested) as any || formParams;
         }
         if (expenditureNotToExceed !== undefined) {
             formParams = formParams.append('ExpenditureNotToExceed', <any>expenditureNotToExceed) as any || formParams;
@@ -249,7 +229,7 @@ export class ResourceRequestService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/api/ResourceRequest`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/ExpenseAuthorization`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,

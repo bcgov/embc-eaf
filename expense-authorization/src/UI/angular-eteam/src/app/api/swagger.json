@@ -14,6 +14,185 @@
     "version": "v1"
   },
   "paths": {
+    "/api/ExpenseAuthorization": {
+      "post": {
+        "tags": [
+          "ExpenseAuthorization"
+        ],
+        "summary": "Creates an Expense Authorization Request.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Event": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "DateTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EAFNo": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EMBCTaskNo": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "RequestingOrg": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "ResourceType": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "AuthName": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "AuthTelephone": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "AuthEmail": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Description": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "AmountRequested": {
+                    "type": "number",
+                    "format": "double",
+                    "nullable": true
+                  },
+                  "ExpenditureNotToExceed": {
+                    "type": "number",
+                    "format": "double",
+                    "nullable": true
+                  },
+                  "EocApprovals.Processing.ApprovedBy": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.Processing.Position": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.Processing.ApprovalDateTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "EocApprovals.ExpenditureRequest.ApprovedBy": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.ExpenditureRequest.Position": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "The optional list of files to attach to the request.",
+                    "nullable": true
+                  }
+                }
+              },
+              "encoding": {
+                "Event": {
+                  "style": "form"
+                },
+                "DateTime": {
+                  "style": "form"
+                },
+                "EAFNo": {
+                  "style": "form"
+                },
+                "EMBCTaskNo": {
+                  "style": "form"
+                },
+                "RequestingOrg": {
+                  "style": "form"
+                },
+                "ResourceType": {
+                  "style": "form"
+                },
+                "AuthName": {
+                  "style": "form"
+                },
+                "AuthTelephone": {
+                  "style": "form"
+                },
+                "AuthEmail": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "AmountRequested": {
+                  "style": "form"
+                },
+                "ExpenditureNotToExceed": {
+                  "style": "form"
+                },
+                "EocApprovals.Processing.ApprovedBy": {
+                  "style": "form"
+                },
+                "EocApprovals.Processing.Position": {
+                  "style": "form"
+                },
+                "EocApprovals.Processing.ApprovalDateTime": {
+                  "style": "form"
+                },
+                "EocApprovals.ExpenditureRequest.ApprovedBy": {
+                  "style": "form"
+                },
+                "EocApprovals.ExpenditureRequest.Position": {
+                  "style": "form"
+                },
+                "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
+                  "style": "form"
+                },
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
     "/api/Lookup/ExpenditureAuthorizationResourceTypes": {
       "get": {
         "tags": [
@@ -86,270 +265,10 @@
           }
         }
       }
-    },
-    "/api/ResourceRequest": {
-      "post": {
-        "tags": [
-          "ResourceRequest"
-        ],
-        "summary": "Creates a Resource Request..",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "ApprovedBy": {
-                    "maxLength": 300,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ApprovedTime": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "CurrentStatus": {
-                    "maxLength": 703,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "EstimatedResourceCost": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "Mission": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "Priority": {
-                    "maxLength": 703,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ReqTrackNoEmac": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ReqTrackNoFema": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ReqTrackNoState": {
-                    "maxLength": 100,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "RequestNumber": {
-                    "maxLength": 300,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "RequestionOrg": {
-                    "maxLength": 300,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "RequestorContactInfo": {
-                    "maxLength": 1000,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ResourceCategory": {
-                    "maxLength": 300,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ResourceType": {
-                    "maxLength": 600,
-                    "minLength": 0,
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "WhenNeeded": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "Event": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "ExpenditureNotToExceed": {
-                    "type": "number",
-                    "format": "double"
-                  },
-                  "EocApprovals.Processing.ApprovedBy": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "EocApprovals.Processing.Position": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "EocApprovals.Processing.ApprovalDateTime": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "EocApprovals.ExpenditureRequest.ApprovedBy": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "EocApprovals.ExpenditureRequest.Position": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "files": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "The optional list of files to attach to the request.",
-                    "nullable": true
-                  }
-                }
-              },
-              "encoding": {
-                "ApprovedBy": {
-                  "style": "form"
-                },
-                "ApprovedTime": {
-                  "style": "form"
-                },
-                "CurrentStatus": {
-                  "style": "form"
-                },
-                "EstimatedResourceCost": {
-                  "style": "form"
-                },
-                "Mission": {
-                  "style": "form"
-                },
-                "Priority": {
-                  "style": "form"
-                },
-                "ReqTrackNoEmac": {
-                  "style": "form"
-                },
-                "ReqTrackNoFema": {
-                  "style": "form"
-                },
-                "ReqTrackNoState": {
-                  "style": "form"
-                },
-                "RequestNumber": {
-                  "style": "form"
-                },
-                "RequestionOrg": {
-                  "style": "form"
-                },
-                "RequestorContactInfo": {
-                  "style": "form"
-                },
-                "ResourceCategory": {
-                  "style": "form"
-                },
-                "ResourceType": {
-                  "style": "form"
-                },
-                "WhenNeeded": {
-                  "style": "form"
-                },
-                "Event": {
-                  "style": "form"
-                },
-                "ExpenditureNotToExceed": {
-                  "style": "form"
-                },
-                "EocApprovals.Processing.ApprovedBy": {
-                  "style": "form"
-                },
-                "EocApprovals.Processing.Position": {
-                  "style": "form"
-                },
-                "EocApprovals.Processing.ApprovalDateTime": {
-                  "style": "form"
-                },
-                "EocApprovals.ExpenditureRequest.ApprovedBy": {
-                  "style": "form"
-                },
-                "EocApprovals.ExpenditureRequest.Position": {
-                  "style": "form"
-                },
-                "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
-                  "style": "form"
-                },
-                "files": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error"
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
-      "LookupValue": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "LookupType": {
-        "enum": [
-          "PriorityResource",
-          "RequestingOrgForwardTo",
-          "ResourceCategory",
-          "ResourceType",
-          "StatusResource",
-          "UnitsOfMeasure",
-          "LeadAgencyDeptList"
-        ],
-        "type": "string"
-      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -379,6 +298,32 @@
           "type": "object",
           "additionalProperties": false
         }
+      },
+      "LookupValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LookupType": {
+        "enum": [
+          "PriorityResource",
+          "RequestingOrgForwardTo",
+          "ResourceCategory",
+          "ResourceType",
+          "StatusResource",
+          "UnitsOfMeasure",
+          "LeadAgencyDeptList"
+        ],
+        "type": "string"
       }
     }
   }

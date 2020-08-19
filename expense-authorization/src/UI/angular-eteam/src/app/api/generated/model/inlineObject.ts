@@ -12,23 +12,18 @@
 
 
 export interface InlineObject { 
-    ApprovedBy?: string | null;
-    ApprovedTime?: string;
-    CurrentStatus?: string | null;
-    EstimatedResourceCost?: number;
-    Mission?: string | null;
-    Priority?: string | null;
-    ReqTrackNoEmac?: string | null;
-    ReqTrackNoFema?: string | null;
-    ReqTrackNoState?: string | null;
-    RequestNumber?: string | null;
-    RequestionOrg?: string | null;
-    RequestorContactInfo?: string | null;
-    ResourceCategory?: string | null;
-    ResourceType?: string | null;
-    WhenNeeded?: string;
     Event?: string | null;
-    ExpenditureNotToExceed?: number;
+    DateTime?: string;
+    EAFNo?: string | null;
+    EMBCTaskNo?: string | null;
+    RequestingOrg?: string | null;
+    ResourceType?: string | null;
+    AuthName?: string | null;
+    AuthTelephone?: string | null;
+    AuthEmail?: string | null;
+    Description?: string | null;
+    AmountRequested?: number | null;
+    ExpenditureNotToExceed?: number | null;
     EocApprovals_Processing_ApprovedBy?: string | null;
     EocApprovals_Processing_Position?: string | null;
     EocApprovals_Processing_ApprovalDateTime?: string;

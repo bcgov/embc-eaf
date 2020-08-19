@@ -1,6 +1,11 @@
 <form [formGroup]="expndAuthForm" (ngSubmit)="onSubmit()">
-    <div class="container" *ngIf="submission == 'none'">
+    
+    <div class="container" *ngIf="submission == 'none' || submission == 'validationFailure'">
         <h1>Expenditure Authorization</h1>
+
+        <div class="row" *ngIf="submission == 'validationFailure'">
+            TODO: show any server validation messages
+        </div>
 
         <div class="row">
             <div class="form-group col-md">
