@@ -24,12 +24,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   files: File[] = [];
   uploadFileErrors: any;
   submission: String = "none";
-  today: Date = new Date();
+  now: number = Date.now();
 
   expndAuthForm = this.fb.group({
     expEvent: [null, Validators.required],
-    dateOfRequest: [null],
-    timeOfRequest: [null],
     eafNo: [null, Validators.required],
     embcTaskNo: [null, Validators.required],
     requestorsCommunity: ['', Validators.required],
@@ -54,8 +52,6 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   });
 
   get expEvent() { return this.expndAuthForm.get('expEvent'); }
-  get dateOfRequest() { return this.expndAuthForm.get('dateOfRequest'); }
-  get timeOfRequest() { return this.expndAuthForm.get('timeOfRequest'); }
   get eafNo() { return this.expndAuthForm.get('eafNo'); }
   get embcTaskNo() { return this.expndAuthForm.get('embcTaskNo'); }
   get requestorsCommunity() { return this.expndAuthForm.get('requestorsCommunity'); }
@@ -77,8 +73,6 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
   ngOnInit(): void {
     // the validation for these date/time fields are dependant on each other, so they are defined here instead.
-    this.dateOfRequest.setValidators([Validators.required, this.dateNotFutureValidator('timeOfRequest')]);
-    this.timeOfRequest.setValidators([Validators.required, this.timeNotFutureValidator('dateOfRequest')]);
     this.processingDate.setValidators([Validators.required, this.dateNotFutureValidator('processingTime')]);
     this.processingTime.setValidators([Validators.required, this.timeNotFutureValidator('processingDate')]);
     this.expenditureDate.setValidators([Validators.required, this.dateNotFutureValidator('expenditureTime')]);
@@ -88,6 +82,37 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       .subscribe(items => this.communities = items);
     this.lookupService.apiLookupExpenditureAuthorizationResourceTypesGet()
       .subscribe(items => this.resourceTypes = items);
+  }
+
+  /** Log a HeroService message with the MessageService */
+  private log(message: string) {
+    console.log(message);
+  }
+
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      this.submission = "failure";
+      this.log(`${operation} failed: ${error.message}`);
+      if (error.error.title) {
+        this.log(`  ${error.error.title}`);
+        for(let key in error.error.errors) {
+          let child = error.error.errors[key];
+          if (child.length > 0) {
+            console.log('  ' + child[0]);
+          }
+        }
+      }
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 
   /**
@@ -156,45 +181,15 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     return total;
   }
 
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    console.log(message);
-  }
-
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      this.submission = "failure";
-      this.log(`${operation} failed: ${error.message}`);
-      if (error.error.title) {
-        this.log(`  ${error.error.title}`);
-        for(let key in error.error.errors) {
-          let child = error.error.errors[key];
-          if (child.length > 0) {
-            console.log('  ' + child[0]);
-          }
-        }
-      }
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
   onSubmit() {
-    console.log(this.expndAuthForm.value);
+    //console.log(this.expndAuthForm.value);
 
     let expEvent = this.expEvent.value;
-    let requestDt = new Date(this.dateOfRequest.value + ' ' + this.timeOfRequest.value).toDateString();
+    let requestTs = new Date(this.now).toDateString();
     let eafNo = this.eafNo.value;
     let embcTaskNo = this.embcTaskNo.value;
     let requestorsCommunity = this.requestorsCommunity.value;
+    let resourceType = this.resourceType.value;
     let repName = this.repName.value;
     let repTelephone = this.repTelephone.value;
     let repEmail = this.repEmail.value;
@@ -203,10 +198,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     let expenditureNotToExceed = this.expenditureNotToExceed ? this.expenditureNotToExceed.value : '';
     let processingApprovedBy = this.processingApprovedBy.value;
     let processingPosition = this.processingPosition.value;
-    let processingDt = new Date(this.processingDate.value + ' ' + this.processingTime.value).toDateString();
+    let processingTs = new Date(this.processingDate.value + ' ' + this.processingTime.value).toDateString();
     let expenditureApprovedBy = this.expenditureApprovedBy.value;
     let expenditurePosition = this.expenditurePosition.value;
-    let expenditureDt = new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toDateString();
+    let expenditureTs = new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toDateString();
 
     // custom field - mission == description + amountRequested
     let mission = description + '\\n' + amountRequested;
@@ -215,13 +210,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
           'Name: ' + repName + '\\n' 
           'Telephone: ' + repTelephone + '\\n' 
           'Email: ' + repEmail;
-    let resourceType = '';
-
-    console.log(expEvent);
 
     this.resourceRequestService.apiResourceRequestPost(
         null,
-        processingDt,
+        requestTs, // approvedTime
         null, // currentStatus
         expenditureNotToExceed,
         mission,
@@ -234,15 +226,15 @@ export class ExpenditureAuthorizationComponent implements OnInit {
         requestorsContactInfo,
         null, // resourceCategory
         resourceType,
-        requestDt,
+        requestTs,
         expEvent,
         expenditureNotToExceed,
         processingApprovedBy,
         processingPosition,
-        processingDt,
+        processingTs,
         expenditureApprovedBy,
         expenditurePosition,
-        expenditureDt,
+        expenditureTs,
         this.files
       )
       .pipe(
