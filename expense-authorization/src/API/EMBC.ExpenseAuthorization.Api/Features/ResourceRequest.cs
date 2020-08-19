@@ -55,7 +55,7 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                 
                 CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
 
-                await _emailService.SendEmailAsync(response, request.Files);
+                await _emailService.SendEmailAsync(request.Request, response, request.Files);
                 
                 return new CreateResponse();
             }

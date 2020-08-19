@@ -37,44 +37,7 @@ namespace EMBC.ExpenseAuthorization.Api
         {
             var builder = Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .UseSerilog((hostingContext, loggerConfiguration) =>
-                {
-                    loggerConfiguration
-                        .ReadFrom.Configuration(hostingContext.Configuration)
-                        .Enrich.WithMachineName()
-                        .Enrich.WithProcessId()
-                        .Enrich.WithProcessName()
-                        .Enrich.FromLogContext()
-                        .Enrich.WithExceptionDetails()
-                        ;
-
-                    if (hostingContext.HostingEnvironment.IsDevelopment())
-                    {
-                        loggerConfiguration.WriteTo.Console();
-                    }
-                    else
-                    {
-                        loggerConfiguration.WriteTo.Console(formatter: new RenderedCompactJsonFormatter());
-                        var splunkUrl = hostingContext.Configuration.GetValue("SPLUNK_URL", string.Empty);
-                        var splunkToken = hostingContext.Configuration.GetValue("SPLUNK_TOKEN", string.Empty);
-                        if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
-                        {
-                            Log.Warning("Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL env vars");
-                        }
-                        else
-                        {
-                            loggerConfiguration
-                                .WriteTo.EventCollector(
-                                    splunkHost: splunkUrl,
-                                    eventCollectorToken: splunkToken,
-                                    messageHandler: new HttpClientHandler
-                                    {
-                                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                                    },
-                                    renderTemplate: false);
-                        }
-                    }
-                })
+                .UseSerilog(ConfigureSerilogLogger)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -83,7 +46,32 @@ namespace EMBC.ExpenseAuthorization.Api
 
             return builder;
         }
-         
+
+        private static void ConfigureSerilogLogger(HostBuilderContext hostingContext, LoggerConfiguration loggerConfiguration)
+        {
+            loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
+                .Enrich.WithMachineName()
+                .Enrich.WithProcessId()
+                .Enrich.WithProcessName()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails();
+
+            if (!hostingContext.HostingEnvironment.IsDevelopment())
+            {
+                var splunkUrl = hostingContext.Configuration.GetValue("SPLUNK_URL", string.Empty);
+                var splunkToken = hostingContext.Configuration.GetValue("SPLUNK_TOKEN", string.Empty);
+
+                if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
+                {
+                    Log.Warning("Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL environment variables");
+                }
+                else
+                {
+                    loggerConfiguration.WriteTo.EventCollector(splunkHost: splunkUrl, eventCollectorToken: splunkToken, messageHandler: new HttpClientHandler {ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true}, renderTemplate: false);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the main program logger used outside of the hosting service.
         /// </summary>
@@ -99,6 +87,8 @@ namespace EMBC.ExpenseAuthorization.Api
 
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
+                // main program always writes to console
+                .WriteTo.Console()
                 .CreateLogger();
 
             return logger;

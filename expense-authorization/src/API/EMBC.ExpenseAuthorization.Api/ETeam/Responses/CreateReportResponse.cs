@@ -11,7 +11,19 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
     /// </summary>
     public class CreateReportResponse : SoapResponse
     {
-        public IDictionary<string,string> Fields { get; protected set; }
+        private IDictionary<string, string> _fields;
+
+        public IDictionary<string, string> Fields
+        {
+            get
+            {
+                return _fields ??= new Dictionary<string, string>();
+            }
+            protected set
+            {
+                _fields = value;
+            }
+        }
 
         protected override void ReadElementsFromXml(XElement element)
         {

@@ -15,9 +15,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
     {
         private const string DefaultResourceCategory = "Expenditure Authorization";
         private const string DefaultCurrentStatus = "Black-New Request";
-
         private const string ExpenditureAuthorizationResourceTypePrefix = "Expenditure Authorization-";
-
 
         private readonly IETeamSoapClient _client;
         private readonly IOptions<ETeamSettings> _options;
@@ -135,14 +133,12 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
         {
             // get the defaults, we could cache this in the future
             var resourceCategories = await GetLookupAsync(LookupType.ResourceCategory);
-            //var resourceTypes = await GetLookupAsync(LookupType.ResourceType);
             var statuses = await GetLookupAsync(LookupType.StatusResource);
             var priorities = await GetLookupAsync(LookupType.PriorityResource);
 
-            resourceRequest.ResourceCategory = resourceCategories.FirstOrDefault(_ => _.Value == DefaultResourceCategory)?.Id;
-            //resourceRequest.ResourceType = resourceTypes.FirstOrDefault(_ => _.Value == DefaultResourceType)?.Id;
-            resourceRequest.CurrentStatus = statuses.FirstOrDefault(_ => _.Value == DefaultCurrentStatus)?.Id;
-            resourceRequest.Priority = priorities.FirstOrDefault(_ => _.Value == "Green-Routine")?.Id;
+            resourceRequest.ResourceCategory = resourceCategories.FirstOrDefault(_ => _.Value == DefaultResourceCategory)?.Value;
+            resourceRequest.CurrentStatus = statuses.FirstOrDefault(_ => _.Value == DefaultCurrentStatus)?.Value;
+            resourceRequest.Priority = priorities.FirstOrDefault(_ => _.Value == "Green-Routine")?.Value;
 
             if (string.IsNullOrEmpty(resourceRequest.RequestorContactInfo))
             {

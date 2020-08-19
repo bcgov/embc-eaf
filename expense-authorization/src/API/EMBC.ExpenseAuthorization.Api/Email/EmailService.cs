@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam;
+using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -16,45 +18,36 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
         public EmailService(IOptions<EmailSettings> emailOptions, IOptions<ETeamSettings> eteamOptions, IEmailSender sender)
         {
-            _emailOptions = emailOptions;
-            _eteamOptions = eteamOptions;
-            _sender = sender;
+            _emailOptions = emailOptions ?? throw new ArgumentNullException(nameof(emailOptions));
+            _eteamOptions = eteamOptions ?? throw new ArgumentNullException(nameof(eteamOptions));
+            _sender = sender ?? throw new ArgumentNullException(nameof(sender));
         }
 
-        public async Task SendEmailAsync(CreateReportResponse report, IList<IFormFile> attachments)
+        public async Task SendEmailAsync(
+            ResourceRequestModel resourceRequest, 
+            CreateReportResponse report,
+            IList<IFormFile> attachments)
         {
             EmailSettings emailSettings = _emailOptions.Value;
+            ETeamSettings eteamSettings = _eteamOptions.Value;
+
+            // create and apply data to the email template
+            string content = new EmailTemplate()
+                .Apply(resourceRequest)
+                .Apply(report, eteamSettings.Url)
+                .Content;
+
+            // based on the region, we may need to have different To addresses
 
             var message = new Message
             {
                 To = new List<MailboxAddress> { new MailboxAddress(emailSettings.From) },
                 Attachments = attachments,
-                Content = CreateEmailContent(report, attachments),
+                Content = content,
                 Subject = "E-Team Resource Request",
             };
 
             await _sender.SendEmailAsync(message);
-
-        }
-
-        private string CreateEmailContent(CreateReportResponse report, IList<IFormFile> attachments)
-        {
-            ETeamSettings eteamSettings = _eteamOptions.Value;
-
-            // https://host/instance/report/resource.do?target=read&id=id&reportType=resource_request
-            string reportUrl = eteamSettings.Url + "report/resource.do?target=read&reportType=resource_request&id" + report.Fields["id"];
-
-            string template = EmbeddedResource.Get<EmailService>("email_template.html");
-
-            template = template.Replace("{{ReportUrl}}", reportUrl);
-            template = template.Replace("{{DateOfRequest}}", string.Empty);
-            template = template.Replace("{{EAFNumber}}", string.Empty);
-            template = template.Replace("{{DescriptionOfExpenditure}}", string.Empty);
-            template = template.Replace("{{Event}}", string.Empty);
-            template = template.Replace("{{Event}}", string.Empty);
-            template = template.Replace("{{ExpenditureNotToExceed}}", string.Empty);
-
-            return template;
         }
     }
 }
