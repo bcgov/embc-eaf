@@ -8,11 +8,16 @@ services:
     ports:
       - 8080:80
     environment:
-      - ETEAM__URL=http://localhost/
-      - ETEAM__USERNAME=username
-      - ETEAM__PASSWORD=password
-      - EMAIL__ENABLED=false
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ETEAM__URL=${ETEAM__URL}
+      - ETEAM__USERNAME=${ETEAM__USERNAME}
+      - ETEAM__PASSWORD=${ETEAM__PASSWORD}
+      - EMAIL__ENABLED=${EMAIL__ENABLED}
+      - EMAIL__FROM=${EMAIL__FROM}
+      - EMAIL__SMTPSERVER=${EMAIL__SMTPSERVER}
+      - EMAIL__PORT=${EMAIL__PORT}
+      - EMAIL__USERNAME=${EMAIL__USERNAME}
+      - EMAIL__PASSWORD=${EMAIL__PASSWORD}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 
   expense-authorization-portal-ui:
     build:
