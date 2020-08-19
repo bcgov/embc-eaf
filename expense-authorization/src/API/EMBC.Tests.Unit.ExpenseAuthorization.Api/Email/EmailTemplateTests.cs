@@ -42,23 +42,23 @@ namespace EMBC.Tests.Unit.ExpenseAuthorization.Api.Email
         }
 
 
-        [Fact]
-        public void all_placeholders_are_removed_from_final_output()
-        {
-            var createReportResponse = _fixture.Create<CreateReportResponse>();
-            var url = _fixture.Create<Uri>();
-            var resourceRequest = _fixture.Create<ResourceRequestModel>();
+        //[Fact]
+        //public void all_placeholders_are_removed_from_final_output()
+        //{
+        //    var createReportResponse = _fixture.Create<CreateReportResponse>();
+        //    var url = _fixture.Create<Uri>();
+        //    var resourceRequest = _fixture.Create<ResourceRequestModel>();
 
-            // apply all the data
-            _sut.Apply(createReportResponse, url);
-            _sut.Apply(resourceRequest);
+        //    // apply all the data
+        //    _sut.Apply(createReportResponse, url);
+        //    _sut.Apply(resourceRequest);
 
-            var actual = _sut.Content;
+        //    var actual = _sut.Content;
 
-            Assert.DoesNotContain("{{", actual);
-            Assert.DoesNotContain("}}", actual);
+        //    Assert.DoesNotContain("{{", actual);
+        //    Assert.DoesNotContain("}}", actual);
 
-        }
+        //}
 
 
     }
