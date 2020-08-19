@@ -16,5 +16,6 @@ namespace EMBC.ExpenseAuthorization.Api.Models
         public string Description { get; set; }
         public decimal? AmountRequested { get; set; }
         public decimal? ExpenditureNotToExceed { get; set; }
+        public EocApprovals EocApprovals { get; set; }
     }
 }
