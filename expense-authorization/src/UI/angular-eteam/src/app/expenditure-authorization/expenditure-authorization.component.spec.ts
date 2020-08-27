@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ExpenditureAuthorizationComponent } from './expenditure-authorization.component';
 import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { LookupService, ResourceRequestService, LookupValue } from '../api/generated';
+import { LookupService, ExpenseAuthorizationService, LookupValue } from '../api/generated';
 import { of } from 'rxjs';
 
 const lookupServiceMockup = {
@@ -11,21 +11,27 @@ const lookupServiceMockup = {
       {id: '1', value: 'Community1'}
     ];
     return of(communities);
+  },
+  apiLookupExpenditureAuthorizationResourceTypesGet() {
+    const types: LookupValue[] = [
+      {id: '1', value: 'Type1'}
+    ];
+    return of(types);
   }
 };
 
 describe('ExpenditureAuthorizationComponent', () => {
   let component: ExpenditureAuthorizationComponent;
   let fixture: ComponentFixture<ExpenditureAuthorizationComponent>;
-  let spyResourceRequestService = jasmine.createSpyObj( { apiResourceRequestPost: null } );
+  let spyExpenseAuthorizationService = jasmine.createSpyObj( { apiExpenseAuthorizationPost: null } );
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExpenditureAuthorizationComponent ],
-      imports: [ ReactiveFormsModule ],
+      imports: [ ReactiveFormsModule, NgSelectModule ],
       providers: [ 
         { provide: LookupService, useValue: lookupServiceMockup }, 
-        { provide: ResourceRequestService, useValue: spyResourceRequestService }
+        { provide: ExpenseAuthorizationService, useValue: spyExpenseAuthorizationService }
       ]
     })
     .compileComponents();
@@ -58,57 +64,6 @@ describe('ExpenditureAuthorizationComponent', () => {
     evnt.setValue("Some event");
     errors = evnt.errors || {};
     expect(errors['required']).toBeFalsy();
-  });
-
-  it('dateOfRequest field validity', () => {
-    let errors = {};
-    let dateOfRequest = component.expndAuthForm.controls['dateOfRequest'];
-
-    // Date of Request field is required
-    errors = dateOfRequest.errors || {};
-    expect(errors['required']).toBeTruthy();
-
-    // Set Date of Request field to now
-    dateOfRequest.setValue(new Date().toDateString());
-    errors = dateOfRequest.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['future']).toBeFalsy();
-    
-    // Set Date of Request field to the future
-    dateOfRequest.setValue(addDays(new Date(), 1).toDateString());
-    errors = dateOfRequest.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['future']).toBeTruthy();
-  });
-
-  it('timeOfRequest field validity', () => {
-    let errors = {};
-    let timeOfRequest = component.expndAuthForm.controls['timeOfRequest'];
-    let dateOfRequest = component.expndAuthForm.controls['dateOfRequest'];
-
-    // Time of Request field is required
-    errors = timeOfRequest.errors || {};
-    expect(errors['required']).toBeTruthy();
-
-    // Set Time of Request field to noon, but leave Date of Request blank
-    timeOfRequest.setValue("12:00");
-    errors = timeOfRequest.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['future']).toBeFalsy(); // doesn't matter if actually in the future or not since date is not set
-    
-    // Set Time of Request field to noon, Date of Request to yesterday
-    dateOfRequest.setValue(addDays(new Date(), -1).toDateString());
-    timeOfRequest.setValue("12:00");
-    errors = timeOfRequest.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['future']).toBeFalsy(); // time not in future since date is yesterday
-    
-    // Set Time of Request field to noon, Date of Request to tomorrow
-    dateOfRequest.setValue(addDays(new Date(), 1).toDateString());
-    timeOfRequest.setValue("12:00");
-    errors = timeOfRequest.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['future']).toBeTruthy(); // time is in the future
   });
 
   it('eafNo field validity', () => {
