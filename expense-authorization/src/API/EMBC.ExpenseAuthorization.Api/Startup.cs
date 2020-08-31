@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -72,6 +72,9 @@ namespace EMBC.ExpenseAuthorization.Api
             services.AddMediatR(GetType().Assembly);
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailRecipientService, EmailRecipientService>();
+
+            services.AddTransient<IExpenseAuthorizationRequestMapper, ExpenseAuthorizationRequestMapper>();
 
             // enable CORS in development
             if (CurrentEnvironment.IsDevelopment())
@@ -121,6 +124,9 @@ namespace EMBC.ExpenseAuthorization.Api
             }
 
             app.UseRouting();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
             app.UseAuthorization();

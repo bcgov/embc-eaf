@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResourceRequestComponent } from './resource-request.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LookupService, ResourceRequestService } from '../api/generated';
+import { LookupService, ExpenseAuthorizationService } from '../api/generated';
 
 describe('ResourceRequestComponent', () => {
   let component: ResourceRequestComponent;
   let fixture: ComponentFixture<ResourceRequestComponent>;
   let spyLookupService = jasmine.createSpyObj( { apiLookupLookupTypeGet: null } );
-  let spyResourceRequestService = jasmine.createSpyObj( { apiResourceRequestPost: null } );
+  let spyExpenseAuthorizationService = jasmine.createSpyObj( { apiExpenseAuthorizationPost: null } );
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,7 +16,7 @@ describe('ResourceRequestComponent', () => {
       imports: [ ReactiveFormsModule ],
       providers: [ 
         { provide: LookupService, useValue: spyLookupService }, 
-        { provide: ResourceRequestService, useValue: spyResourceRequestService }
+        { provide: ExpenseAuthorizationService, useValue: spyExpenseAuthorizationService }
       ]
     })
     .compileComponents();

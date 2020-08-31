@@ -2,7 +2,7 @@
     white-space: nowrap;
 }
 
-.uploadfilecontainer {
+.fileAttachmentsContainer {
     background-image: url("../../assets/images/cloud-2044823_960_720.png");
     background-repeat: no-repeat;
     background-size: 100px;
@@ -14,13 +14,13 @@
     border-radius: 10px;
 }
 
-.uploadfilecontainer:hover {
+.fileAttachmentsContainer:hover {
     cursor: pointer;
     background-color: #9ecbec !important;
     opacity: 0.8;
 }
 
-.uploadfilecontainer-note, .uploadFileErrors {
+.fileAttachmentsContainer-note, .uploadFileErrors {
     width: 80%;
     margin: 0px auto 0px auto;
 }

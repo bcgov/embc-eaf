@@ -17,5 +17,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
         public string Password { get; set; }
 
         public string ReportTypeName { get; set; } = "resource_request";
+
+        public string Environment { get; set; }
     }
 }

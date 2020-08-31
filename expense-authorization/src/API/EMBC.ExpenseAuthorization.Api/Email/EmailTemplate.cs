@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using EMBC.ExpenseAuthorization.Api.Models;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
     public class EmailTemplate
     {
-        public const string DateFormat = "o";
+        public const string DateFormat = "MMMM dd, yyyy HH:mm";
 
         public EmailTemplate()
         {
@@ -20,26 +19,26 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         /// </summary>
         public string Content { get; private set; }
         
-        public EmailTemplate Apply(ResourceRequestModel data)
+        public EmailTemplate Apply(ExpenseAuthorizationRequest data)
         {
-            Apply(data, "ResourceRequest.");
+            Apply(data, "Request.");
             return this;
         }
 
-        public EmailTemplate Apply(CreateReportResponse data, Uri baseUri)
+        public EmailTemplate Apply(CreateReportResponse response, Uri baseUri)
         {
             var baseUrl = baseUri.ToString();
-            if (baseUrl.EndsWith("/"))
+            if (baseUrl.EndsWith("/", StringComparison.OrdinalIgnoreCase))
             {
                 baseUrl = baseUrl.TrimEnd('/');
             }
 
             string reportUrl;
 
-            if (data.Fields.ContainsKey("id"))
+            if (response.Fields.ContainsKey("id"))
             {
                 // https://host/instance/report/resource.do?target=read&id=id&reportType=resource_request
-                reportUrl = baseUrl + "/report/resource.do?target=read&reportType=resource_request&id=" + data.Fields["id"];
+                reportUrl = baseUrl + "/report/resource.do?target=read&reportType=resource_request&id=" + response.Fields["id"];
             }
             else
             {
@@ -48,7 +47,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
             }
 
             Apply(reportUrl, "Report.Url");
-            Apply(data, "ResourceRequest.");
+            Apply(response, "Response.");
             return this;
         }
 

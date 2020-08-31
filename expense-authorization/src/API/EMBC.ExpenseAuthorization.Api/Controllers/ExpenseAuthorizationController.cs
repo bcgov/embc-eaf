@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EMBC.ExpenseAuthorization.Api.ETeam.Models;
-using EMBC.ExpenseAuthorization.Api.Features;
+using EMBC.ExpenseAuthorization.Api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +11,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
     /// <summary></summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class ResourceRequestController : ControllerBase
+    public class ExpenseAuthorizationController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly ILogger _logger;
@@ -22,23 +21,23 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
         /// </summary>
         /// <param name="mediator"></param>
         /// <param name="logger"></param>
-        public ResourceRequestController(IMediator mediator, ILogger logger)
+        public ExpenseAuthorizationController(IMediator mediator, ILogger logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
-        /// Creates a Resource Request..
+        /// Creates an Expense Authorization Request.
         /// </summary>
-        /// <param name="resourceRequest">The resource request to create.</param>
+        /// <param name="request">The expense authorization request to create.</param>
         /// <param name="files">The optional list of files to attach to the request.</param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> PostAsync([FromForm]ResourceRequestModel resourceRequest, [FromForm] IFormFileCollection files)
+        public async Task<IActionResult> PostAsync([FromForm] ExpenseAuthorizationRequest request, [FromForm] IFormFileCollection files)
         {
             // By annotating the controller with ApiControllerAttribute,
             // the ModelStateInvalidFilter will automatically check ModelState.IsValid
@@ -46,20 +45,30 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
 
             try
             {
-                var command = new ResourceRequest.CreateCommand(resourceRequest, files);
-                ResourceRequest.CreateResponse response = await _mediator.Send(command);
-                
+                var command = new Features.ExpenseAuthorization.CreateCommand(request, files);
+                var response = await _mediator.Send(command);
+
+                if (response.Exception != null)
+                {
+                    return GetProblemResult(response.Exception);
+                }
+
                 return Ok();
             }
             catch (Exception e)
             {
-                // create an error instance id to correlate the log error message with the problem details returned to 
-                // caller
-                var errorInstanceId = Guid.NewGuid().ToString("d");
-
-                _logger.Warning(e, "An error occured while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
-                return Problem(e.Message, errorInstanceId);
+                return GetProblemResult(e);
             }
+        }
+
+        private ObjectResult GetProblemResult(Exception e)
+        {
+            // create an error instance id to correlate the log error message with the problem details returned to 
+            // caller
+            var errorInstanceId = Guid.NewGuid().ToString("d");
+
+            _logger.Warning(e, "An error occured while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
+            return Problem(e.Message, errorInstanceId);
         }
     }
 }

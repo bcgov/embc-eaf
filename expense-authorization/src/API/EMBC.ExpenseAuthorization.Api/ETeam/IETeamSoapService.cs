@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
+using EMBC.ExpenseAuthorization.Api.Models;
 using Refit;
 
 namespace EMBC.ExpenseAuthorization.Api.ETeam
@@ -15,7 +15,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
         /// <summary>
         /// Creates a resource request report.
         /// </summary>
-        /// <param name="resourceRequest">The resource request.</param>
-        Task<CreateReportResponse> CreateReportAsync(ResourceRequestModel resourceRequest);
+        /// <param name="expenseAuthorizationRequest">The expense authorization request.</param>
+        Task<CreateReportResponse> CreateReportAsync(ExpenseAuthorizationRequest expenseAuthorizationRequest);
     }
 }
