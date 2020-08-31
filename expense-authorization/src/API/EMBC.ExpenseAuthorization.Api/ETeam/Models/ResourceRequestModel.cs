@@ -74,13 +74,6 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Models
         ////[Range(0, int.MaxValue)]
         ////public int Quantity { get; set; } = 1;
         #endregion
-
-        #region Extra Fields Not Sent to ETeam
-        public string Event { get; set; }
-        public decimal ExpenditureNotToExceed { get; set; }
-
-        //public EocApprovals EocApprovals { get; set; }
-        #endregion
     }
 
 }

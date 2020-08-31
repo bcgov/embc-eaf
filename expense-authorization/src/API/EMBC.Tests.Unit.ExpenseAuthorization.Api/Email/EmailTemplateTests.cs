@@ -3,24 +3,56 @@ using AutoFixture;
 using EMBC.ExpenseAuthorization.Api.Email;
 using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
+using EMBC.ExpenseAuthorization.Api.Models;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace EMBC.Tests.Unit.ExpenseAuthorization.Api.Email
 {
     public class EmailTemplateTests
     {
+        private readonly ITestOutputHelper _output;
         private readonly EmailTemplate _sut = new EmailTemplate();
         private readonly Fixture _fixture = new Fixture();
-        
+
+        public EmailTemplateTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void can_apply_resource_request_to_template()
         {
-            var resourceRequest = _fixture.Create<ResourceRequestModel>();
+            var request = _fixture.Create<ExpenseAuthorizationRequest>();
 
-            _sut.Apply(resourceRequest);
+            _sut.Apply(request);
             var actual = _sut.Content;
 
-            Assert.Contains(resourceRequest.ApprovedTime.ToString(EmailTemplate.DateFormat), actual);
+            _output.WriteLine(actual);
+
+            Assert.Contains(request.Event, actual);
+            Assert.Contains(request.DateTime.ToString(EmailTemplate.DateFormat), actual);
+            Assert.Contains(request.EAFNo, actual);
+            Assert.Contains(request.EMBCTaskNo, actual);
+            Assert.Contains(request.RequestingOrg, actual);
+            Assert.Contains(request.ResourceType, actual);
+
+            Assert.Contains(request.AuthName, actual);
+            Assert.Contains(request.AuthTelephone, actual);
+            Assert.Contains(request.AuthEmail, actual);
+
+            Assert.Contains(request.Description, actual);
+
+            Assert.Contains(request.AmountRequested.ToString(), actual);
+            Assert.Contains(request.ExpenditureNotToExceed.ToString(), actual);
+
+            Assert.Contains(request.EocApprovals.Processing.ApprovedBy, actual);
+            Assert.Contains(request.EocApprovals.Processing.Position, actual);
+            Assert.Contains(request.EocApprovals.Processing.ApprovalDateTime.ToString(EmailTemplate.DateFormat), actual);
+
+            Assert.Contains(request.EocApprovals.ExpenditureRequest.ApprovedBy, actual);
+            Assert.Contains(request.EocApprovals.ExpenditureRequest.Position, actual);
+            Assert.Contains(request.EocApprovals.ExpenditureRequest.ApprovalDateTime.ToString(EmailTemplate.DateFormat), actual);
         }
 
 

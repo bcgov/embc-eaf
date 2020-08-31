@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using Microsoft.AspNetCore.Mvc;
@@ -85,7 +86,17 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
 
             try
             {
-                var values = await _service.GetLookupAsync(lookupType);
+                IList<LookupValue> values = await _service.GetLookupAsync(lookupType);
+
+                if (lookupType == LookupType.LeadAgencyDeptList)
+                {
+                    // LeadAgencyDeptList requires just values and not internal id
+                    foreach (var value in values)
+                    {
+                        value.Id = value.Value;
+                    }
+                }
+
                 return Ok(values);
             }
             catch (Refit.ApiException exception)
@@ -94,9 +105,10 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
                 // caller
                 var errorInstanceId = Guid.NewGuid().ToString("d");
 
-                _logger.LogWarning(exception, "Error getting lookup values for {LookupType}, Error Message: {ErrorResponse}, Status Code = {HttpStatusCode}, Error Id: {ErrorInstanceId}",
+                _logger.LogWarning(exception,
+                    "Error getting lookup values for {LookupType}, Error Message: {ErrorResponse}, Status Code = {HttpStatusCode}, Error Id: {ErrorInstanceId}",
                     lookupType,
-                    exception.Content, 
+                    exception.Content,
                     exception.StatusCode,
                     errorInstanceId);
 
@@ -105,6 +117,27 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
                     Detail = "E-Teams web service was not successful",
                     Instance = errorInstanceId,
                     Status = (int)exception.StatusCode
+                };
+
+                // throw the error to the caller
+                return StatusCode(500, problem);
+            }
+            catch (Exception exception)
+            {
+                // create an error instance id to correlate the log error message with the problem details returned to 
+                // caller
+                var errorInstanceId = Guid.NewGuid().ToString("d");
+
+                _logger.LogWarning(exception,
+                    "Error getting lookup values for {LookupType}, Error Id: {ErrorInstanceId}",
+                    lookupType,
+                    errorInstanceId);
+
+                var problem = new ProblemDetails
+                {
+                    Detail = "E-Teams web service was not successful",
+                    Instance = errorInstanceId,
+                    Status = 500
                 };
 
                 // throw the error to the caller

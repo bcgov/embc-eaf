@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 
 namespace EMBC.ExpenseAuthorization.Api
 {
@@ -14,7 +13,7 @@ namespace EMBC.ExpenseAuthorization.Api
     {
         public static int Main(string[] args)
         {
-            var logger = GetProgramLogger();
+            var logger = GetProgramLogger(args);
 
             try
             {
@@ -38,11 +37,7 @@ namespace EMBC.ExpenseAuthorization.Api
             var builder = Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog(ConfigureSerilogLogger)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    SetupConfigurationSources(config, hostingContext.HostingEnvironment);
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 
             return builder;
         }
@@ -56,19 +51,22 @@ namespace EMBC.ExpenseAuthorization.Api
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails();
 
-            if (!hostingContext.HostingEnvironment.IsDevelopment())
-            {
-                var splunkUrl = hostingContext.Configuration.GetValue("SPLUNK_URL", string.Empty);
-                var splunkToken = hostingContext.Configuration.GetValue("SPLUNK_TOKEN", string.Empty);
+            // check for splunk configuration
+            var splunkUrl = hostingContext.Configuration.GetValue("SPLUNK_URL", string.Empty);
+            var splunkToken = hostingContext.Configuration.GetValue("SPLUNK_TOKEN", string.Empty);
 
-                if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
-                {
-                    Log.Warning("Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL environment variables");
-                }
-                else
-                {
-                    loggerConfiguration.WriteTo.EventCollector(splunkHost: splunkUrl, eventCollectorToken: splunkToken, messageHandler: new HttpClientHandler {ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true}, renderTemplate: false);
-                }
+            if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
+            {
+                Log.Warning("Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL environment variables");
+            }
+            else
+            {
+                loggerConfiguration
+                    .WriteTo.EventCollector(
+                        splunkHost: splunkUrl,
+                        eventCollectorToken: splunkToken,
+                        messageHandler: new HttpClientHandler { ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true },
+                        renderTemplate: false);
             }
         }
 
@@ -76,59 +74,50 @@ namespace EMBC.ExpenseAuthorization.Api
         /// Gets the main program logger used outside of the hosting service.
         /// </summary>
         /// <returns></returns>
-        private static ILogger GetProgramLogger()
+        private static ILogger GetProgramLogger(string[] args)
         {
-            var configurationBuilder = new ConfigurationBuilder();
+            // configure the program logger in the same way as CreateDefaultBuilder does
+            string environmentName = GetEnvironmentName();
 
-            // we dont know the environment yet, so pass null
-            SetupConfigurationSources(configurationBuilder, env: null);
+            bool IsDevelopment()
+            {
+                return string.Equals(environmentName, Environments.Development, StringComparison.OrdinalIgnoreCase);
+            }
+
+            string GetEnvironmentName()
+            {
+                string name = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = Environments.Production;
+                }
+
+                return name;
+            }
+
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true);
+
+            if (IsDevelopment())
+            {
+                configurationBuilder.AddUserSecrets(typeof(Program).Assembly, optional: true);
+            }
+
+            configurationBuilder.AddEnvironmentVariables();
+
+            if (args != null)
+            {
+                configurationBuilder.AddCommandLine(args);
+            }
 
             var configuration = configurationBuilder.Build();
 
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
-                // main program always writes to console
-                .WriteTo.Console()
                 .CreateLogger();
 
             return logger;
-        }
-
-
-        private static void SetupConfigurationSources(IConfigurationBuilder configurationBuilder, IHostEnvironment env)
-        {
-            // Added before AddUserSecrets to let user secrets override environment variables.
-
-            configurationBuilder.AddJsonFile("appsettings.json");
-
-            if (env != null)
-            {
-                configurationBuilder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            }
-
-            configurationBuilder.AddEnvironmentVariables();
-
-#if DEBUG
-            try
-            {
-                // only use User Secrets in development
-
-                // User secrets override all other settings
-                configurationBuilder.AddUserSecrets(typeof(Program).Assembly, optional: true);
-            }
-            catch (InvalidOperationException)
-            {
-                // InvalidOperationException can be thrown by AddUserSecrets if the secret id exists but 
-                // the framework can not determine an appropriate location for storing user secrets. It uses
-                // the following environment variables / folders in this order
-                //
-                // APPDATA
-                // HOME
-                // SpecialFolder.ApplicationData
-                // SpecialFolder.UserProfile
-                // DOTNET_USER_SECRETS_FALLBACK_DIR
-            }
-#endif
         }
     }
 }

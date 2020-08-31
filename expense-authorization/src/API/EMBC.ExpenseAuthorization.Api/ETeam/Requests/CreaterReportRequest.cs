@@ -6,9 +6,9 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Requests
 {
     public class CreaterReportRequest : SoapRequest
     {
-        private readonly Dictionary<string, string> _items;
+        private readonly IDictionary<string, string> _items;
 
-        public CreaterReportRequest(Dictionary<string,string> items)
+        public CreaterReportRequest(IDictionary<string,string> items)
         {
             _items = items ?? throw new ArgumentNullException(nameof(items));
         }

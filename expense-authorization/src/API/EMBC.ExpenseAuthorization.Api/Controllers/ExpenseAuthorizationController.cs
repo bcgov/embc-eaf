@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EMBC.ExpenseAuthorization.Api.Features;
 using EMBC.ExpenseAuthorization.Api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -46,20 +45,30 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
 
             try
             {
-                //var command = new ResourceRequest.CreateCommand(resourceRequest, files);
-                //ResourceRequest.CreateResponse response = await _mediator.Send(command);
-                
+                var command = new Features.ExpenseAuthorization.CreateCommand(request, files);
+                var response = await _mediator.Send(command);
+
+                if (response.Exception != null)
+                {
+                    return GetProblemResult(response.Exception);
+                }
+
                 return Ok();
             }
             catch (Exception e)
             {
-                // create an error instance id to correlate the log error message with the problem details returned to 
-                // caller
-                var errorInstanceId = Guid.NewGuid().ToString("d");
-
-                _logger.Warning(e, "An error occured while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
-                return Problem(e.Message, errorInstanceId);
+                return GetProblemResult(e);
             }
+        }
+
+        private ObjectResult GetProblemResult(Exception e)
+        {
+            // create an error instance id to correlate the log error message with the problem details returned to 
+            // caller
+            var errorInstanceId = Guid.NewGuid().ToString("d");
+
+            _logger.Warning(e, "An error occured while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
+            return Problem(e.Message, errorInstanceId);
         }
     }
 }
