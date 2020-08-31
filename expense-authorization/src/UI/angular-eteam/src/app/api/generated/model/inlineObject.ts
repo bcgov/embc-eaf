@@ -12,34 +12,24 @@
 
 
 export interface InlineObject { 
-    ApprovedBy?: string | null;
-    ApprovedTime?: string;
-    CurrentStatus: string;
-    EstimatedResourceCost?: number;
-    Mission?: string | null;
-    MustComeWithFuel?: string | null;
-    MustComeWithLodging?: string | null;
-    MustComeWithMaint?: string | null;
-    MustComeWithMeals?: string | null;
-    MustComeWithOperator?: string | null;
-    MustComeWithOther?: string | null;
-    MustComeWithPower?: string | null;
-    MustComeWithWater?: string | null;
-    Priority?: string | null;
-    QtyUnitOfMeasurement?: string | null;
-    Quantity: number;
-    ReqTrackNoEmac?: string | null;
-    ReqTrackNoFema?: string | null;
-    ReqTrackNoState?: string | null;
-    RequestNumber?: string | null;
-    RequestionOrg?: string | null;
-    RequestorContactInfo?: string | null;
-    ResourceCategory?: string | null;
-    ResourceType: string;
-    ResourceTypeTemp?: string | null;
-    SpecialInstructions?: string | null;
-    SummaryOfActionsTaken?: string | null;
-    WhenNeeded?: string;
+    Event?: string | null;
+    DateTime?: string;
+    EAFNo?: string | null;
+    EMBCTaskNo?: string | null;
+    RequestingOrg?: string | null;
+    ResourceType?: string | null;
+    AuthName?: string | null;
+    AuthTelephone?: string | null;
+    AuthEmail?: string | null;
+    Description?: string | null;
+    AmountRequested?: number | null;
+    ExpenditureNotToExceed?: number | null;
+    EocApprovals_Processing_ApprovedBy?: string | null;
+    EocApprovals_Processing_Position?: string | null;
+    EocApprovals_Processing_ApprovalDateTime?: string;
+    EocApprovals_ExpenditureRequest_ApprovedBy?: string | null;
+    EocApprovals_ExpenditureRequest_Position?: string | null;
+    EocApprovals_ExpenditureRequest_ApprovalDateTime?: string;
     /**
      * The optional list of files to attach to the request.
      */

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { LookupService } from '../api/generated/api/lookup.service'
-import { ResourceRequestService, LookupType, LookupValue } from '../api/generated';
+import { ExpenseAuthorizationService, LookupType, LookupValue } from '../api/generated';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -17,21 +17,21 @@ import { catchError } from 'rxjs/operators';
 })
 export class ExpenditureAuthorizationComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private lookupService: LookupService, private resourceRequestService: ResourceRequestService) { }
+  constructor(private fb: FormBuilder, private lookupService: LookupService, private expenseAuthorizationService: ExpenseAuthorizationService) { }
 
   communities: LookupValue[];
+  resourceTypes: LookupValue[];
   files: File[] = [];
   uploadFileErrors: any;
   submission: String = "none";
-  today: Date = new Date();
+  now: number = Date.now();
 
   expndAuthForm = this.fb.group({
     expEvent: [null, Validators.required],
-    dateOfRequest: [null],
-    timeOfRequest: [null],
     eafNo: [null, Validators.required],
     embcTaskNo: [null, Validators.required],
     requestorsCommunity: ['', Validators.required],
+    resourceType: ['', Validators.required],
     repName: [null, Validators.required],
     repTelephone: [null, [Validators.required, Validators.pattern("^\\d{3}([\\.\\- ]?)\\d{3}\\1\\d{4}$")]],
     repEmail: [null, [Validators.required, Validators.pattern("^[^@]{1,64}@[^_@]+$")]],
@@ -52,11 +52,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   });
 
   get expEvent() { return this.expndAuthForm.get('expEvent'); }
-  get dateOfRequest() { return this.expndAuthForm.get('dateOfRequest'); }
-  get timeOfRequest() { return this.expndAuthForm.get('timeOfRequest'); }
   get eafNo() { return this.expndAuthForm.get('eafNo'); }
   get embcTaskNo() { return this.expndAuthForm.get('embcTaskNo'); }
   get requestorsCommunity() { return this.expndAuthForm.get('requestorsCommunity'); }
+  get resourceType() { return this.expndAuthForm.get('resourceType'); }
   get repName() { return this.expndAuthForm.get('repName'); }
   get repTelephone() { return this.expndAuthForm.get('repTelephone'); }
   get repEmail() { return this.expndAuthForm.get('repEmail'); }
@@ -74,8 +73,6 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
   ngOnInit(): void {
     // the validation for these date/time fields are dependant on each other, so they are defined here instead.
-    this.dateOfRequest.setValidators([Validators.required, this.dateNotFutureValidator('timeOfRequest')]);
-    this.timeOfRequest.setValidators([Validators.required, this.timeNotFutureValidator('dateOfRequest')]);
     this.processingDate.setValidators([Validators.required, this.dateNotFutureValidator('processingTime')]);
     this.processingTime.setValidators([Validators.required, this.timeNotFutureValidator('processingDate')]);
     this.expenditureDate.setValidators([Validators.required, this.dateNotFutureValidator('expenditureTime')]);
@@ -83,6 +80,8 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
     this.lookupService.apiLookupLookupTypeGet(LookupType.LeadAgencyDeptList)
       .subscribe(items => this.communities = items);
+    this.lookupService.apiLookupExpenditureAuthorizationResourceTypesGet()
+      .subscribe(items => this.resourceTypes = items);
   }
 
   /**
@@ -117,8 +116,9 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     };
   }
 
-  uploadFile(event: File[]) {
-    let totalFileSize = this.totalFileSize();
+  /** Adds an attachment to the files list.  Logs an error if wrong file type or too large (sum of all attachments must be <5MB) */
+  addAttachment(event: File[]) {
+    let totalFileSize = this.totalFileSizeSum();
     this.uploadFileErrors = "";
     for (let i = 0; i < event.length; i++) {
       const file = event[i];
@@ -138,12 +138,14 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     }
   }
   
-  deleteAttachment(index: any) {
+  /** Removes the indexed file from the files list. */
+  deleteAttachment(index: number) {
     this.uploadFileErrors = "";
     this.files.splice(index, 1);
   }
 
-  totalFileSize() {
+  /** Returns the sum of all the file sizes. */
+  totalFileSizeSum() {
     let total = 0;
     for (let i = 0; i < this.files.length; i++) {
       total = total + this.files[i].size;
@@ -151,45 +153,16 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     return total;
   }
 
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    console.log(message);
-  }
-
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      this.submission = "failure";
-      this.log(`${operation} failed: ${error.message}`);
-      if (error.error.title) {
-        this.log(`  ${error.error.title}`);
-        for(let key in error.error.errors) {
-          let child = error.error.errors[key];
-          if (child.length > 0) {
-            console.log('  ' + child[0]);
-          }
-        }
-      }
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
+  /** Main submit method.  Called when Submit is clicked. */
   onSubmit() {
-    console.log(this.expndAuthForm.value);
+    this.log(this.expndAuthForm.value);
 
     let expEvent = this.expEvent.value;
-    let requestDt = new Date(this.dateOfRequest.value + ' ' + this.timeOfRequest.value).toDateString();
+    let requestTs = new Date(this.now).toISOString();
     let eafNo = this.eafNo.value;
     let embcTaskNo = this.embcTaskNo.value;
     let requestorsCommunity = this.requestorsCommunity.value;
+    let resourceType = this.resourceType.value;
     let repName = this.repName.value;
     let repTelephone = this.repTelephone.value;
     let repEmail = this.repEmail.value;
@@ -198,46 +171,159 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     let expenditureNotToExceed = this.expenditureNotToExceed ? this.expenditureNotToExceed.value : '';
     let processingApprovedBy = this.processingApprovedBy.value;
     let processingPosition = this.processingPosition.value;
-    let processingDt = new Date(this.processingDate.value + ' ' + this.processingTime.value).toDateString();
+    let processingTs = (this.processingDate.value && this.processingTime.value) ? new Date(this.processingDate.value + ' ' + this.processingTime.value).toISOString() : null;
     let expenditureApprovedBy = this.expenditureApprovedBy.value;
     let expenditurePosition = this.expenditurePosition.value;
-    let expenditureDt = new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toDateString();
+    let expenditureTs = (this.expenditureDate.value && this.expenditureTime.value) ? new Date(this.expenditureDate.value + ' ' + this.expenditureTime.value).toISOString() : null;
 
-    console.log(expEvent);
-
-    this.resourceRequestService.apiResourceRequestPost(
-        'currentStatusStr',
-        0,
-        'resourceTypeStr',
-        processingApprovedBy,
-        processingDt,
-        amountRequested,
-        description,
-        '', '', '', '', '', '', '', '', 
-        'priorityStr',
-        'qtyStr',
-        embcTaskNo,
-        '',
-        '',
-        eafNo,
-        requestorsCommunity,
-        '',
-        'resourceCat',
-        '',
-        '',
-        '',
-        new Date().toDateString(),
+    this.expenseAuthorizationService.apiExpenseAuthorizationPost(
+        expEvent,     // Event
+        requestTs,    // DateTime
+        eafNo,        // EAF #
+        embcTaskNo,   // EMBC Task #
+        requestorsCommunity, // Requesting Community
+        resourceType, // Resource Type
+        repName,      // Authorized Representative Name
+        repTelephone, // Authorized Representative Telephone
+        repEmail,     // Authorized Representative Email
+        description,  // Description
+        amountRequested, // Amount Requested
+        expenditureNotToExceed, // Expenditure Not To Exceed
+        processingApprovedBy, // Approved for Processing By
+        processingPosition, // Approved Position
+        processingTs, // // Approved DateTime
+        expenditureApprovedBy, // Expenditure Approved By
+        expenditurePosition, // Expenditure Position
+        expenditureTs, // Expenditure DateTime
         this.files
       )
       .pipe(
         catchError(this.handleError('API post'))
       )
       .subscribe(() => {
-        if (this.submission != "failure") {
+        if (this.submission != "failure" && this.submission != "validationFailure") {
           this.submission = "success";
-          console.log('apiResourceRequestPost returned');
+          this.log('apiResourceRequestPost returned');
         }
       });
   }
 
+  /** Log a message to the console. */
+  private log(message: string) {
+    // for debugging
+    // console.log(message);
+  }
+
+  /**
+   * Handle Http operation that failed.  Scans the errors for relevent validation errors if any.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      if (error.status == 400 && error.error.title == 'One or more validation errors occurred.') {
+        // Server validation error (the UI protects against this with it's own validation so this should never happen)
+        // But if we are here then there is a decrepency between the UI and server validation checks.
+        this.log(`  ${error.error.title}`);
+        for(let key in error.error.errors) {
+          let errors = error.error.errors[key];
+          if (errors.length > 0) {
+            this.submission = "validationFailure";
+            if (key === 'event') {
+              this.expEvent.markAsDirty();
+              this.expEvent.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eAFNo') {
+              this.eafNo.markAsDirty();
+              this.eafNo.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eMBCTaskNo') {
+              this.embcTaskNo.markAsDirty();
+              this.embcTaskNo.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'requestingOrg') {
+              this.requestorsCommunity.markAsDirty();
+              this.requestorsCommunity.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'resourceType') {
+              this.resourceType.markAsDirty();
+              this.resourceType.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'authName') {
+              this.repName.markAsDirty();
+              this.repName.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'authTelephone') {
+              this.repTelephone.markAsDirty();
+              this.repTelephone.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'authEmail') {
+              this.repEmail.markAsDirty();
+              this.repEmail.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'description') {
+              this.description.markAsDirty();
+              this.description.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'amountRequested') {
+              this.amountRequested.markAsDirty();
+              this.amountRequested.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'expenditureNotToExceed') {
+              this.expenditureNotToExceed.markAsDirty();
+              this.expenditureNotToExceed.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eocApprovals.Processing.ApprovedBy') {
+              this.processingApprovedBy.markAsDirty();
+              this.processingApprovedBy.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eocApprovals.Processing.Position') {
+              this.processingPosition.markAsDirty();
+              this.processingPosition.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eocApprovals.Processing.ApprovalDateTime') {
+              this.processingDate.markAsDirty();
+              this.processingDate.setErrors({ fromServer: errors[0]});
+              this.processingTime.markAsDirty();
+              this.processingTime.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eocApprovals.ExpenditureRequest.ApprovedBy') {
+              this.expenditureApprovedBy.markAsDirty();
+              this.expenditureApprovedBy.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eocApprovals.ExpenditureRequest.Position') {
+              this.expenditurePosition.markAsDirty();
+              this.expenditurePosition.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'eocApprovals.ExpenditureRequest.ApprovalDateTime') {
+              this.expenditureDate.markAsDirty();
+              this.expenditureDate.setErrors({ fromServer: errors[0]});
+              this.expenditureTime.markAsDirty();
+              this.expenditureTime.setErrors({ fromServer: errors[0]});
+            }
+            else if (key === 'files') {
+              this.uploadFileErrors = errors[0];
+            }
+            this.log('  ' + errors[0]);
+          }
+        }
+        // if not a field validation error, then some other unknown error occurred.
+        if (this.submission != "validationFailure") {
+          this.submission = "failure";
+          this.log(`${operation} failed: ${error.message}`);
+        }
+      }
+      else {        
+        // Not server validation error, but some other unknown internal server error.
+        // Display 'try again later' section.
+        this.submission = "failure";
+        this.log(`${operation} failed: ${error.message}`);
+      }
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
 }

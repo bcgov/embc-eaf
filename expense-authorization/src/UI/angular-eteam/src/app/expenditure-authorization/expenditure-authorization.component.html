@@ -1,4 +1,5 @@
 <form [formGroup]="expndAuthForm" (ngSubmit)="onSubmit()">
+    
     <div class="container" *ngIf="submission == 'none'">
         <h1>Expenditure Authorization</h1>
 
@@ -7,20 +8,17 @@
                 <label class="control-label" for="expEvent">* Event</label>
                 <input class="form-control" id="expEvent" type="text" formControlName="expEvent">
                 <div class="ng-invalid-feedback" *ngIf="expEvent.touched && expEvent.errors && expEvent.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="expEvent.errors && expEvent.errors.fromServer">{{ expEvent.errors.fromServer }}</div>
             </div>
 
-            <div class="form-group col-sm-6 col-md-4 col-lg-3">
-                <label class="control-label" for="dateOfRequest">* Date of Request</label>
-                <input class="form-control" id="dateOfRequest" type="date" formControlName="dateOfRequest">
-                <div class="ng-invalid-feedback" *ngIf="dateOfRequest.touched && dateOfRequest.errors && dateOfRequest.errors.required">This field is required</div>
-                <div class="ng-invalid-feedback" *ngIf="dateOfRequest.touched && dateOfRequest.errors && dateOfRequest.errors.future">Cannot be a future date</div>
+            <div class="form-group col-sm-3 col-md-2">
+                <label class="control-label">Date</label>
+                <div>{{ now | date:'yyyy-MM-dd' }}</div>                 
             </div>
 
-            <div class="form-group col-sm-6 col-md-3 col-lg-2">
-                <label class="control-label" for="timeOfRequest">* Time of Request</label>
-                <input class="form-control" id="timeOfRequest" type="time" formControlName="timeOfRequest">
-                <div class="ng-invalid-feedback" *ngIf="timeOfRequest.touched && timeOfRequest.errors && timeOfRequest.errors.required">This field is required</div>
-                <div class="ng-invalid-feedback" *ngIf="timeOfRequest.touched && timeOfRequest.errors && timeOfRequest.errors.future">Cannot be a future time</div>
+            <div class="form-group col-sm-3 col-md-2">
+                <label class="control-label">Time</label>
+                <div>{{ now | date:'shortTime' }} </div>
             </div>
         </div>
 
@@ -29,11 +27,13 @@
                 <label class="control-label" for="eafNo">* EAF#</label>
                 <input class="form-control" id="eafNo" type="text" formControlName="eafNo">
                 <div class="ng-invalid-feedback" *ngIf="eafNo.touched && eafNo.errors && eafNo.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="eafNo.errors && eafNo.errors.fromServer">{{ eafNo.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-8 col-md-6 col-lg-4">
                 <label class="control-label" for="embcTaskNo">* EMBC Task #</label>
                 <input class="form-control" id="embcTaskNo" type="text" formControlName="embcTaskNo">
                 <div class="ng-invalid-feedback" *ngIf="embcTaskNo.touched && embcTaskNo.errors && embcTaskNo.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="embcTaskNo.errors && embcTaskNo.errors.fromServer">{{ embcTaskNo.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -48,6 +48,19 @@
                            formControlName="requestorsCommunity">
                 </ng-select>
                 <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.touched && requestorsCommunity.errors && requestorsCommunity.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="requestorsCommunity.errors && requestorsCommunity.errors.fromServer">{{ requestorsCommunity.errors.fromServer }}</div>
+            </div>
+            <div class="form-group col-lg col-md-9">
+                <label class="control-label" for="resourceType">* Resource Type</label>
+                <ng-select labelForId="resourceType"
+                           [items]="resourceTypes"
+                           bindLabel="value"
+                           bindValue="id"
+                           ngDefaultControl 
+                           formControlName="resourceType">
+                </ng-select>
+                <div class="ng-invalid-feedback" *ngIf="resourceType.touched && resourceType.errors && resourceType.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="resourceType.errors && resourceType.errors.fromServer">{{ resourceType.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -59,18 +72,21 @@
                 <label class="control-label" for="repName">* Name</label>
                 <input class="form-control" id="repName" type="text" formControlName="repName">
                 <div class="ng-invalid-feedback" *ngIf="repName.touched && repName.errors && repName.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="repName.errors && repName.errors.fromServer">{{ repName.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-md-3">
                 <label class="control-label" for="repTelephone">* Telephone</label>
                 <input class="form-control" id="repTelephone" type="tel" formControlName="repTelephone" placeholder="555-555-5555">
                 <div class="ng-invalid-feedback" *ngIf="repTelephone.touched && repTelephone.errors && repTelephone.errors.required">This field is required</div>
                 <div class="ng-invalid-feedback" *ngIf="repTelephone.touched && repTelephone.errors && repTelephone.errors.pattern">Must be of the form: 555-555-5555</div>
+                <div class="ng-invalid-feedback" *ngIf="repTelephone.errors && repTelephone.errors.fromServer">{{ repTelephone.errors.fromServer }}</div>
             </div>
             <div class="form-group col-md">
                 <label class="control-label" for="repEmail">* Email</label>
                 <input class="form-control" id="repEmail" type="email" formControlName="repEmail" placeholder="name@domain">
                 <div class="ng-invalid-feedback" *ngIf="repEmail.touched && repEmail.errors && repEmail.errors.required">This field is required</div>
                 <div class="ng-invalid-feedback" *ngIf="repEmail.touched && repEmail.errors && repEmail.errors.pattern">Must be of the form: name@domain</div>
+                <div class="ng-invalid-feedback" *ngIf="repEmail.errors && repEmail.errors.fromServer">{{ repEmail.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -83,6 +99,7 @@
                         outcome, location, date/time planned…)</small></div>
                 <textarea class="form-control" id="description" type="text" formControlName="description" rows="5"></textarea>
                 <div class="ng-invalid-feedback" *ngIf="description.touched && description.errors && description.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="description.errors && description.errors.fromServer">{{ description.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -92,10 +109,12 @@
                 <input class="form-control" id="amountRequested" type="text" formControlName="amountRequested" placeholder="$0.00">
                 <div class="ng-invalid-feedback" *ngIf="amountRequested.touched && amountRequested.errors && amountRequested.errors.required">This field is required</div>
                 <div class="ng-invalid-feedback" *ngIf="amountRequested.touched && amountRequested.errors && amountRequested.errors.pattern">Must be a valid currency amount.</div>
+                <div class="ng-invalid-feedback" *ngIf="amountRequested.errors && amountRequested.errors.fromServer">{{ amountRequested.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-md-5 col-lg-4 col-xl-3">
                 <label class="control-label" for="expenditureNotToExceed">Expenditure Not to Exceed</label>
-                <input class="form-control" id="expenditureNotToExceed" type="text" formControlName="expenditureNotToExceed">
+                <input class="form-control" id="expenditureNotToExceed" type="text" formControlName="expenditureNotToExceed" placeholder="$0.00">
+                <div class="ng-invalid-feedback" *ngIf="expenditureNotToExceed.errors && expenditureNotToExceed.errors.fromServer">{{ expenditureNotToExceed.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -107,21 +126,25 @@
                 <label class="control-label" for="processingApprovedBy">* Approved for Processing by</label>
                 <input class="form-control" id="processingApprovedBy" type="text" formControlName="processingApprovedBy">
                 <div class="ng-invalid-feedback" *ngIf="processingApprovedBy.touched && processingApprovedBy.errors && processingApprovedBy.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="processingApprovedBy.errors && processingApprovedBy.errors.fromServer">{{ processingApprovedBy.errors.fromServer }}</div>
             </div>
             <div class="form-group col-md-5 col-lg-3">
                 <label class="control-label" for="processingPosition">* Position</label>
                 <input class="form-control" id="processingPosition" type="text" formControlName="processingPosition">
                 <div class="ng-invalid-feedback" *ngIf="processingPosition.touched && processingPosition.errors && processingPosition.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="processingPosition.errors && processingPosition.errors.fromServer">{{ processingPosition.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-lg-3">
                 <label class="control-label" for="processingDate">* Date</label>
                 <input class="form-control" id="processingDate" type="date" formControlName="processingDate">
                 <div class="ng-invalid-feedback" *ngIf="processingDate.touched && processingDate.errors && processingDate.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="processingDate.errors && processingDate.errors.fromServer">{{ processingDate.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-lg-2">
                 <label class="control-label" for="processingTime">* Time</label>
                 <input class="form-control" id="processingTime" type="time" formControlName="processingTime">
                 <div class="ng-invalid-feedback" *ngIf="processingTime.touched && processingTime.errors && processingTime.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="processingTime.errors && processingTime.errors.fromServer">{{ processingTime.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -130,21 +153,25 @@
                 <label class="control-label" for="expenditureApprovedBy">* Expenditure Request Approved by</label>
                 <input class="form-control" id="expenditureApprovedBy" type="text" formControlName="expenditureApprovedBy">
                 <div class="ng-invalid-feedback" *ngIf="expenditureApprovedBy.touched && expenditureApprovedBy.errors && expenditureApprovedBy.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="expenditureApprovedBy.errors && expenditureApprovedBy.errors.fromServer">{{ expenditureApprovedBy.errors.fromServer }}</div>
             </div>
             <div class="form-group col-md-5 col-lg-3">
                 <label class="control-label" for="expenditurePosition">* Position</label>
                 <input class="form-control" id="expenditurePosition" type="text" formControlName="expenditurePosition">
                 <div class="ng-invalid-feedback" *ngIf="expenditurePosition.touched && expenditurePosition.errors && expenditurePosition.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="expenditurePosition.errors && expenditurePosition.errors.fromServer">{{ expenditurePosition.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-lg-3">
                 <label class="control-label" for="expenditureDate">* Date</label>
                 <input class="form-control" id="expenditureDate" type="date" formControlName="expenditureDate">
                 <div class="ng-invalid-feedback" *ngIf="expenditureDate.touched && expenditureDate.errors && expenditureDate.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="expenditureDate.errors && expenditureDate.errors.fromServer">{{ expenditureDate.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-lg-2">
                 <label class="control-label" for="expenditureTime">* Time</label>
                 <input class="form-control" id="expenditureTime" type="time" formControlName="expenditureTime">
                 <div class="ng-invalid-feedback" *ngIf="expenditureTime.touched && expenditureTime.errors && expenditureTime.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="expenditureTime.errors && expenditureTime.errors.fromServer">{{ expenditureTime.errors.fromServer }}</div>
             </div>
         </div>
 
@@ -152,10 +179,10 @@
         <legend>File Attachments</legend>
         <div class="row">
             <div class="form-group col-md mb-0">
-                <div class="uploadfilecontainer-note"><small class="form-text text-muted mt-0">(Drag and drop any relevant files - only add .png, .jpg, or .pdf file types, < 5MB in total size)</small></div>
+                <div class="fileAttachmentsContainer-note"><small class="form-text text-muted mt-0">(Drag and drop any relevant files - only add .png, .jpg, or .pdf file types, < 5MB in total size)</small></div>
 
-                <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
-                    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+                <div class="fileAttachmentsContainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="addAttachment($event)">
+                    <input hidden type="file" #fileInput (change)="addAttachment($event.target.files)">
                 </div>
                 
                 <div class="ng-invalid-feedback uploadFileErrors">{{ uploadFileErrors }}</div>
@@ -169,8 +196,8 @@
             </div>
         </div>
 
-        <button type="submit" [disabled]="!expndAuthForm.valid" class="btn btn-primary">Submit</button>
-        <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+        <!-- <button type="submit" [disabled]="!expndAuthForm.valid" class="btn btn-primary">Submit</button> -->
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>    
     
     <div class="container submission" *ngIf="submission == 'success'">

@@ -9,20 +9,22 @@
   <ItemGroup>
     <None Remove="ETeam\Responses\CreateResponse.txt" />
     <None Remove="ETeam\Responses\GetPicklistKeywordsResponse.txt" />
+    <None Remove="ETeam\Responses\SoapFaultResponse.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="ETeam\Responses\CreateResponse.txt" />
     <EmbeddedResource Include="ETeam\Responses\GetPicklistKeywordsResponse.txt" />
+    <EmbeddedResource Include="ETeam\Responses\SoapFaultResponse.txt" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.13.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0-preview-20200519-01" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

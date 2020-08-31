@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>E Team Expenditure Authorization</title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="{{Report.Url}}" target="_blank">Open Report in E Team</a>
+
+    <h1>Expenditure Authorization</h1>
+    <table>
+        <thead style="font-weight: bold"><tr><td>Field</td><td>Value</td></tr></thead>
+        <tr><td>Date of Request</td><td>{{Request.DateTime}}</td></tr>
+        <tr><td>Event</td><td>{{Request.Event}}</td></tr>
+        <tr><td>EAF Number</td><td>{{Request.EAFNo}}</td></tr>
+        <tr><td>EMBC Task Number</td><td>{{Request.EMBCTaskNo}}</td></tr>
+        <tr><td>Requesting Organization</td><td>{{Request.RequestingOrg}}</td></tr>
+        <tr><td>Resource Type</td><td>{{Request.ResourceType}}</td></tr>
+        <tr><td>Description of Expenditure</td><td>{{Request.Description}}</td></tr>
+        <tr><td>Amount Requested</td><td>{{Request.AmountRequested}}</td></tr>
+        <tr><td>Expenditure Not To Exceed</td><td>{{Request.ExpenditureNotToExceed}}</td></tr>
+    </table>
+
+    <h2>EOC Approvals</h2>
+    <table>
+        <thead style="font-weight: bold"><tr><td>Field</td><td>Value</td></tr></thead>
+        <tr><td>Authorized Representative Name</td><td>{{Request.AuthName}}</td></tr>
+        <tr><td>Authorized Representative Email</td><td>{{Request.AuthEmail}}</td></tr>
+        <tr><td>Authorized Representative Telephone</td><td>{{Request.AuthTelephone}}</td></tr>
+        <tr><td>Position</td><td>{{Request.EocApprovals.Processing.Position}}</td></tr>
+        <tr><td>Approval Date/Time</td><td>{{Request.EocApprovals.Processing.ApprovalDateTime}}</td></tr>
+    </table>
+
+    <h3>Processing</h3>
+    <table>
+        <thead style="font-weight: bold"><tr><td>Field</td><td>Value</td></tr></thead>
+        <tr><td>Approved By</td><td>{{Request.EocApprovals.Processing.ApprovedBy}}</td></tr>
+        <tr><td>Position</td><td>{{Request.EocApprovals.Processing.Position}}</td></tr>
+        <tr><td>Approval Date/Time</td><td>{{Request.EocApprovals.Processing.ApprovalDateTime}}</td></tr>
+    </table>
+
+    <h3>Expenditure Request</h3>
+    <table>
+        <thead style="font-weight: bold"><tr><td>Field</td><td>Value</td></tr></thead>
+        <tr><td>Approved By</td><td>{{Request.EocApprovals.ExpenditureRequest.ApprovedBy}}</td></tr>
+        <tr><td>Position</td><td>{{Request.EocApprovals.ExpenditureRequest.Position}}</td></tr>
+        <tr><td>Approval Date/Time</td><td>{{Request.EocApprovals.ExpenditureRequest.ApprovalDateTime}}</td></tr>
+    </table>
+</body>
+</html>

@@ -26,9 +26,11 @@ namespace EMBC.ExpenseAuthorization.Api
     public class Startup
     {
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Startup>();
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            CurrentEnvironment = env;
             Configuration = configuration;
         }
 
@@ -64,11 +66,29 @@ namespace EMBC.ExpenseAuthorization.Api
                 .ConfigureHttpClient(ConfigureETeamsHttpClient);
 
             services.AddTransient<IETeamSoapService, ETeamSoapService>();
-            
+            services.AddTransient<IEmailService, EmailService>();
+
             // add all the handlers in this assembly
             services.AddMediatR(GetType().Assembly);
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailRecipientService, EmailRecipientService>();
+
+            services.AddTransient<IExpenseAuthorizationRequestMapper, ExpenseAuthorizationRequestMapper>();
+
+            // enable CORS in development
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyOrigin();
+                    });
+                });
+            }
 
             AddSwaggerGen(services);
         }
@@ -100,9 +120,13 @@ namespace EMBC.ExpenseAuthorization.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors();
             }
 
             app.UseRouting();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
             app.UseAuthorization();

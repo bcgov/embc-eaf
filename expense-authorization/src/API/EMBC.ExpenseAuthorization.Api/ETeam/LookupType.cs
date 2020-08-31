@@ -7,7 +7,6 @@
         ResourceCategory,
         ResourceType,
         StatusResource,
-        UnitsOfMeasure,
         LeadAgencyDeptList
     }
 }

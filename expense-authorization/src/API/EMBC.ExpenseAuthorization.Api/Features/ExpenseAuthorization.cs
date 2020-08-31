@@ -4,23 +4,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.Email;
 using EMBC.ExpenseAuthorization.Api.ETeam;
-using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
+using EMBC.ExpenseAuthorization.Api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using MimeKit;
+using Microsoft.Extensions.Logging;
 
 namespace EMBC.ExpenseAuthorization.Api.Features
 {
-    public class ResourceRequest
+    public class ExpenseAuthorization
     {
         public class CreateCommand : IRequest<CreateResponse>
         {
-            public ResourceRequestModel Request { get; }
+            public ExpenseAuthorizationRequest Request { get; }
             public IList<IFormFile> Files { get; } = Array.Empty<IFormFile>();
 
-            public CreateCommand(ResourceRequestModel request, IEnumerable<IFormFile> files)
+            public CreateCommand(ExpenseAuthorizationRequest request, IEnumerable<IFormFile> files)
             {
                 Request = request ?? throw new ArgumentNullException(nameof(request));
 
@@ -33,51 +32,43 @@ namespace EMBC.ExpenseAuthorization.Api.Features
 
         public class CreateResponse
         {
+            public Exception Exception { get; set; }
         }
         
         public class Handler : IRequestHandler<CreateCommand, CreateResponse>
         {
             private readonly IETeamSoapService _eteamService;
-            private readonly IEmailSender _emailSender;
+            private readonly IEmailService _emailService;
+            private readonly ILogger<Handler> _logger;
 
-            public Handler(IETeamSoapService eteamService, IEmailSender emailSender)
+            public Handler(IETeamSoapService eteamService, IEmailService emailService, ILogger<Handler> logger)
             {
                 _eteamService = eteamService ?? throw new ArgumentNullException(nameof(eteamService));
-                _emailSender = emailSender;
+                _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+                _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             }
 
             public async Task<CreateResponse> Handle(CreateCommand request, CancellationToken cancellationToken)
             {
+                
                 if (request == null)
                 {
                     throw new ArgumentNullException(nameof(request));
                 }
 
-
-                CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
-
-                // seems the output has the id in reportId / id
-                if (!response.Fields.TryGetValue("reportId", out var reportId))
+                try
                 {
-                    response.Fields.TryGetValue("id", out reportId);
-                }
+                    CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
 
-                if (request.Files != null && request.Files.Count != 0)
+                    await _emailService.SendEmailAsync(request.Request, response, request.Files);
+
+                    return new CreateResponse();
+                }
+                catch (Exception e)
                 {
-
-                    var message = new Message
-                    {
-                        To = new List<MailboxAddress> { new MailboxAddress("philbolduc@gmail.com")},
-                        Attachments = request.Files,
-                        Content = $"Attachments for Report: {reportId}",
-                        Subject = "E-Team Resource Request",
-                    };
-
-                    await _emailSender.SendEmailAsync(message);
-
+                    _logger.LogError(e, "Failed to create expense authorization");
+                    return new CreateResponse { Exception = e };
                 }
-
-                return new CreateResponse();
             }
         }
     }

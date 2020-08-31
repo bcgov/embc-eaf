@@ -16,6 +16,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
         /// <param name="xml">The XML.</param>
         /// <exception cref="ArgumentNullException">xml</exception>
         /// <exception cref="ArgumentException">Parameter cannot be empty string - xml</exception>
+        /// <exception cref="SoapFaultException">The <paramref name="xml"/> represents a SOAP fault.</exception>
         public void LoadFromXml(string xml)
         {
             if (xml == null)
@@ -36,9 +37,15 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses
                 .Single()
                 .FirstNode;
 
+            if (element.Name == XName.Get(@"{http://www.w3.org/2003/05/soap-envelope}Fault"))
+            {
+                // soap fault
+                throw new SoapFaultException(element);
+            }
+
             ReadElementsFromXml(element);
         }
-
+        
         /// <summary>
         /// Reads the elements from XML.
         /// </summary>
