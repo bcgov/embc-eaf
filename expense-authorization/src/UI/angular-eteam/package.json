@@ -5,7 +5,7 @@
     "generate:api": "openapi-generator generate -g typescript-angular -i ./src/app/api/swagger.json -o ./src/app/api/generated",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build  -- --prod",
     "build-local": "ng build",
     "test": "ng test",
     "lint": "ng lint",
