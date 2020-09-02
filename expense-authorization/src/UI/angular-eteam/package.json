@@ -5,7 +5,7 @@
     "generate:api": "openapi-generator generate -g typescript-angular -i ./src/app/api/swagger.json -o ./src/app/api/generated",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration=production",
+    "build": "ng build --prod",
     "build-local": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "-": "0.0.1",
     "@angular/animations": "~9.1.9",
     "@angular/common": "~9.1.9",
     "@angular/compiler": "~9.1.9",
@@ -25,6 +26,7 @@
     "@bcgov/bootstrap-theme": "https://github.com/bcgov/bootstrap-theme/releases/download/v1.1.3/bcgov-bootstrap-theme-1.1.3.tgz",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@ng-select/ng-select": "^5.0.1",
+    "@angular/cli": "~9.1.9",
     "bootstrap": "^4.3.1",
     "jquery": "^3.5.1",
     "popper.js": "^1.14.7",
@@ -34,7 +36,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.901.9",
-    "@angular/cli": "~9.1.7",
+    "@angular/cli": "~9.1.9",
     "@angular/compiler-cli": "~9.1.9",
     "@openapitools/openapi-generator-cli": "^1.0.13-4.3.1",
     "@types/jasmine": "~3.5.0",
