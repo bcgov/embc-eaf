@@ -50,6 +50,16 @@ namespace EMBC.ExpenseAuthorization.Api
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
+            // send header Access-Control-Allow-Origin: *
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
 
             services.AddOptions();
 
@@ -75,17 +85,7 @@ namespace EMBC.ExpenseAuthorization.Api
             services.AddTransient<IEmailRecipientService, EmailRecipientService>();
 
             services.AddTransient<IExpenseAuthorizationRequestMapper, ExpenseAuthorizationRequestMapper>();
-
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.AllowAnyHeader();
-                    builder.AllowAnyMethod();
-                    builder.AllowAnyOrigin();
-                });
-            });
-
+            
             AddSwaggerGen(services);
         }
 
@@ -119,7 +119,7 @@ namespace EMBC.ExpenseAuthorization.Api
             }
 
             app.UseRouting();
-            app.UseCors();
+            app.UseCors();    // Apply CORS policies to all endpoints
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
