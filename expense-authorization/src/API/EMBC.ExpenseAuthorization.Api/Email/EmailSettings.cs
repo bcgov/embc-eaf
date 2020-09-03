@@ -22,6 +22,12 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         ////[Required]
         public string From { get; set; }
 
+        /// <summary>
+        /// Gets or sets addresses to send to.
+        /// </summary>
+        /// <value>
+        /// To.
+        /// </value>
         public string To { get; set; }
 
         /// <summary>Gets or sets the SMTP server name.</summary>
