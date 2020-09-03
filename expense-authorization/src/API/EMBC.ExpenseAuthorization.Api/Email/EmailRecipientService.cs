@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EMBC.ExpenseAuthorization.Api.Models;
 using Microsoft.Extensions.Options;
 
@@ -16,8 +17,8 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         public IEnumerable<string> GetRecipients(ExpenseAuthorizationRequest request)
         {
             // based on the region, we may need to have different To addresses
-
-            yield return _emailOptions.Value.To;
+            var to = _emailOptions.Value.To ?? string.Empty;
+            return to.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }
