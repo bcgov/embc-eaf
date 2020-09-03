@@ -76,19 +76,15 @@ namespace EMBC.ExpenseAuthorization.Api
 
             services.AddTransient<IExpenseAuthorizationRequestMapper, ExpenseAuthorizationRequestMapper>();
 
-            // enable CORS in development
-            if (CurrentEnvironment.IsDevelopment())
+            services.AddCors(options =>
             {
-                services.AddCors(options =>
+                options.AddDefaultPolicy(builder =>
                 {
-                    options.AddDefaultPolicy(builder =>
-                    {
-                        builder.AllowAnyHeader();
-                        builder.AllowAnyMethod();
-                        builder.AllowAnyOrigin();
-                    });
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
                 });
-            }
+            });
 
             AddSwaggerGen(services);
         }
@@ -120,10 +116,10 @@ namespace EMBC.ExpenseAuthorization.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors();
             }
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
