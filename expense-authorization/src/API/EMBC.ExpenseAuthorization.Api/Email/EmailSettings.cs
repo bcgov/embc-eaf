@@ -39,6 +39,8 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         /// <value>The SMTP server port.</value>
         public int Port { get; set; } = 465;
 
+        public bool Ssl { get; set; }
+        
         /// <summary>Gets or sets the username.</summary>
         /// <value>The username.</value>
         public string Username { get; set; }
