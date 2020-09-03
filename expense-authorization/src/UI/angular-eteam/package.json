@@ -1,11 +1,12 @@
 {
   "name": "angular-eteam",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "generate:api": "openapi-generator generate -g typescript-angular -i ./src/app/api/swagger.json -o ./src/app/api/generated",
     "ng": "ng",
+    "config": "ts-node set-env.ts",
+    "build": "npm run config && ng build --prod",
     "start": "ng serve",
-    "build": "ng build --prod",
     "build-local": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -15,6 +16,7 @@
   "dependencies": {
     "-": "0.0.1",
     "@angular/animations": "~9.1.9",
+    "@angular/cli": "~9.1.9",
     "@angular/common": "~9.1.9",
     "@angular/compiler": "~9.1.9",
     "@angular/core": "~9.1.9",
@@ -26,8 +28,8 @@
     "@bcgov/bootstrap-theme": "https://github.com/bcgov/bootstrap-theme/releases/download/v1.1.3/bcgov-bootstrap-theme-1.1.3.tgz",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@ng-select/ng-select": "^5.0.1",
-    "@angular/cli": "~9.1.9",
     "bootstrap": "^4.3.1",
+    "dotenv": "^8.2.0",
     "jquery": "^3.5.1",
     "popper.js": "^1.14.7",
     "rxjs": "~6.5.4",
@@ -51,7 +53,7 @@
     "karma-jasmine": "~3.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
     "protractor": "~7.0.0",
-    "ts-node": "~8.3.0",
+    "ts-node": "^8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.8.3"
   }
