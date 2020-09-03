@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
@@ -100,6 +101,9 @@ namespace EMBC.ExpenseAuthorization.Api.Email
             {
                 try
                 {
+                    // ignore SSL errors :-(
+                    client.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+
                     _logger.LogTrace("Connecting to SMTP server using SSL, {SmtpServer}:{Port}", settings.SmtpServer, settings.Port);
                     await client.ConnectAsync(settings.SmtpServer, settings.Port, settings.Ssl);
 
