@@ -1,7 +1,6 @@
 {
   "name": "angular-eteam",
   "version": "0.0.1",
-  "type": "module",
   "scripts": {
     "generate:api": "openapi-generator generate -g typescript-angular -i ./src/app/api/swagger.json -o ./src/app/api/generated",
     "ng": "ng",
