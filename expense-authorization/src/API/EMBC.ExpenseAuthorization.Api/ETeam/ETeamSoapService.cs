@@ -40,7 +40,7 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
 
             IList<LookupValue> values = resourceTypeValues
                 .Where(_ => _.Value != null && _.Value.StartsWith(ExpenditureAuthorizationResourceTypePrefix))
-                .Select(_ => new LookupValue { Id = _.Id, Value = _.Value.Substring(ExpenditureAuthorizationResourceTypePrefix.Length)})
+                .Select(_ => new LookupValue { Id = _.Value, Value = _.Value.Substring(ExpenditureAuthorizationResourceTypePrefix.Length)})
                 .ToList();
 
             return values;
