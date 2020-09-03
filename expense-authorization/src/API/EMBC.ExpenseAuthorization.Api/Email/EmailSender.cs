@@ -101,7 +101,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                 try
                 {
                     _logger.LogTrace("Connecting to SMTP server using SSL, {SmtpServer}:{Port}", settings.SmtpServer, settings.Port);
-                    await client.ConnectAsync(settings.SmtpServer, settings.Port, true);
+                    await client.ConnectAsync(settings.SmtpServer, settings.Port, settings.Ssl);
 
                     if (!string.IsNullOrEmpty(settings.Username) && !string.IsNullOrEmpty(settings.Password))
                     {
