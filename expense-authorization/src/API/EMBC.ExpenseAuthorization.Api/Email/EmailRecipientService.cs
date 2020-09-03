@@ -18,7 +18,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         {
             // based on the region, we may need to have different To addresses
             var to = _emailOptions.Value.To ?? string.Empty;
-            return to.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries));
+            return to.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
