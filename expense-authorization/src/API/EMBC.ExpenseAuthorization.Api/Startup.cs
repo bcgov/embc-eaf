@@ -82,7 +82,7 @@ namespace EMBC.ExpenseAuthorization.Api
             services.AddMediatR(GetType().Assembly);
 
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IEmailRecipientService, EmailRecipientService>();
+            services.AddTransient<IEmailRecipientService, CsvEmailRecipientService>();
 
             services.AddTransient<IExpenseAuthorizationRequestMapper, ExpenseAuthorizationRequestMapper>();
             

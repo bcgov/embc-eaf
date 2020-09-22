@@ -61,10 +61,14 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
         private async Task<MimeMessage> CreateEmailMessageAsync(Message message, string from)
         {
-
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(from));
+
+            // populate the recipients
             emailMessage.To.AddRange(message.To);
+            emailMessage.Cc.AddRange(message.Cc);
+            emailMessage.Bcc.AddRange(message.Bcc);
+
             emailMessage.Subject = message.Subject;
 
             var bodyBuilder = new BodyBuilder

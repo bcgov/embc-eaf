@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using EMBC.ExpenseAuthorization.Api.Email;
 using EMBC.ExpenseAuthorization.Api.ETeam;
+using FlatFiles;
+using FlatFiles.TypeMapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 
 namespace EMBC.ExpenseAuthorization.Api.Controllers
 {
@@ -51,7 +57,8 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
                 // caller
                 var errorInstanceId = Guid.NewGuid().ToString("d");
 
-                _logger.LogWarning(exception, "Error getting lookup values for Expenditure Authorization Resource Types, Error Message: {ErrorResponse}, Status Code = {HttpStatusCode}, Error Id: {ErrorInstanceId}",
+                _logger.LogWarning(exception,
+                    "Error getting lookup values for Expenditure Authorization Resource Types, Error Message: {ErrorResponse}, Status Code = {HttpStatusCode}, Error Id: {ErrorInstanceId}",
                     exception.Content,
                     exception.StatusCode,
                     errorInstanceId);
@@ -78,7 +85,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
         [ProducesResponseType(typeof(List<LookupValue>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAsync([FromRoute]LookupType lookupType)
+        public async Task<IActionResult> GetAsync([FromRoute] LookupType lookupType)
         {
             // By annotating the controller with ApiControllerAttribute,
             // the ModelStateInvalidFilter will automatically check ModelState.IsValid
@@ -135,14 +142,52 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
 
                 var problem = new ProblemDetails
                 {
-                    Detail = "E-Teams web service was not successful",
-                    Instance = errorInstanceId,
-                    Status = 500
+                    Detail = "E-Teams web service was not successful", Instance = errorInstanceId, Status = 500
                 };
 
                 // throw the error to the caller
                 return StatusCode(500, problem);
             }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("LeadAgencyDeptListCsv")]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetLeadAgencyDeptListAsCsvAsync()
+        {
+            // By annotating the controller with ApiControllerAttribute,
+            // the ModelStateInvalidFilter will automatically check ModelState.IsValid
+            // see https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1#automatic-http-400-responses
+
+            IList<LookupValue> lookupValues = await _service
+                .GetLookupAsync(LookupType.LeadAgencyDeptList);
+
+            var values = lookupValues.Select(_ => new CommunityEmailRecipient
+            {
+                Community = _.Value,
+                To = string.Empty,
+                Cc = string.Empty,
+                Bcc = string.Empty
+            });
+
+            var mapper = SeparatedValueTypeMapper.Define<CommunityEmailRecipient>();
+            mapper.Property(c => c.Community).ColumnName("community");
+            mapper.Property(c => c.To).ColumnName("to");
+            mapper.Property(c => c.Cc).ColumnName("cc");
+            mapper.Property(c => c.Bcc).ColumnName("bcc");
+
+            StringBuilder buffer = new StringBuilder();
+            StringWriter writer = new StringWriter(buffer);
+
+            await mapper.WriteAsync(writer, values, new SeparatedValueOptions { IsFirstRecordSchema = true });
+
+            return new FileContentResult(Encoding.UTF8.GetBytes(buffer.ToString()), new MediaTypeHeaderValue("text/csv"));
         }
     }
 }
