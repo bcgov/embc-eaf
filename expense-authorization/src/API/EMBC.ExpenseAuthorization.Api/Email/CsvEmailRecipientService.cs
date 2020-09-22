@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using EMBC.ExpenseAuthorization.Api.Models;
-using FlatFiles;
-using FlatFiles.TypeMapping;
 using Microsoft.Extensions.Options;
 using Serilog;
 
@@ -31,6 +28,8 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                 return recipients;
             }
 
+            _logger.Information("Email recipient not found based on request, using the default email address from configuration");
+
             // if the config file does not have configured recipient, fall back to the configuration
             return GetDefaultToEmailRecipients(request);
         }
@@ -50,8 +49,15 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         private IList<string> GetDefaultToEmailRecipients(ExpenseAuthorizationRequest request)
         {
             // if the config file does not have configured recipient, fall back to the configuration
-            DefaultEmailRecipientService defaultEmailRecipientService = new DefaultEmailRecipientService(_emailOptions);
-            return defaultEmailRecipientService.GetToRecipients(request);
+            var defaultService = new DefaultEmailRecipientService(_emailOptions);
+            var defaultList = defaultService.GetToRecipients(request);
+
+            if (defaultList.Count == 0)
+            {
+                _logger.Error("No default email recipients not found, sending email is probably going to fail");
+            }
+
+            return defaultList;
         }
 
         private IList<string> GetRecipients(ExpenseAuthorizationRequest request, Func<CommunityEmailRecipient, string> fieldSelector, Func<EmailSettings, IEnumerable<string>> defaultRecipients)
@@ -93,12 +99,11 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         {
             var recipients = new Dictionary<string, CommunityEmailRecipient>(StringComparer.OrdinalIgnoreCase);
 
-            var loader = new CommunityEmailRecipientsProvider(_logger);
-            var settings = _emailOptions.Value;
+            var loader = new CommunityEmailRecipientsProvider();
 
-            // load the file and remove any separators
+            // load the file and remove any separators (all underscores)
             var communityRecipients = loader
-                .GetCommunityEmailRecipients(settings.RecipientMappingFile)
+                .GetCommunityEmailRecipients(_emailOptions.Value.RecipientMappingFile)
                 .Where(_ => _.Community.Any(c => c != '_'))
                 .ToLookup(_ => _.Community, StringComparer.OrdinalIgnoreCase);
 
@@ -116,40 +121,6 @@ namespace EMBC.ExpenseAuthorization.Api.Email
             }
 
             return recipients;
-        }
-        
-
-    }
-
-    public class CommunityEmailRecipientsProvider
-    {
-        private readonly ILogger _logger;
-
-        public CommunityEmailRecipientsProvider(ILogger logger)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        public IList<CommunityEmailRecipient> GetCommunityEmailRecipients(string filename)
-        {
-            var mapper = SeparatedValueTypeMapper.Define<CommunityEmailRecipient>();
-            mapper.Property(c => c.Community).ColumnName("community");
-            mapper.Property(c => c.To).ColumnName("to");
-            mapper.Property(c => c.Cc).ColumnName("cc");
-            mapper.Property(c => c.Bcc).ColumnName("bcc");
-
-            if (File.Exists(filename))
-            {
-                using (var reader = new StreamReader(File.OpenRead(filename)))
-                {
-                    var options = new SeparatedValueOptions() { IsFirstRecordSchema = true };
-                    List<CommunityEmailRecipient> recipients = mapper.Read(reader, options).ToList();
-                    return recipients;
-                }
-            }
-
-            _logger.Warning("Mapping {Filename} not found", filename);
-            return Array.Empty<CommunityEmailRecipient>();
         }
     }
 }
