@@ -61,10 +61,14 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
         private async Task<MimeMessage> CreateEmailMessageAsync(Message message, string from)
         {
-
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(from));
+
+            // populate the recipients
             emailMessage.To.AddRange(message.To);
+            emailMessage.Cc.AddRange(message.Cc);
+            emailMessage.Bcc.AddRange(message.Bcc);
+
             emailMessage.Subject = message.Subject;
 
             var bodyBuilder = new BodyBuilder
@@ -104,8 +108,11 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                     // ignore SSL errors :-(
                     client.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
 
-                    _logger.LogTrace("Connecting to SMTP server using SSL, {SmtpServer}:{Port}", settings.SmtpServer, settings.Port);
-                    await client.ConnectAsync(settings.SmtpServer, settings.Port, settings.Ssl);
+                    // use the configured port, or default 465 (SSL) or 25 (non-SSL)
+                    int port = settings.Port ?? (settings.Ssl ? 465 : 25);
+
+                    _logger.LogTrace("Connecting to SMTP server using SSL {SSL}, {SmtpServer}:{Port}", settings.Ssl, settings.SmtpServer, settings.Port);
+                    await client.ConnectAsync(settings.SmtpServer, port, settings.Ssl);
 
                     if (!string.IsNullOrEmpty(settings.Username) && !string.IsNullOrEmpty(settings.Password))
                     {

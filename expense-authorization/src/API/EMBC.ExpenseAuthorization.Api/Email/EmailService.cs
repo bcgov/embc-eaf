@@ -1,31 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using EMBC.ExpenseAuthorization.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using MimeKit;
+using Serilog;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
     public class EmailService : IEmailService
     {
-        private readonly IOptions<EmailSettings> _emailOptions;
         private readonly IEmailRecipientService _recipientService;
         private readonly IOptions<ETeamSettings> _eteamOptions;
         private readonly IEmailSender _sender;
+        private readonly ILogger _logger;
 
         public EmailService(
-            IOptions<EmailSettings> emailOptions,
             IEmailRecipientService recipientService,
             IOptions<ETeamSettings> eteamOptions,
-            IEmailSender sender)
+            IEmailSender sender, 
+            ILogger logger)
         {
-            _emailOptions = emailOptions ?? throw new ArgumentNullException(nameof(emailOptions));
             _recipientService = recipientService ?? throw new ArgumentNullException(nameof(recipientService));
             _eteamOptions = eteamOptions ?? throw new ArgumentNullException(nameof(eteamOptions));
             _sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task SendEmailAsync(
@@ -33,7 +36,6 @@ namespace EMBC.ExpenseAuthorization.Api.Email
             CreateReportResponse response,
             IList<IFormFile> attachments)
         {
-            EmailSettings emailSettings = _emailOptions.Value;
             ETeamSettings eteamSettings = _eteamOptions.Value;
 
             // create and apply data to the email template
@@ -42,14 +44,23 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                 .Apply(response, eteamSettings.Url)
                 .Content;
 
-            var to = _recipientService.GetRecipients(request);
-            string subject = "E Team Resource Request";
+            _logger.Debug("Getting the email to recipient list base on request");
+            var to = _recipientService.GetToRecipients(request);
+            _logger.Debug("Email will be sent to {@EmailTo}", to);
+
+            // Request from R. Wainwright, subject line of the email should 
+            // be [Region abbreviation + PREOC] – [A new EAF has been submitted to ETEAMS]
+            // however, it is difficult to know the region abbreviation
+
+            string subject = "A new EAF has been submitted to ETEAMS";
             if (!string.IsNullOrEmpty(eteamSettings.Environment))
             {
-                subject = "[" + eteamSettings.Environment + "] " + subject;
+                subject = $"[{eteamSettings.Environment}] {subject}";
             }
 
             var message = new Message(to, subject, content, attachments);
+            message.AddCc(_recipientService.GetCcRecipients(request));
+            message.AddBcc(_recipientService.GetBccRecipients(request));
 
             await _sender.SendEmailAsync(message);
         }

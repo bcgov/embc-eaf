@@ -8,34 +8,20 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 {
     public class Message
     {
-        public List<MailboxAddress> To { get; set; }
+        public List<MailboxAddress> To { get; private set; } = new List<MailboxAddress>();
+
+        public List<MailboxAddress> Cc { get; private set; } = new List<MailboxAddress>();
+        public List<MailboxAddress> Bcc { get; private set; } = new List<MailboxAddress>();
 
         public string Subject { get; set; }
         public string Content { get; set; }
 
         public IList<IFormFile> Attachments { get; set; } = Array.Empty<IFormFile>();
 
-        public Message()
-        {
-        }
-
-        public Message(string to, string subject, string content, IList<IFormFile> attachments)
-        {
-            To = new List<MailboxAddress> {new MailboxAddress(to)};
-            Subject = subject;
-            Content = content;
-
-            if (attachments != null)
-            {
-                Attachments = attachments;
-            }
-        }
-
         public Message(IEnumerable<string> to, string subject, string content, IList<IFormFile> attachments)
         {
-            To = new List<MailboxAddress>();
+            To.AddRange(to.Select(email => new MailboxAddress(email)));
 
-            To.AddRange(to.Select(x => new MailboxAddress(x)));
             Subject = subject;
             Content = content;
 
@@ -44,5 +30,16 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                 Attachments = attachments;
             }
         }
+
+        public void AddCc(IEnumerable<string> cc)
+        {
+            Cc.AddRange(cc.Select(email => new MailboxAddress(email)));
+        }
+
+        public void AddBcc(IEnumerable<string> bcc)
+        {
+            Bcc.AddRange(bcc.Select(email => new MailboxAddress(email)));
+        }
+
     }
 }
