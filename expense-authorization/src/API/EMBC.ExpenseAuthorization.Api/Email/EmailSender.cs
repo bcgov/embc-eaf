@@ -108,8 +108,11 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                     // ignore SSL errors :-(
                     client.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
 
-                    _logger.LogTrace("Connecting to SMTP server using SSL, {SmtpServer}:{Port}", settings.SmtpServer, settings.Port);
-                    await client.ConnectAsync(settings.SmtpServer, settings.Port, settings.Ssl);
+                    // use the configured port, or default 465 (SSL) or 25 (non-SSL)
+                    int port = settings.Port ?? (settings.Ssl ? 465 : 25);
+
+                    _logger.LogTrace("Connecting to SMTP server using SSL {SSL}, {SmtpServer}:{Port}", settings.Ssl, settings.SmtpServer, settings.Port);
+                    await client.ConnectAsync(settings.SmtpServer, port, settings.Ssl);
 
                     if (!string.IsNullOrEmpty(settings.Username) && !string.IsNullOrEmpty(settings.Password))
                     {
