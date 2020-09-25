@@ -8,6 +8,7 @@ using EMBC.ExpenseAuthorization.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Serilog;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
@@ -16,15 +17,18 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         private readonly IEmailRecipientService _recipientService;
         private readonly IOptions<ETeamSettings> _eteamOptions;
         private readonly IEmailSender _sender;
+        private readonly ILogger _logger;
 
         public EmailService(
             IEmailRecipientService recipientService,
             IOptions<ETeamSettings> eteamOptions,
-            IEmailSender sender)
+            IEmailSender sender, 
+            ILogger logger)
         {
             _recipientService = recipientService ?? throw new ArgumentNullException(nameof(recipientService));
             _eteamOptions = eteamOptions ?? throw new ArgumentNullException(nameof(eteamOptions));
             _sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task SendEmailAsync(
@@ -40,7 +44,9 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                 .Apply(response, eteamSettings.Url)
                 .Content;
 
+            _logger.Debug("Getting the email to recipient list base on request");
             var to = _recipientService.GetToRecipients(request);
+            _logger.Debug("Email will be sent to {@EmailTo}", to);
 
             // Request from R. Wainwright, subject line of the email should 
             // be [Region abbreviation + PREOC] – [A new EAF has been submitted to ETEAMS]

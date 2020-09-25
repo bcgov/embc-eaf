@@ -20,11 +20,13 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
         public IList<string> GetToRecipients(ExpenseAuthorizationRequest request)
         {
+            _logger.Debug("Getting the email address for {RequestingOrg}", request.RequestingOrg);
             // do not use the default to list
             var recipients = GetRecipients(request, _ => _.To, _ => Enumerable.Empty<string>());
 
             if (recipients.Count != 0)
             {
+                _logger.Debug("Found {@EmailRecipients} ", recipients);
                 return recipients;
             }
 
