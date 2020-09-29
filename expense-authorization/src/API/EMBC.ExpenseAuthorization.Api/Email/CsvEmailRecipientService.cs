@@ -87,9 +87,17 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
         private CommunityEmailRecipient GetCommunityEmailRecipient(ExpenseAuthorizationRequest request)
         {
+            if (request?.RequestingOrg == null)
+            {
+                _logger.Information("Request or RequestingOrg is null");
+                return null;
+            }
+
             IDictionary<string, CommunityEmailRecipient> recipients = GetRecipients();
 
-            if (recipients.TryGetValue(request.RequestingOrg, out var recipient))
+            var requestingOrg = request.RequestingOrg.Trim();
+
+            if (recipients.TryGetValue(requestingOrg, out var recipient))
             {
                 return recipient;
             }
@@ -106,8 +114,8 @@ namespace EMBC.ExpenseAuthorization.Api.Email
             // load the file and remove any separators (all underscores)
             var communityRecipients = loader
                 .GetCommunityEmailRecipients(_emailOptions.Value.RecipientMappingFile)
-                .Where(_ => _.Community.Any(c => c != '_'))
-                .ToLookup(_ => _.Community, StringComparer.OrdinalIgnoreCase);
+                .Where(_ => _.Community != null && _.Community.Any(c => c != '_'))
+                .ToLookup(_ => _.Community.Trim(), StringComparer.OrdinalIgnoreCase);
 
             foreach (var community in communityRecipients)
             {
