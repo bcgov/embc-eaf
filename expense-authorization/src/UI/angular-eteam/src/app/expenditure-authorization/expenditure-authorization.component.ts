@@ -40,12 +40,12 @@ export class ExpenditureAuthorizationComponent implements OnInit {
     expenditureNotToExceed: [null, [Validators.pattern("^\\$?\\d+(\\.\\d{2})?$")]],
     processingApprovedBy: [null, Validators.required],
     processingPosition: [null, Validators.required],
-    processingDate: [null],
-    processingTime: [null],
+    processingDate: [null, [Validators.required, this.dateNotFutureValidator()]],
+    processingTime: [null, Validators.required],
     expenditureApprovedBy: [null, Validators.required],
     expenditurePosition: [null, Validators.required],
-    expenditureDate: [null],
-    expenditureTime: [null]
+    expenditureDate: [null, [Validators.required, this.dateNotFutureValidator()]],
+    expenditureTime: [null, Validators.required]
   }, {
     validator: Validators.compose([
     ])
@@ -72,12 +72,6 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   get expenditureTime() { return this.expndAuthForm.get('expenditureTime'); }
 
   ngOnInit(): void {
-    // the validation for these date/time fields are dependant on each other, so they are defined here instead.
-    this.processingDate.setValidators([Validators.required, this.dateNotFutureValidator('processingTime')]);
-    this.processingTime.setValidators([Validators.required, this.timeNotFutureValidator('processingDate')]);
-    this.expenditureDate.setValidators([Validators.required, this.dateNotFutureValidator('expenditureTime')]);
-    this.expenditureTime.setValidators([Validators.required, this.timeNotFutureValidator('expenditureDate')]);
-
     this.lookupService.apiLookupLookupTypeGet(LookupType.LeadAgencyDeptList)
       .subscribe(items => this.communities = items);
     this.lookupService.apiLookupExpenditureAuthorizationResourceTypesGet()
@@ -86,30 +80,11 @@ export class ExpenditureAuthorizationComponent implements OnInit {
 
   /**
    * Validates that the control field (a date) is not in the future (can be on or before today)
-   * @param tmField related time field that is dependant on this control field and should be fired afterwards to keep current.
    */
-  dateNotFutureValidator(tmField: string): ValidatorFn {
+  dateNotFutureValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } => {
       let now = new Date();
       if (now < new Date(control.value)) {
-        return { 'future': true };
-      }
-      let tm = this.expndAuthForm.get(tmField);
-      tm.updateValueAndValidity();
-      return {};
-    };
-  }
-
-  /**
-   * Validates that the control field (a time) along with the given date field is not in the future (can be on or before now)
-   * @param tmField related date field together with the current control field makes up a valid datetime object.
-   */
-  timeNotFutureValidator(dtField: string): ValidatorFn {
-    return (tm: AbstractControl): { [key: string]: boolean } => {
-      let dt = this.expndAuthForm.get(dtField);
-      let now = new Date();
-      let dateTime = new Date(dt.value + ' ' + tm.value);
-      if (now < dateTime) {
         return { 'future': true };
       }
       return {};
