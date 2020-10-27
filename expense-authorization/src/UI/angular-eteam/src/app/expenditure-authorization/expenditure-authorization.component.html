@@ -61,6 +61,7 @@
                 </ng-select>
                 <div class="ng-invalid-feedback" *ngIf="resourceType.touched && resourceType.errors && resourceType.errors.required">This field is required</div>
                 <div class="ng-invalid-feedback" *ngIf="resourceType.errors && resourceType.errors.fromServer">{{ resourceType.errors.fromServer }}</div>
+                <div><small class="form-text text-muted pt-2">*Please select the expense type that most closely matches the EAF objective. If a specific selection is not present, please select "GENERAL", and provide additional details in the Description of Expenditure field.</small></div>
             </div>
         </div>
 
