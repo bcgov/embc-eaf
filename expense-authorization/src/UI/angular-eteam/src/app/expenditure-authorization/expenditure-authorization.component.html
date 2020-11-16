@@ -61,6 +61,7 @@
                 </ng-select>
                 <div class="ng-invalid-feedback" *ngIf="resourceType.touched && resourceType.errors && resourceType.errors.required">This field is required</div>
                 <div class="ng-invalid-feedback" *ngIf="resourceType.errors && resourceType.errors.fromServer">{{ resourceType.errors.fromServer }}</div>
+                <div><small class="form-text text-muted pt-2">*Please select the expense type that most closely matches the EAF objective. If a specific selection is not present, please select "GENERAL", and provide additional details in the Description of Expenditure field.</small></div>
             </div>
         </div>
 
@@ -138,6 +139,7 @@
                 <label class="control-label" for="processingDate">* Date</label>
                 <input class="form-control" id="processingDate" type="date" formControlName="processingDate">
                 <div class="ng-invalid-feedback" *ngIf="processingDate.touched && processingDate.errors && processingDate.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="processingDate.touched && processingDate.errors && processingDate.errors.future">Date cannot be in the future</div>
                 <div class="ng-invalid-feedback" *ngIf="processingDate.errors && processingDate.errors.fromServer">{{ processingDate.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-lg-2">
@@ -165,6 +167,7 @@
                 <label class="control-label" for="expenditureDate">* Date</label>
                 <input class="form-control" id="expenditureDate" type="date" formControlName="expenditureDate">
                 <div class="ng-invalid-feedback" *ngIf="expenditureDate.touched && expenditureDate.errors && expenditureDate.errors.required">This field is required</div>
+                <div class="ng-invalid-feedback" *ngIf="expenditureDate.touched && expenditureDate.errors && expenditureDate.errors.future">Date cannot be in the future</div>
                 <div class="ng-invalid-feedback" *ngIf="expenditureDate.errors && expenditureDate.errors.fromServer">{{ expenditureDate.errors.fromServer }}</div>
             </div>
             <div class="form-group col-sm-6 col-lg-2">
