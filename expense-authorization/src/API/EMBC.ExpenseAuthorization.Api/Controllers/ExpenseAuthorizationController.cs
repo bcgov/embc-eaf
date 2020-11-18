@@ -4,7 +4,7 @@ using EMBC.ExpenseAuthorization.Api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace EMBC.ExpenseAuthorization.Api.Controllers
 {
@@ -14,14 +14,14 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
     public class ExpenseAuthorizationController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger _logger;
+        private readonly ILogger<ExpenseAuthorizationController> _logger;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="mediator"></param>
         /// <param name="logger"></param>
-        public ExpenseAuthorizationController(IMediator mediator, ILogger logger)
+        public ExpenseAuthorizationController(IMediator mediator, ILogger<ExpenseAuthorizationController> logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -67,7 +67,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
             // caller
             var errorInstanceId = Guid.NewGuid().ToString("d");
 
-            _logger.Warning(e, "An error occured while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
+            _logger.LogWarning(e, "An error occurred while processing the request Error Id: {ErrorInstanceId}", errorInstanceId);
             return Problem(e.Message, errorInstanceId);
         }
     }

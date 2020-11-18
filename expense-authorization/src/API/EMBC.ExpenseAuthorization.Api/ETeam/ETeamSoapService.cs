@@ -76,12 +76,39 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
                 throw new ArgumentNullException(nameof(expenseAuthorizationRequest));
             }
 
-            ETeamSettings settings = _options.Value;
-
             // login and get session cookie
-            await LoginAsync(settings);
+            await LoginAsync(_options.Value);
 
-            CreateReportResponse response = await CreateReportAsync(settings, expenseAuthorizationRequest);
+            CreateReportResponse ret;
+            // get the defaults, we could cache this in the future
+            var resourceCategories = await GetLookupAsync(LookupType.ResourceCategory);
+            var statuses = await GetLookupAsync(LookupType.StatusResource);
+            var priorities = await GetLookupAsync(LookupType.PriorityResource);
+
+            string resourceCategory = resourceCategories.FirstOrDefault(_ => _.Value == DefaultResourceCategory)?.Value;
+            string currentStatus = statuses.FirstOrDefault(_ => _.Value == DefaultCurrentStatus)?.Id;
+            string priority = priorities.FirstOrDefault(_ => _.Value == DefaultPriority)?.Id;
+
+            var items = _mapper.Map(expenseAuthorizationRequest, priority, resourceCategory, currentStatus);
+
+            var request = new CreaterReportRequest(items);
+            string soapRequest = request.CreateSoapRequest();
+
+            try
+            {
+                CreateReportResponse response1 = new CreateReportResponse();
+
+                var soapResponse = await _client.CreateReportAsync(soapRequest);
+                response1.LoadFromXml(soapResponse);
+
+                ret = response1;
+            }
+            catch (ApiException exception)
+            {
+                throw new SoapFaultException(exception);
+            }
+
+            CreateReportResponse response = ret;
 
             return response;
         }
@@ -130,41 +157,6 @@ namespace EMBC.ExpenseAuthorization.Api.ETeam
             catch (ApiException e)
             {
                 throw new SoapFaultException(e);
-            }
-        }
-
-        private async Task<CreateReportResponse> CreateReportAsync(ETeamSettings settings, ExpenseAuthorizationRequest expenseAuthorizationRequest)
-        {
-            // get the defaults, we could cache this in the future
-            var resourceCategories = await GetLookupAsync(LookupType.ResourceCategory);
-            var statuses = await GetLookupAsync(LookupType.StatusResource);
-            var priorities = await GetLookupAsync(LookupType.PriorityResource);
-
-            string resourceCategory = resourceCategories.FirstOrDefault(_ => _.Value == DefaultResourceCategory)?.Value;
-            string currentStatus = statuses.FirstOrDefault(_ => _.Value == DefaultCurrentStatus)?.Id;
-            string priority = priorities.FirstOrDefault(_ => _.Value == DefaultPriority)?.Id;
-
-            var items = _mapper.Map(expenseAuthorizationRequest, priority, resourceCategory, currentStatus);
-
-            var request = new CreaterReportRequest(items);
-            string soapRequest = request.CreateSoapRequest();
-
-            try
-            {
-                CreateReportResponse response = new CreateReportResponse();
-
-#if true
-                var soapResponse = await _client.CreateReportAsync(soapRequest);
-                response.LoadFromXml(soapResponse);
-#else
-                response.Fields["id"] = Guid.NewGuid().ToString("n");
-#endif
-
-                return response;
-            }
-            catch (ApiException exception)
-            {
-                throw new SoapFaultException(exception);
             }
         }
 

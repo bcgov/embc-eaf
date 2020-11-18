@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using EMBC.ExpenseAuthorization.Api.Models;
-using Refit;
 
 namespace EMBC.ExpenseAuthorization.Api.ETeam
 {

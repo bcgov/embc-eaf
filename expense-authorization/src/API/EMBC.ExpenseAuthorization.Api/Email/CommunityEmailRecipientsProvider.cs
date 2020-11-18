@@ -4,13 +4,18 @@ using System.IO;
 using System.Linq;
 using FlatFiles;
 using FlatFiles.TypeMapping;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
     public class CommunityEmailRecipientsProvider
     {
-        private readonly ILogger _logger = Log.ForContext<CommunityEmailRecipientsProvider>();
+        private readonly ILogger<CommunityEmailRecipientsProvider> _logger;
+
+        public CommunityEmailRecipientsProvider(ILogger<CommunityEmailRecipientsProvider> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
         
         public IList<CommunityEmailRecipient> GetCommunityEmailRecipients(string filename)
         {
@@ -28,18 +33,18 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                     {
                         var options = new SeparatedValueOptions { IsFirstRecordSchema = true };
                         List<CommunityEmailRecipient> recipients = mapper.Read(reader, options).ToList();
-                        _logger.Debug("Found {Count} community email recipient from {Filename}", recipients.Count, filename);
+                        _logger.LogDebug("Found {Count} community email recipient from {Filename}", recipients.Count, filename);
 
                         return recipients;
                     }
                 }
 
-                _logger.Warning("Mapping {Filename} not found, returning empty result", filename);
+                _logger.LogWarning("Mapping {Filename} not found, returning empty result", filename);
                 return Array.Empty<CommunityEmailRecipient>();
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Failed to read file {Filename}, returning empty result", filename);
+                _logger.LogError(e, "Failed to read file {Filename}, returning empty result", filename);
                 return Array.Empty<CommunityEmailRecipient>();
             }
         }
