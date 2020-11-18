@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using Refit;
 
 namespace EMBC.ExpenseAuthorization.Api.ETeam.Responses

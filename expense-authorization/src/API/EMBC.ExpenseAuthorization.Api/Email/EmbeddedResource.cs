@@ -12,6 +12,12 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
             using var stream = assembly.GetManifestResourceStream(typeNamespace + "." + filename);
 
+            if (stream == null)
+            {
+                // should never happen unless the specified file name is wrong
+                return string.Empty;
+            }
+
             using StreamReader reader = new StreamReader(stream);
 
             string text = reader.ReadToEnd();

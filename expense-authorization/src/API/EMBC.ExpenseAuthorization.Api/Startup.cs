@@ -26,11 +26,9 @@ namespace EMBC.ExpenseAuthorization.Api
     public class Startup
     {
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Startup>();
-        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            CurrentEnvironment = env;
             Configuration = configuration;
         }
 
@@ -110,7 +108,9 @@ namespace EMBC.ExpenseAuthorization.Api
             }
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

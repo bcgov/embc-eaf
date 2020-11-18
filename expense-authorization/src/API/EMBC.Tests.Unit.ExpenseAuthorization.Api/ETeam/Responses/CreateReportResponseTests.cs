@@ -26,6 +26,8 @@ namespace EMBC.Tests.Unit.ExpenseAuthorization.Api.ETeam.Responses
 
             var soapFaultException = Assert.Throws<SoapFaultException>(() => sut.LoadFromXml(xml));
 
+            Assert.NotNull(soapFaultException.SoapFault);
+
         }
     }
 }
