@@ -56,18 +56,30 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                     throw new ArgumentNullException(nameof(request));
                 }
 
-                try
+                var loggingState = new Dictionary<string, object>
                 {
-                    CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
+                    {"ExpenseAuthorization.Request", request.Request},
+                    {"ExpenseAuthorization.FileCount", request.Files.Count },
+                };
 
-                    await _emailService.SendEmailAsync(request.Request, response, request.Files);
-
-                    return new CreateResponse();
-                }
-                catch (Exception e)
+                // ensure we log the request details, especially if an error occurs
+                using (_logger.BeginScope(loggingState))
                 {
-                    _logger.LogError(e, "Failed to create expense authorization");
-                    return new CreateResponse { Exception = e };
+                    try
+                    {
+                        _logger.LogDebug("Creating report in E-Team");
+                        CreateReportResponse response = await _eteamService.CreateReportAsync(request.Request);
+
+                        _logger.LogDebug("Sending email to notify of new request submission");
+                        await _emailService.SendEmailAsync(request.Request, response, request.Files);
+
+                        return new CreateResponse();
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e, "Failed to create expense authorization");
+                        return new CreateResponse { Exception = e };
+                    }
                 }
             }
         }

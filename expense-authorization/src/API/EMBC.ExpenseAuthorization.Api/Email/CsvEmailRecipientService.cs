@@ -2,35 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using EMBC.ExpenseAuthorization.Api.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
     public class CsvEmailRecipientService : IEmailRecipientService
     {
         private readonly IOptions<EmailSettings> _emailOptions;
-        private readonly ILogger _logger;
+        private readonly CommunityEmailRecipientsProvider _eEmailRecipientsProvider;
+        private readonly ILogger<CsvEmailRecipientService> _logger;
 
-        public CsvEmailRecipientService(IOptions<EmailSettings> emailOptions, ILogger logger)
+        public CsvEmailRecipientService(IOptions<EmailSettings> emailOptions, CommunityEmailRecipientsProvider eEmailRecipientsProvider, ILogger<CsvEmailRecipientService> logger)
         {
             _emailOptions = emailOptions ?? throw new ArgumentNullException(nameof(emailOptions));
+            _eEmailRecipientsProvider = eEmailRecipientsProvider ?? throw new ArgumentNullException(nameof(eEmailRecipientsProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public IList<string> GetToRecipients(ExpenseAuthorizationRequest request)
         {
-            _logger.Debug("Getting the email address for {RequestingOrg}", request.RequestingOrg);
+            _logger.LogDebug("Getting the email address for {RequestingOrg}", request.RequestingOrg);
             // do not use the default to list
             var recipients = GetRecipients(request, _ => _.To, _ => Enumerable.Empty<string>());
 
             if (recipients.Count != 0)
             {
-                _logger.Debug("Found {@EmailRecipients} ", recipients);
+                _logger.LogDebug("Found {@EmailRecipients} ", recipients);
                 return recipients;
             }
 
-            _logger.Information("Email recipient not found based on request, using the default email address from configuration");
+            _logger.LogInformation("Email recipient not found based on request, using the default email address from configuration");
 
             // if the config file does not have configured recipient, fall back to the configuration
             return GetDefaultToEmailRecipients(request);
@@ -56,7 +58,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
             if (defaultList.Count == 0)
             {
-                _logger.Error("No default email recipients not found, sending email is probably going to fail");
+                _logger.LogError("No default email recipients not found, sending email is probably going to fail");
             }
 
             return defaultList;
@@ -89,7 +91,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         {
             if (request?.RequestingOrg == null)
             {
-                _logger.Information("Request or RequestingOrg is null");
+                _logger.LogInformation("Request or RequestingOrg is null");
                 return null;
             }
 
@@ -109,10 +111,8 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         {
             var recipients = new Dictionary<string, CommunityEmailRecipient>(StringComparer.OrdinalIgnoreCase);
 
-            var loader = new CommunityEmailRecipientsProvider();
-
             // load the file and remove any separators (all underscores)
-            var communityRecipients = loader
+            var communityRecipients = _eEmailRecipientsProvider
                 .GetCommunityEmailRecipients(_emailOptions.Value.RecipientMappingFile)
                 .Where(_ => _.Community != null && _.Community.Any(c => c != '_'))
                 .ToLookup(_ => _.Community.Trim(), StringComparer.OrdinalIgnoreCase);
@@ -124,7 +124,7 @@ namespace EMBC.ExpenseAuthorization.Api.Email
 
                 if (1 < items.Count)
                 {
-                    _logger.Information("More than one line matched {Community}, only the first matching line will be used", community.Key);
+                    _logger.LogInformation("More than one line matched {Community}, only the first matching line will be used", community.Key);
                 }
 
                 recipients.Add(community.Key, items[0]);

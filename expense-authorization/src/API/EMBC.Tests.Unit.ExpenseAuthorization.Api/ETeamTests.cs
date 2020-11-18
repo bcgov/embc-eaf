@@ -1,20 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Xsl;
 using AutoFixture;
-using EMBC.ExpenseAuthorization.Api.ETeam;
-using EMBC.ExpenseAuthorization.Api.ETeam.Models;
-using EMBC.ExpenseAuthorization.Api.ETeam.Requests;
-using Moq;
-using Refit;
-using Xunit;
 
 namespace EMBC.Tests.Unit.ExpenseAuthorization.Api
 {

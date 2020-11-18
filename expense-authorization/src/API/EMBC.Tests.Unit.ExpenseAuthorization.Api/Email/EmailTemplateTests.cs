@@ -1,7 +1,6 @@
 ﻿using System;
 using AutoFixture;
 using EMBC.ExpenseAuthorization.Api.Email;
-using EMBC.ExpenseAuthorization.Api.ETeam.Models;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using EMBC.ExpenseAuthorization.Api.Models;
 using Xunit;

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using EMBC.ExpenseAuthorization.Api.ETeam.Responses;
 using EMBC.ExpenseAuthorization.Api.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MimeKit;
-using Serilog;
 
 namespace EMBC.ExpenseAuthorization.Api.Email
 {
@@ -17,13 +15,13 @@ namespace EMBC.ExpenseAuthorization.Api.Email
         private readonly IEmailRecipientService _recipientService;
         private readonly IOptions<ETeamSettings> _eteamOptions;
         private readonly IEmailSender _sender;
-        private readonly ILogger _logger;
+        private readonly ILogger<EmailService> _logger;
 
         public EmailService(
             IEmailRecipientService recipientService,
             IOptions<ETeamSettings> eteamOptions,
-            IEmailSender sender, 
-            ILogger logger)
+            IEmailSender sender,
+            ILogger<EmailService> logger)
         {
             _recipientService = recipientService ?? throw new ArgumentNullException(nameof(recipientService));
             _eteamOptions = eteamOptions ?? throw new ArgumentNullException(nameof(eteamOptions));
@@ -44,9 +42,9 @@ namespace EMBC.ExpenseAuthorization.Api.Email
                 .Apply(response, eteamSettings.Url)
                 .Content;
 
-            _logger.Debug("Getting the email to recipient list base on request");
+            _logger.LogDebug("Getting the email to recipient list base on request");
             var to = _recipientService.GetToRecipients(request);
-            _logger.Debug("Email will be sent to {@EmailTo}", to);
+            _logger.LogDebug("Email will be sent to {@EmailTo}", to);
 
             // Request from R. Wainwright, subject line of the email should 
             // be [Region abbreviation + PREOC] – [A new EAF has been submitted to ETEAMS]

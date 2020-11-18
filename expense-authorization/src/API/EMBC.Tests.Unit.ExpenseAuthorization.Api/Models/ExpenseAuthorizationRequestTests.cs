@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoFixture;
 using EMBC.ExpenseAuthorization.Api.Models;
 using Xunit;
