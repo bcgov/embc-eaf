@@ -182,7 +182,7 @@
         <legend>File Attachments</legend>
         <div class="row">
             <div class="form-group col-md mb-0">
-                <div class="fileAttachmentsContainer-note"><small class="form-text text-muted mt-0">(Drag and drop any relevant files - only add .png, .jpg, or .pdf file types, < 5MB in total size)</small></div>
+                <div class="fileAttachmentsContainer-note"><small class="form-text text-muted mt-0">(Drag and drop any relevant files - only add .png, .jpg, .pdf, .docx, or .xlsx file types, < 5MB in total size)</small></div>
 
                 <div class="fileAttachmentsContainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="addAttachment($event)">
                     <input hidden type="file" #fileInput (change)="addAttachment($event.target.files)">
@@ -210,5 +210,6 @@
     <div class="container submission" *ngIf="submission == 'failure'">
         <h2>Submission <i>unsuccessful</i>.</h2>
         <p>There was an error processing your request. Please try again later.</p>
+        <button type="button" class="btn btn-primary" (click)="onBack()">Back</button>
     </div>
 </form>
