@@ -99,7 +99,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       const file = event[i];
       if ((totalFileSize + file.size ) < 5242880 ) { // 5MB = 5 * 1024 * 1024
         let type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-        if ('|jpg|jpeg|pdf|png|'.indexOf(type) !== -1) {
+        if ('|jpg|jpeg|pdf|png|doc|docx|xls|xlsx|vnd.openxmlformats-officedocument.wordprocessingml.document|vnd.openxmlformats-officedocument.spreadsheetml.sheet|'.indexOf(type) !== -1) {
           this.files.push(file);
           totalFileSize = totalFileSize + file.size;
         }
@@ -126,6 +126,12 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       total = total + this.files[i].size;
     }
     return total;
+  }
+
+  /** Back button on the Unsuccessful screen. */
+  onBack() {
+    this.now = Date.now(); // reset Date/Time on form
+    this.submission = 'none';
   }
 
   /** Main submit method.  Called when Submit is clicked. */
