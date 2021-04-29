@@ -14,9 +14,10 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - name: Get Source
+        uses: actions/checkout@v2
 
       - name: Build image
         working-directory: expense-authorization/src/API
