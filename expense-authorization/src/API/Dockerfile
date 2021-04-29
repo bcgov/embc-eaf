@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 WORKDIR /src
 COPY . .
-RUN dotnet publish "DisputeApi.Web/DisputeApi.Web.csproj" -c Release -o /opt/app-root
+RUN dotnet publish "EMBC.ExpenseAuthorization.Api.csproj" -c Release -o /opt/app-root
 
 FROM registry.access.redhat.com/ubi8/dotnet-50-runtime AS base
 WORKDIR /opt/app-root
