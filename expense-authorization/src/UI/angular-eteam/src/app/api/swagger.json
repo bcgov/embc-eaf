@@ -27,74 +27,59 @@
                 "type": "object",
                 "properties": {
                   "Event": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "DateTime": {
                     "type": "string",
                     "format": "date-time"
                   },
                   "EAFNo": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "EMBCTaskNo": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "RequestingOrg": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "ResourceType": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "AuthName": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "AuthTelephone": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "AuthEmail": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "Description": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "AmountRequested": {
                     "type": "number",
-                    "format": "double",
-                    "nullable": true
+                    "format": "double"
                   },
                   "ExpenditureNotToExceed": {
                     "type": "number",
-                    "format": "double",
-                    "nullable": true
+                    "format": "double"
                   },
                   "EocApprovals.Processing.ApprovedBy": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "EocApprovals.Processing.Position": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "EocApprovals.Processing.ApprovalDateTime": {
                     "type": "string",
                     "format": "date-time"
                   },
                   "EocApprovals.ExpenditureRequest.ApprovedBy": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "EocApprovals.ExpenditureRequest.Position": {
-                    "type": "string",
-                    "nullable": true
+                    "type": "string"
                   },
                   "EocApprovals.ExpenditureRequest.ApprovalDateTime": {
                     "type": "string",
@@ -105,9 +90,7 @@
                     "items": {
                       "type": "string",
                       "format": "binary"
-                    },
-                    "description": "The optional list of files to attach to the request.",
-                    "nullable": true
+                    }
                   }
                 }
               },
@@ -175,7 +158,14 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseAuthorizationResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
@@ -188,7 +178,14 @@
             }
           },
           "500": {
-            "description": "Server Error"
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -265,10 +262,78 @@
           }
         }
       }
+    },
+    "/api/Lookup/LeadAgencyDeptListCsv": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "ExpenseAuthorizationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LookupType": {
+        "enum": [
+          "PriorityResource",
+          "RequestingOrgForwardTo",
+          "ResourceCategory",
+          "ResourceType",
+          "StatusResource",
+          "LeadAgencyDeptList"
+        ],
+        "type": "string"
+      },
+      "LookupValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -294,36 +359,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {
-          "type": "object",
-          "additionalProperties": false
-        }
-      },
-      "LookupValue": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "LookupType": {
-        "enum": [
-          "PriorityResource",
-          "RequestingOrgForwardTo",
-          "ResourceCategory",
-          "ResourceType",
-          "StatusResource",
-          "UnitsOfMeasure",
-          "LeadAgencyDeptList"
-        ],
-        "type": "string"
+        "additionalProperties": { }
       }
     }
   }

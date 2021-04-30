@@ -34,9 +34,9 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
         /// <param name="files">The optional list of files to attach to the request.</param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ExpenseAuthorizationResponse), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 500)]
         public async Task<IActionResult> PostAsync([FromForm] ExpenseAuthorizationRequest request, [FromForm] IFormFileCollection files)
         {
             // By annotating the controller with ApiControllerAttribute,
@@ -53,7 +53,7 @@ namespace EMBC.ExpenseAuthorization.Api.Controllers
                     return GetProblemResult(response.Exception);
                 }
 
-                return Ok();
+                return Ok(new ExpenseAuthorizationResponse { Id = response.Id });
             }
             catch (Exception e)
             {

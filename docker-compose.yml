@@ -6,7 +6,7 @@ services:
       context: ./expense-authorization/src/API
     image: embc-expense-authorization-api:dev
     ports:
-      - 8080:80
+      - 8080:8080
     environment:
       - ETEAM__URL=${ETEAM__URL}
       - ETEAM__USERNAME=${ETEAM__USERNAME}

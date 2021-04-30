@@ -2,6 +2,11 @@
 
 namespace EMBC.ExpenseAuthorization.Api.Models
 {
+    public class ExpenseAuthorizationResponse
+    {
+        public string Id { get; set; }
+    }
+
     public class ExpenseAuthorizationRequest
     {
         private decimal _amountRequested;

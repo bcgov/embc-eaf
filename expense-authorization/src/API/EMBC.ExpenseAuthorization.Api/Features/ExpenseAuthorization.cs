@@ -32,6 +32,18 @@ namespace EMBC.ExpenseAuthorization.Api.Features
 
         public class CreateResponse
         {
+            public CreateResponse(string id)
+            {
+                Id = id;
+            }
+
+            public CreateResponse(Exception exception)
+            {
+                Exception = exception;
+            }
+
+            public string Id { get; set; }
+            
             public Exception Exception { get; set; }
         }
         
@@ -73,12 +85,12 @@ namespace EMBC.ExpenseAuthorization.Api.Features
                         _logger.LogDebug("Sending email to notify of new request submission");
                         await _emailService.SendEmailAsync(request.Request, response, request.Files);
 
-                        return new CreateResponse();
+                        return new CreateResponse(response.Fields["id"]);
                     }
                     catch (Exception e)
                     {
                         _logger.LogError(e, "Failed to create expense authorization");
-                        return new CreateResponse { Exception = e };
+                        return new CreateResponse(e);
                     }
                 }
             }
