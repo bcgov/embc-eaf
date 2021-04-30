@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ExpenseAuthorizationResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -118,13 +119,13 @@ export class ExpenseAuthorizationService {
      * @param eocApprovalsExpenditureRequestApprovedBy 
      * @param eocApprovalsExpenditureRequestPosition 
      * @param eocApprovalsExpenditureRequestApprovalDateTime 
-     * @param files The optional list of files to attach to the request.
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ExpenseAuthorizationResponse>;
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ExpenseAuthorizationResponse>>;
+    public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ExpenseAuthorizationResponse>>;
     public apiExpenseAuthorizationPost(event?: string, dateTime?: string, eAFNo?: string, eMBCTaskNo?: string, requestingOrg?: string, resourceType?: string, authName?: string, authTelephone?: string, authEmail?: string, description?: string, amountRequested?: number, expenditureNotToExceed?: number, eocApprovalsProcessingApprovedBy?: string, eocApprovalsProcessingPosition?: string, eocApprovalsProcessingApprovalDateTime?: string, eocApprovalsExpenditureRequestApprovedBy?: string, eocApprovalsExpenditureRequestPosition?: string, eocApprovalsExpenditureRequestApprovalDateTime?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -229,7 +230,7 @@ export class ExpenseAuthorizationService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/api/ExpenseAuthorization`,
+        return this.httpClient.post<ExpenseAuthorizationResponse>(`${this.configuration.basePath}/api/ExpenseAuthorization`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 responseType: <any>responseType,

@@ -12,27 +12,24 @@
 
 
 export interface InlineObject { 
-    Event?: string | null;
+    Event?: string;
     DateTime?: string;
-    EAFNo?: string | null;
-    EMBCTaskNo?: string | null;
-    RequestingOrg?: string | null;
-    ResourceType?: string | null;
-    AuthName?: string | null;
-    AuthTelephone?: string | null;
-    AuthEmail?: string | null;
-    Description?: string | null;
-    AmountRequested?: number | null;
-    ExpenditureNotToExceed?: number | null;
-    EocApprovals_Processing_ApprovedBy?: string | null;
-    EocApprovals_Processing_Position?: string | null;
+    EAFNo?: string;
+    EMBCTaskNo?: string;
+    RequestingOrg?: string;
+    ResourceType?: string;
+    AuthName?: string;
+    AuthTelephone?: string;
+    AuthEmail?: string;
+    Description?: string;
+    AmountRequested?: number;
+    ExpenditureNotToExceed?: number;
+    EocApprovals_Processing_ApprovedBy?: string;
+    EocApprovals_Processing_Position?: string;
     EocApprovals_Processing_ApprovalDateTime?: string;
-    EocApprovals_ExpenditureRequest_ApprovedBy?: string | null;
-    EocApprovals_ExpenditureRequest_Position?: string | null;
+    EocApprovals_ExpenditureRequest_ApprovedBy?: string;
+    EocApprovals_ExpenditureRequest_Position?: string;
     EocApprovals_ExpenditureRequest_ApprovalDateTime?: string;
-    /**
-     * The optional list of files to attach to the request.
-     */
-    files?: Array<Blob> | null;
+    files?: Array<Blob>;
 }
 
