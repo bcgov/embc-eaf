@@ -42,6 +42,11 @@ namespace EMBC.ExpenseAuthorization.Api.Email
             var settings = _emailOptions.Value;
             var field = fieldSelector(settings);
 
+            if (string.IsNullOrEmpty(field))
+            {
+                return Array.Empty<string>();
+            }
+
             return field.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
