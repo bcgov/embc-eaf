@@ -24,6 +24,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   files: File[] = [];
   uploadFileErrors: any;
   submission: String = "none";
+  submissionID: String = "";
   now: number = Date.now();
 
   expndAuthForm = this.fb.group({
@@ -132,6 +133,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
   onBack() {
     this.now = Date.now(); // reset Date/Time on form
     this.submission = 'none';
+    this.submissionID = "";
   }
 
   /** Main submit method.  Called when Submit is clicked. */
@@ -181,9 +183,10 @@ export class ExpenditureAuthorizationComponent implements OnInit {
       .pipe(
         catchError(this.handleError('API post'))
       )
-      .subscribe(() => {
+      .subscribe((response: {id: String}) => {
         if (this.submission != "failure" && this.submission != "validationFailure") {
           this.submission = "success";
+          this.submissionID = response.id;
           this.log('apiResourceRequestPost returned');
         }
       });
@@ -303,6 +306,7 @@ export class ExpenditureAuthorizationComponent implements OnInit {
         this.log(`${operation} failed: ${error.message}`);
       }
 
+      this.submissionID = "";
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
