@@ -5,11 +5,9 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Autofac;
 using EMBC.ExpenseAuthorization.Api.Email;
 using EMBC.ExpenseAuthorization.Api.ETeam;
 using MediatR;
-using MediatR.Extensions.Autofac.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -77,13 +75,14 @@ namespace EMBC.ExpenseAuthorization.Api
             services.AddTransient<IEmailService, EmailService>();
 
             // add all the handlers in this assembly
-            services.AddMediatR(GetType().Assembly);
+            services.AddMediatR(typeof(Startup));
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailRecipientService, CsvEmailRecipientService>();
 
             services.AddTransient<IExpenseAuthorizationRequestMapper, ExpenseAuthorizationRequestMapper>();
-            
+            services.AddTransient<CommunityEmailRecipientsProvider>();
+
             AddSwaggerGen(services);
         }
 
@@ -141,19 +140,7 @@ namespace EMBC.ExpenseAuthorization.Api
             });
 
         }
-
-        // ConfigureContainer is where you can register things directly
-        // with Autofac. This runs after ConfigureServices so the things
-        // here will override registrations made in ConfigureServices.
-        // Don't build the container; that gets done for you by the factory.
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.AddMediatR(typeof(Startup).Assembly);
-
-            // Register top application module
-            builder.RegisterModule<ExpenseAuthorizationModule>();
-        }
-
+        
         private void AddSwaggerGen(IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
