@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -39,7 +38,6 @@ namespace EMBC.ExpenseAuthorization.Api
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             var builder = Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog(ConfigureSerilogLogger)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 
