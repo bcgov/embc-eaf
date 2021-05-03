@@ -39,7 +39,14 @@ namespace EMBC.ExpenseAuthorization.Api
         {
             var builder = Host.CreateDefaultBuilder(args)
                 .UseSerilog(ConfigureSerilogLogger)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel(opts =>
+                    {
+                        opts.ListenAnyIP(8080);
+                    });
+                });
 
             return builder;
         }
