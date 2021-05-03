@@ -9,4 +9,4 @@ WORKDIR /opt/app-root
 EXPOSE 8080
 COPY --from=build /opt/app-root .
 
-ENTRYPOINT ["dotnet", "EMBC.ExpenseAuthorization.Api.dll"]
+ENTRYPOINT ["sh","-c","dotnet EMBC.ExpenseAuthorization.Api.dll"]
