@@ -16,6 +16,5 @@ RUN dotnet publish "EMBC.ExpenseAuthorization.Api.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /opt/app-root/app
 COPY --from=publish /app/publish .
-COPY --from=build EMBC.ExpenseAuthorization.Api.xml .
 
 ENTRYPOINT ["sh","-c","dotnet EMBC.ExpenseAuthorization.Api.dll"]

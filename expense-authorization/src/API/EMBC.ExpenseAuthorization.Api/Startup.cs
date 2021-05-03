@@ -198,7 +198,10 @@ namespace EMBC.ExpenseAuthorization.Api
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                options.IncludeXmlComments(xmlPath);
+                if (File.Exists(xmlPath))
+                {
+                    options.IncludeXmlComments(xmlPath);
+                }
 
                 options.OperationFilter<ConsumesAndProductOnlyJSonContentTypeFilter>();
             });
