@@ -21,3 +21,16 @@ jobs:
       - name: Build image
         working-directory: expense-authorization/src/UI
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Tag the Image in OCP3
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker tag expense-authorization-ui ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/expense-authorization-ui
+
+      - name: Push frontend to OCP3
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker login ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }} -u ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY_USER }} -p ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY_PASS }}
+          docker image push --all-tags ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/expense-authorization-ui
