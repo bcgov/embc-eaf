@@ -45,7 +45,7 @@ export class LookupService {
                 basePath = this.basePath;
             }
 
-            if (basePath == undefined) {
+            if (basePath === undefined || basePath === 'undefined') {
                 basePath = '';
             }
 
