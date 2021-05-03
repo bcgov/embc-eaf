@@ -44,7 +44,7 @@ export class LookupService {
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
-            this.configuration.basePath = basePath;
+            this.configuration.basePath = basePath ?? '';
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
