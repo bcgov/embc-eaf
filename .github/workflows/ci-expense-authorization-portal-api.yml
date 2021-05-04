@@ -16,6 +16,11 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       - name: Get Source
         uses: actions/checkout@v2
 
@@ -27,9 +32,10 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
+          docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ steps.extract_branch.outputs.branch }}
 
       - name: Push frontend to OCP3
+        if: ${{ steps.extract_branch.outputs.branch === 'dev' || steps.extract_branch.outputs.branch === 'test' || steps.extract_branch.outputs.branch === 'prod' }}
         env:
           DOCKER_BUILDKIT: 1
         run: |
