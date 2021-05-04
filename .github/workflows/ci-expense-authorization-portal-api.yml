@@ -35,7 +35,7 @@ jobs:
           docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ steps.extract_branch.outputs.branch }}
 
       - name: Push frontend to OCP3
-        if: ${{ steps.extract_branch.outputs.branch === 'dev' || steps.extract_branch.outputs.branch === 'test' || steps.extract_branch.outputs.branch === 'prod' }}
+        if: ${{ steps.extract_branch.outputs.branch == 'dev' || steps.extract_branch.outputs.branch == 'test' || steps.extract_branch.outputs.branch == 'prod' }}
         env:
           DOCKER_BUILDKIT: 1
         run: |
