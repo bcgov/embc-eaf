@@ -35,7 +35,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.head_ref }}
+          docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
 
       - name: Push frontend to OCP3
         if: ${{ github.head_ref == 'master' || github.head_ref == 'main' }}
@@ -43,4 +43,4 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           docker login ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }} -u ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY_USER }} -p ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY_PASS }}
-          docker image push --all-tags ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.head_ref }}
+          docker image push --all-tags ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
