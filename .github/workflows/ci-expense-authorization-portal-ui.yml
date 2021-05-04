@@ -31,14 +31,14 @@ jobs:
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
       - name: Tag the Image in OCP3
-        if: ${{ github.head_ref == 'master' || github.head_ref == 'main' }}
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         env:
           DOCKER_BUILDKIT: 1
         run: |
           docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
 
       - name: Push frontend to OCP3
-        if: ${{ github.head_ref == 'master' || github.head_ref == 'main' }}
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         env:
           DOCKER_BUILDKIT: 1
         run: |
