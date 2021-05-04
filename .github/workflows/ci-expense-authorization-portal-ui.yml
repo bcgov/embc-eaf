@@ -24,7 +24,7 @@ jobs:
       #     echo "$GITHUB_CONTEXT"
 
       - name: Get Source
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Build image
         working-directory: expense-authorization/src/UI
