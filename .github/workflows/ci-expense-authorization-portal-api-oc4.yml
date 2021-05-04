@@ -1,0 +1,45 @@
+name: ci-expense-authorization-portal-api
+
+on:
+  push:
+    branches: [develop, master, main]
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    paths:
+      - "expense-authorization/src/API/**"
+      - ".github/workflows/ci-expense-authorization-portal-api.yml"
+
+env:
+  IMAGE_NAME: expense-authorization-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Print GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: |
+      #     echo "The event name is ${{ github.event_name }}"
+      #     echo "$GITHUB_CONTEXT"
+
+      - name: Get Source
+        uses: actions/checkout@v2
+
+      - name: Build image
+        working-directory: expense-authorization/src/API/EMBC.ExpenseAuthorization.Api
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Tag the Image in OCP3
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
+      - name: Push frontend to OCP3
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker login ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }} -u ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY_USER }} -p ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY_PASS }}
+          docker image push --all-tags ${{ secrets.OPENSHIFT_OCP3_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP3_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
