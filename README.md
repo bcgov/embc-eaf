@@ -24,7 +24,7 @@ Repository for Expense Authorization Form Webform Development
 - Git 
 
 ## Build (Github Actions)
-The following secets need to be setup in your project to push to push to openshift. Note the OCP3 names are depricated and will be removed once the migration to OCP4 is complete.
+The following secets need to be setup in your project to push to push to openshift. Note the OCP3 names are deprecated and will be removed once the migration to OCP4 is complete.
 
 | Secret | Description |
 | --- | --- |
@@ -32,10 +32,10 @@ The following secets need to be setup in your project to push to push to openshi
 | OPENSHIFT_EXTERNAL_REGISTRY_PASS | The password/token of the service account allowed to push to the image registry |
 | OPENSHIFT_EXTERNAL_REGISTRY_USER | The username of the service account allowed to push to the image registry, ie builder |
 | OPENSHIFT_TOOLS_NAMESPACE | The tools openshift namespace, ie abcdef-tools |
-| OPENSHIFT_OCP3_EXTERNAL_REGISTRY | depricated - The name of the openshift external registry (OCP3) |
-| OPENSHIFT_OCP3_EXTERNAL_REGISTRY_PASS | depricated - The password/token of the service account allowed to push to the image registry |
-| OPENSHIFT_OCP3_EXTERNAL_REGISTRY_USER |depricated - The username of the service account allowed to push to the image registry, ie builder |
-| OPENSHIFT_OCP3_TOOLS_NAMESPACE | depricated - The tools openshift namespace, ie abcdef-tools |
+| OPENSHIFT_OCP3_EXTERNAL_REGISTRY | deprecated - The name of the openshift external registry (OCP3) |
+| OPENSHIFT_OCP3_EXTERNAL_REGISTRY_PASS | deprecated - The password/token of the service account allowed to push to the image registry |
+| OPENSHIFT_OCP3_EXTERNAL_REGISTRY_USER | deprecated - The username of the service account allowed to push to the image registry, ie builder |
+| OPENSHIFT_OCP3_TOOLS_NAMESPACE | deprecated - The tools openshift namespace, ie abcdef-tools |
 
 ## Deployment (OpenShift)
 
