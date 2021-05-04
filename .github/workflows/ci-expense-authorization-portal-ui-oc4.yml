@@ -1,4 +1,4 @@
-name: ci-expense-authorization-portal-ui
+name: ci-expense-authorization-portal-ui-oc4
 
 on:
   push:
