@@ -43,6 +43,11 @@ export class ExpenseAuthorizationService {
             if (typeof basePath !== 'string') {
                 basePath = this.basePath;
             }
+
+            if (basePath === undefined || basePath === 'undefined') {
+                basePath = '';
+            }
+
             this.configuration.basePath = basePath;
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
