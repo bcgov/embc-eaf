@@ -8,7 +8,7 @@ Repository for Expense Authorization Form Webform Development
 | Layer   | Technology | 
 | ------- | ------------ |
 | Presentation | Angular 9.1 |
-| Business Logic | C# - .NET Core 3.1 |
+| Business Logic | C# - .NET 5 |
 | Web Server | Kestrel |
 
 ## Deployment (Local Development)
