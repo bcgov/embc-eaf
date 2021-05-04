@@ -27,6 +27,7 @@ Repository for Expense Authorization Form Webform Development
 The following secets need to be setup in your project to push to push to openshift. Note the OCP3 names are depricated and will be removed once the migration to OCP4 is complete.
 
 | Secret | Description |
+| --- | --- |
 | OPENSHIFT_EXTERNAL_REGISTRY | The name of the openshift external registry (OCP4) |
 | OPENSHIFT_EXTERNAL_REGISTRY_PASS | The password/token of the service account allowed to push to the image registry |
 | OPENSHIFT_EXTERNAL_REGISTRY_USER | The username of the service account allowed to push to the image registry, ie builder |
