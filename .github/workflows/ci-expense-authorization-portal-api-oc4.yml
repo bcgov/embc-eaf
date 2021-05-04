@@ -30,13 +30,13 @@ jobs:
         working-directory: expense-authorization/src/API/EMBC.ExpenseAuthorization.Api
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Tag the Image in OCP3
+      - name: Tag the Image in OCP4
         if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         env:
           DOCKER_BUILDKIT: 1
         run: |
           docker tag ${{ env.IMAGE_NAME }} ${{ secrets.OPENSHIFT_OCP4_EXTERNAL_REGISTRY }}/${{ secrets.OPENSHIFT_OCP4_TOOLS_NAMESPACE }}/${{ env.IMAGE_NAME }}
-      - name: Push frontend to OCP3
+      - name: Push frontend to OCP4
         if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         env:
           DOCKER_BUILDKIT: 1
