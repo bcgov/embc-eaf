@@ -1,4 +1,7 @@
 # embc-eaf
+
+> **Retired, October 2026.** The Expense Authorization Form application is no longer in service. Its OpenShift project `d951c7` has been shut down, and this repository is archived and kept for reference only.
+
 Repository for Expense Authorization Form Webform Development
 
 ![ci-expense-authorization-portal-api](https://github.com/pbolduc/embc-expense-auth-form/workflows/ci-expense-authorization-portal-api/badge.svg)
